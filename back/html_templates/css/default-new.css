@@ -1,0 +1,156 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap');
+
+* {
+    font-family: 'Times New Roman', Times, serif;
+    -webkit-print-color-adjust: exact;
+    text-align: left;
+    font-size: 14px;
+}
+
+@page {
+    margin-top: 80px;
+    margin-bottom: 70px;
+}
+
+@page :first {
+    /* margin-top: 40px; */
+    margin-top: 0;
+    margin-bottom: 150px;
+}
+
+body {
+    margin: unset !important;
+    margin-top: 1cm;
+}
+
+.container {
+    margin: auto;
+    width: 80%;
+    text-align: left;
+}
+
+.container div {
+    margin: 10px;
+    text-align: center;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+table th,
+table td {
+    text-align: center;
+    padding: 4px;
+    border: 1px solid black;
+    margin: 0;
+}
+
+.d-flex {
+    display: flex;
+    align-items: center;
+    text-align: left;
+}
+
+.justify-center {
+    justify-content: center;
+}
+
+.name {
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.picture {
+    background-color: grey;
+    height: 250px;
+    width: 150px;
+    object-fit: cover;
+    border-radius: 0%;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.blue-title {
+    background-color: #071e30;
+    width: 100%;
+    border-radius: 30px;
+    color: white;
+    text-align: center;
+    font-size: 20px;
+    padding: 5px;
+    font-family: 'Times New Roman', Times, serif;
+    margin-bottom: 50px;
+    font-weight: 300;
+}
+
+.subtitle {
+    font-weight: 600;
+    text-align: left;
+}
+
+.main-infos p {
+    margin: 0 0 3px 0;
+}
+
+.mt-2 {
+    margin-top: 20px !important;
+}
+
+.mt-13 {
+    margin-top: 130px !important;
+}
+
+.header-banner-main-new {
+    background-color: #081e30;
+    /* background-image: url("../images/top-cv-mmi1.png"); */
+    width: 100%;
+    height: 170px;
+    /* background-position: center; */
+    background-size: contain;
+    background-repeat: no-repeat;
+    /* margin-top: -80px; */
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    /* padding-left: 20px; */
+}
+
+.page-break {
+    page-break-after: always;
+}
+
+.material-icons-outlined {
+    color: #d76004;
+    margin-right: 10px;
+}
+
+.footer {
+    background-color: lightgrey;
+    width: 100%;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    position: fixed;
+    bottom: 0px;
+}
+
+.footer p {
+    font-size: 8px !important;
+    text-align: center;
+}
+
+p {
+    font-size: 14px;
+}
+
+.blue-title,
+.name {
+    font-family: 'Times New Roman', Times, serif;
+    /* font-family: "Libre Baskerville", serif; */
+}
+
+.description-candidate {
+    line-height: 25px;
+}

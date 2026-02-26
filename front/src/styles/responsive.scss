@@ -1,0 +1,523 @@
+/* Responsive Styles for Morgan & Mallet CRM */
+
+/* Mobile First Approach - Base styles for mobile, then scale up */
+
+/* ===== BREAKPOINTS ===== */
+/* 
+  xs: 0-599px (Mobile)
+  sm: 600-959px (Tablet Portrait)
+  md: 960-1279px (Tablet Landscape / Small Desktop)
+  lg: 1280-1919px (Desktop)
+  xl: 1920px+ (Large Desktop)
+*/
+
+/* ===== GLOBAL RESPONSIVE UTILITIES ===== */
+
+/* Hide/Show based on screen size */
+@media (max-width: 599px) {
+  .hide-xs { display: none !important; }
+}
+
+@media (min-width: 600px) and (max-width: 959px) {
+  .hide-sm { display: none !important; }
+}
+
+@media (min-width: 960px) and (max-width: 1279px) {
+  .hide-md { display: none !important; }
+}
+
+@media (min-width: 1280px) {
+  .hide-lg { display: none !important; }
+}
+
+/* Show only on specific sizes */
+.show-xs, .show-sm, .show-md, .show-lg {
+  display: none !important;
+}
+
+@media (max-width: 599px) {
+  .show-xs { display: block !important; }
+}
+
+@media (min-width: 600px) and (max-width: 959px) {
+  .show-sm { display: block !important; }
+}
+
+@media (min-width: 960px) and (max-width: 1279px) {
+  .show-md { display: block !important; }
+}
+
+@media (min-width: 1280px) {
+  .show-lg { display: block !important; }
+}
+
+/* ===== MOBILE (0-599px) ===== */
+@media (max-width: 599px) {
+  
+  /* Typography */
+  h1 { font-size: 24px !important; }
+  h2 { font-size: 20px !important; }
+  h3 { font-size: 18px !important; }
+  
+  /* Containers */
+  .nxs-list-page {
+    padding: 0 !important;
+  }
+  
+  .nxs-list-page-content {
+    padding: 20px 5px !important;
+  }
+  
+  .nxs-list-page-filters {
+    padding: 10px !important;
+    
+    .filters-wrapper {
+      > div {
+        width: 100% !important;
+        margin-bottom: 10px;
+      }
+    }
+  }
+  
+  /* Form fields */
+  .mat-form-field,
+  .nxs-small-mat-input {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 100% !important;
+    margin: 5px 0 !important;
+  }
+  
+  .small-width,
+  .long-width,
+  .xl-long-width {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+  
+  /* Buttons */
+  button {
+    width: 100%;
+    margin: 5px 0 !important;
+  }
+  
+  .buttons-wrapper {
+    flex-direction: column;
+    
+    > .mat-button-base {
+      width: 100%;
+      margin: 5px 0 !important;
+    }
+  }
+  
+  /* Tables and Lists */
+  .nxs-list-item-wrapper-container {
+    flex-direction: column !important;
+    padding: 10px !important;
+    overflow: hidden !important;
+    height: auto !important;
+    min-height: auto !important;
+    
+    > div {
+      width: 100% !important;
+      max-width: 100% !important;
+      min-width: 100% !important;
+      margin: 5px 0 !important;
+      overflow: hidden !important;
+      text-overflow: ellipsis !important;
+    }
+    
+    .vertical-separator {
+      display: none !important;
+    }
+  }
+  
+  /* Candidate/Job Offer items */
+  .candidate-wrapper-item,
+  .job-offer-wrapper-item {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 100% !important;
+    margin: 5px 0 !important;
+  }
+  
+  /* Tabs */
+  .mat-tab-label {
+    min-width: 80px !important;
+    padding: 0 10px !important;
+    font-size: 12px !important;
+  }
+  
+  .mat-tab-header {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    width: 100% !important;
+  }
+  
+  .mat-tab-label-container {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    width: 100% !important;
+  }
+  
+  .mat-tab-labels {
+    justify-content: flex-start !important;
+  }
+  
+  .mat-tab-header-pagination {
+    display: none !important;
+  }
+  
+  .mat-tab-body-content {
+    padding: 0 !important;
+  }
+  
+  /* Dialogs */
+  mat-dialog-container.mat-dialog-container {
+    padding: 20px !important;
+    max-width: 95vw !important;
+  }
+  
+  /* Search section */
+  .search-section {
+    .search-input-container {
+      flex-direction: column;
+      
+      .search-field {
+        width: 100% !important;
+        margin-bottom: 10px;
+      }
+      
+      .search-button {
+        width: 100% !important;
+      }
+    }
+  }
+  
+  /* Actions buttons */
+  .actions {
+    width: 100% !important;
+    margin: 10px 0 !important;
+    justify-content: center !important;
+  }
+  
+  .actions-btn {
+    width: 100% !important;
+    justify-content: center !important;
+    
+    button {
+      width: 100% !important;
+    }
+  }
+  
+  /* Flex layouts */
+  .d-flex-row,
+  .flex-wrapper-horizontal {
+    flex-direction: column !important;
+  }
+  
+  /* Stat items */
+  .stat-item {
+    width: 100% !important;
+    margin: 10px 0 !important;
+  }
+  
+  /* Profile picture */
+  .profile-picture {
+    min-width: 40px !important;
+    min-height: 40px !important;
+  }
+  
+  /* Paginator */
+  .mat-paginator {
+    font-size: 12px !important;
+    
+    .mat-paginator-page-size {
+      display: none !important;
+    }
+  }
+}
+
+/* ===== TABLET PORTRAIT (600-959px) ===== */
+@media (min-width: 600px) and (max-width: 959px) {
+  
+  /* Typography */
+  h1 { font-size: 26px !important; }
+  h2 { font-size: 22px !important; }
+  
+  /* Containers */
+  .nxs-list-page {
+    padding: 15px !important;
+  }
+  
+  /* Form fields - 2 columns */
+  .mat-form-field,
+  .nxs-small-mat-input {
+    width: 48% !important;
+    min-width: 48% !important;
+  }
+  
+  .long-width,
+  .xl-long-width {
+    width: 100% !important;
+  }
+  
+  /* Buttons */
+  button {
+    width: auto;
+  }
+  
+  /* List items - stack some elements */
+  .nxs-list-item-wrapper-container {
+    flex-wrap: wrap;
+    
+    > div {
+      min-width: 45% !important;
+    }
+  }
+  
+  /* Tabs */
+  .mat-tab-label {
+    min-width: 90px !important;
+    font-size: 13px !important;
+  }
+  
+  /* Dialogs */
+  mat-dialog-container.mat-dialog-container {
+    padding: 30px !important;
+    max-width: 90vw !important;
+  }
+}
+
+/* ===== TABLET LANDSCAPE / SMALL DESKTOP (960-1279px) ===== */
+@media (min-width: 960px) and (max-width: 1279px) {
+  
+  /* Containers */
+  .nxs-list-page {
+    padding: 20px !important;
+  }
+  
+  /* Form fields - 3 columns */
+  .mat-form-field,
+  .nxs-small-mat-input {
+    width: 32% !important;
+  }
+  
+  .long-width {
+    width: 48% !important;
+  }
+  
+  .xl-long-width {
+    width: 100% !important;
+  }
+  
+  /* List items */
+  .candidate-wrapper-item,
+  .job-offer-wrapper-item {
+    min-width: 12% !important;
+    max-width: 15% !important;
+  }
+}
+
+/* ===== LARGE DESKTOP (1280px+) ===== */
+@media (min-width: 1280px) {
+  /* Default desktop styles - already defined in main styles */
+}
+
+/* ===== COMPONENT-SPECIFIC RESPONSIVE STYLES ===== */
+
+/* Drawer Container */
+@media (max-width: 959px) {
+  app-drawer-main-container {
+    .drawer-content {
+      padding: 10px !important;
+    }
+  }
+}
+
+/* Left Menu */
+@media (max-width: 959px) {
+  .left-side-menu {
+    width: 100% !important;
+    position: fixed !important;
+    z-index: 1000;
+  }
+}
+
+/* Candidate List */
+@media (max-width: 959px) {
+  app-candidate-list-minified {
+    .candidate-info {
+      font-size: 12px !important;
+    }
+    
+    .profile-picture {
+      margin-right: 10px !important;
+    }
+  }
+}
+
+/* Job Offer List */
+@media (max-width: 959px) {
+  app-job-offer-list-minified {
+    .job-offer-wrapper-item {
+      font-size: 12px !important;
+    }
+  }
+}
+
+/* Edit Forms */
+@media (max-width: 959px) {
+  .edit-form-container {
+    padding: 10px !important;
+    
+    .mat-tab-body-content {
+      padding: 10px !important;
+    }
+  }
+}
+
+/* Edit page blue blocks - stack on mobile */
+@media (max-width: 599px) {
+  app-edit-candidate {
+    .row-container {
+      flex-direction: column !important;
+    }
+    
+    .column-container {
+      width: 90% !important;
+      max-width: 90% !important;
+      min-width: 90% !important;
+      margin: 0 auto 20px auto !important;
+    }
+    
+    .edit-page-blue-block,
+    .edit-page-block {
+      width: 100% !important;
+      max-width: 100% !important;
+      min-width: 100% !important;
+      height: auto !important;
+      max-height: none !important;
+      padding: 5px 5px !important;
+      
+      .mat-icon-button {
+        width: 20px !important;
+        height: 20px !important;
+        min-width: 20px !important;
+        min-height: 20px !important;
+        line-height: 20px !important;
+        padding: 0 !important;
+        
+        mat-icon {
+          font-size: 14px !important;
+          width: 14px !important;
+          height: 14px !important;
+          line-height: 14px !important;
+        }
+      }
+    }
+  }
+}
+
+/* Dashboard Stats */
+@media (max-width: 599px) {
+  .stat-item {
+    flex: 0 0 150px !important;
+    max-width: 150px !important;
+    min-width: 150px !important;
+    width: 150px !important;
+    height: 150px !important;
+    border-radius: 50% !important;
+  }
+  
+  .d-flex.flex-wrap {
+    justify-content: center !important;
+  }
+}
+
+@media (min-width: 600px) and (max-width: 959px) {
+  .stat-item {
+    flex: 0 0 150px !important;
+    max-width: 150px !important;
+    min-width: 150px !important;
+    width: 150px !important;
+    height: 150px !important;
+    border-radius: 50% !important;
+  }
+}
+
+/* ===== UTILITY CLASSES FOR RESPONSIVE SPACING ===== */
+
+@media (max-width: 599px) {
+  .gap-10 { gap: 5px !important; }
+  .mt-1, .mt-2, .mt-3, .mt-4, .mt-5 { margin-top: 10px !important; }
+  .mb-1, .mb-2, .mb-3, .mb-4, .mb-5 { margin-bottom: 10px !important; }
+  .ml-1, .ml-2, .ml-3, .ml-4, .ml-5 { margin-left: 5px !important; }
+  .mr-1, .mr-2, .mr-3, .mr-4, .mr-5 { margin-right: 5px !important; }
+}
+
+/* ===== OVERFLOW AND SCROLLING ===== */
+
+@media (max-width: 959px) {
+  .table-wrapper {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  table {
+    min-width: 600px;
+  }
+}
+
+/* ===== TOUCH-FRIENDLY ELEMENTS ===== */
+
+@media (max-width: 959px) {
+  /* Larger touch targets */
+  button,
+  .mat-button,
+  .mat-icon-button {
+    min-height: 44px !important;
+    min-width: 44px !important;
+  }
+  
+  /* Larger form inputs */
+  .mat-form-field-infix {
+    padding: 12px 0 !important;
+  }
+  
+  /* Larger checkboxes and radio buttons */
+  .mat-checkbox-inner-container,
+  .mat-radio-outer-circle {
+    width: 24px !important;
+    height: 24px !important;
+  }
+}
+
+/* ===== PRINT STYLES ===== */
+
+@media print {
+  .hide-print {
+    display: none !important;
+  }
+  
+  .nxs-list-page-filters,
+  button,
+  .actions,
+  .mat-paginator {
+    display: none !important;
+  }
+  
+  .nxs-list-item-wrapper-container {
+    page-break-inside: avoid;
+  }
+}
+
+/* ===== LANDSCAPE ORIENTATION ===== */
+
+@media (max-width: 959px) and (orientation: landscape) {
+  /* Adjust for landscape mobile/tablet */
+  .mat-dialog-container {
+    max-height: 90vh !important;
+    overflow-y: auto !important;
+  }
+}

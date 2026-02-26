@@ -1,0 +1,154 @@
+<div class="nxs-list-page-content">
+    <div class="loading-wrapper" [style.display]="loading ? '' : 'none'">
+        <mat-spinner diameter="50" strokeWidth="6"></mat-spinner>
+    </div>
+
+    <!-- Time zone warning message -->
+    <div *ngIf="candidateInterviewsList?.length" style="margin: 10px; padding: 12px; background-color: #fff3cd; border-left: 4px solid #ffc107; border-radius: 4px;">
+        <mat-icon style="vertical-align: middle; color: #856404; margin-right: 8px;">info</mat-icon>
+        <span style="color: #856404; font-weight: 500;">{{ 'Interview.TimeZoneWarning' | translate }}</span>
+    </div>
+
+    <h1 *ngIf="!candidateInterviewsList?.length" class="white-title">
+        <ng-container *ngIf="mode === 'consultant'">
+            {{ 'Candidate.NoInterviews' | translate }}
+        </ng-container>
+        <ng-container *ngIf="mode === 'candidate'">
+            {{ 'Candidate.AnyInterviews' | translate }}
+        </ng-container>
+        <ng-container *ngIf="mode === 'editCandidate'">
+            {{ 'Candidate.AnyInterviewsConsultant' | translate }}
+        </ng-container>
+
+        <!-- TODO : afficher message correct si on est sur l'écran de la liste des entretiens d'un consultant -->
+    </h1>
+    <div
+        style="margin: 10px"
+        routerLinkActive="router-link-active"
+        class="nxs-list-item-wrapper-container"
+        *ngFor="let item of candidateInterviewsList"
+    >
+        <div class="interview-list" (click)="onClickInterview(item)">
+            <div
+                class="candidate-wrapper-item d-flex align-items-center no-width"
+            >
+                <div class="label">
+                    {{ getInterviewLabel(item) }}
+                </div>
+            </div>
+            <div class="vertical-separator"></div>
+
+            <div class="candidate-wrapper-item d-flex align-items-center">
+                <mat-icon class="grey-icon" matTooltip="Date"
+                    >schedule</mat-icon
+                >
+                <div class="date">
+                    {{ item.date | date : 'dd/MM/YYYY - HH:mm' }}
+                </div>
+            </div>
+            <div class="vertical-separator"></div>
+            <div
+                class="candidate-wrapper-item d-flex align-items-center long-item"
+                *ngIf="item?.consultant && displayConsultant"
+            >
+                <div
+                    class="candidate-wrapper-item d-flex align-items-center long-item"
+                    *ngIf="item?.consultant"
+                >
+                    <div
+                        class="profile-picture"
+                        [style.backgroundImage]="
+                            'url(' +
+                            ImageHelper.getUserPicture(item?.consultant) +
+                            ')'
+                        "
+                    ></div>
+                    <div class="candidate-info">
+                        {{ item.consultant?.lastName | uppercase }}
+                        {{ item.consultant?.firstName }}
+                        <br />
+                    </div>
+                </div>
+            </div>
+            <div
+                class="candidate-wrapper-item d-flex align-items-center long-item"
+                *ngIf="item?.candidate && displayCandidate"
+                [class.clickable-candidate]="mode === 'consultant'"
+                (click)="mode === 'consultant' && onClickCandidate($event, item)"
+            >
+                <div
+                    class="profile-picture"
+                    [style.backgroundImage]="
+                        'url(' +
+                        ImageHelper.getUserPicture(item?.candidate) +
+                        ')'
+                    "
+                ></div>
+                <div class="candidate-info">
+                    {{ item.candidate?.lastName | uppercase }}
+                    {{ item.candidate?.firstName }}
+                    <br />
+                </div>
+            </div>
+
+            <div class="vertical-separator"></div>
+
+            <div class="candidate-wrapper-item d-flex align-items-center">
+                <mat-icon
+                    class="grey-icon"
+                    matTooltip="Titre"
+                    fontSet="material-icons-outlined"
+                    >label
+                </mat-icon>
+                <div class="title">
+                    {{ item.title }}
+                </div>
+            </div>
+            <div class="actions">
+                <span *ngIf="item.noShow" class="no-show-badge">
+                    {{ 'Interview.NoShow' | translate }}
+                </span>
+                <button
+                    mat-flat-button
+                    class="statut-btn"
+                    [ngClass]="{
+                        'statut-response-red':
+                            item.candidateResponse ===
+                            InterviewConfirmationStatus.REFUSED,
+                        'statut-response-green':
+                            item.candidateResponse ===
+                            InterviewConfirmationStatus.ACCEPTED
+                    }"
+                >
+                    <ng-container
+                        *ngIf="
+                            item.candidateResponse ===
+                            InterviewConfirmationStatus.ACCEPTED
+                        "
+                    >
+                        {{ 'Interview.Accepted' | translate }}
+                    </ng-container>
+                    <ng-container
+                        *ngIf="
+                            item.candidateResponse ===
+                            InterviewConfirmationStatus.REFUSED
+                        "
+                    >
+                        {{ 'Interview.Refused' | translate }}
+                    </ng-container>
+                </button>
+            </div>
+        </div>
+
+        <div *ngIf="mode !== 'candidate'">
+            <a
+                mat-icon-button
+                [disabled]="loading"
+                [matTooltip]="'Interview.ReSendMail' | translate"
+                (click)="sendMail(item)"
+            >
+                <mat-icon>outgoing_mail</mat-icon>
+            </a>
+        </div>
+    </div>
+</div>

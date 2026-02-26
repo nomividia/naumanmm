@@ -1,0 +1,362 @@
+<app-drawer-main-container
+    [headerTitle]="'Menu.CandidateApplications' | translate"
+>
+    <div class="nxs-list-page">
+        <div class="nxs-list-page-filters">
+            <div class="filters-wrapper" #filterList [class.disabled-filters]="loading">
+                <ng-container *ngIf="request">
+                    <!-- Search Section -->
+                    <div class="search-section">
+                        <h2>{{ 'Global.Search' | translate }}</h2>
+                        <div class="search-input-container">
+                            <mat-form-field
+                                class="nxs-small-mat-input search-field"
+                                appearance="outline"
+                            >
+                                <mat-label>{{
+                                    'Global.Search' | translate
+                                }}</mat-label>
+                                <input
+                                    matInput
+                                    autocomplete="off"
+                                    [(ngModel)]="request.search"
+                                    type="text"
+                                    [placeholder]="'CandidateApplication.SearchPlaceholder' | translate"
+                                    [disabled]="loading"
+                                    (keyup.enter)="onSearchButtonClick()"
+                                />
+                                <button
+                                    mat-icon-button
+                                    matSuffix
+                                    *ngIf="request.search"
+                                    (click)="request.search = ''"
+                                    [disabled]="loading"
+                                >
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                            </mat-form-field>
+                            <button
+                                mat-flat-button
+                                color="primary"
+                                class="search-button"
+                                (click)="onSearchButtonClick()"
+                                [disabled]="loading"
+                            >
+                                {{ 'Global.Search' | translate }}
+                            </button>
+                        </div>
+                    </div>
+                    <!-- End Search Section -->
+
+                    <hr class="search-divider low-opacity" />
+
+                    <!-- Applications Section -->
+                    <div>
+                        <h2>{{ 'Menu.CandidateApplications' | translate }}</h2>
+                        <div>
+                            <nxs-multiple-select
+                                [label]="
+                                    'CandidateApplication.Status' | translate
+                                "
+                                class="nxs-small-mat-input small-width"
+                                appearance="outline"
+                                [(ngModel)]="request.applyStatusListSelected"
+                                [source]="applyStatusFullList"
+                                (ngModelChange)="onFiltersChanged()"
+                                [showUnselectAllButton]="true"
+                                [getLabelFunction]="
+                                    GlobalAppService.dbTranslateAppValue.bind(
+                                        this
+                                    )
+                                "
+                                [showSelectAllButton]="false"
+                                valueFieldName="id"
+                                [unselectAllLabel]="
+                                    'Global.UnselectAll' | translate
+                                "
+                            >
+                            </nxs-multiple-select>
+
+                            <mat-form-field
+                                appearance="outline"
+                                class="nxs-small-mat-input small-width"
+                            >
+                                <mat-label>{{
+                                    'Candidate.CoupleApplication' | translate
+                                }}</mat-label>
+                                <mat-select
+                                    completedField
+                                    [(ngModel)]="request.applyInCouple"
+                                    (ngModelChange)="onApplyInCoupleChanged()"
+                                >
+                                    <mat-option value="">{{
+                                        'Global.SelectAll' | translate
+                                    }}</mat-option>
+                                    <mat-option value="true">{{
+                                        'Global.InCouple' | translate
+                                    }}</mat-option>
+                                    <mat-option value="false">{{
+                                        'Global.Alone' | translate
+                                    }}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+
+                        <div style="display: flex; flex-direction: column">
+                            <mat-checkbox
+                                class="checkBoxFilteredCandid"
+                                [checked]="request.showOnlyUnSeen === 'true'"
+                                (change)="displayUnSeenCandidatures($event)"
+                            >
+                                {{
+                                    'Candidate.IncludeUnSeenCandidate'
+                                        | translate
+                                }}
+                            </mat-checkbox>
+
+                            <mat-checkbox
+                                class="checkBoxFilteredCandid"
+                                [checked]="
+                                    request.spontaneousApplication === 'true'
+                                "
+                                (change)="displaySpontaneousApplication($event)"
+                            >
+                                {{
+                                    'Candidate.OnlySpontaneousApplication'
+                                        | translate
+                                }}
+                            </mat-checkbox>
+
+                            <mat-checkbox
+                                class="checkBoxFilteredCandid"
+                                [checked]="
+                                    request.hideSpontaneousApplications === 'true'
+                                "
+                                (change)="displayHideSpontaneousApplications($event)"
+                            >
+                                {{
+                                    'Candidate.HideSpontaneousApplications'
+                                        | translate
+                                }}
+                            </mat-checkbox>
+
+                            <mat-checkbox
+                                class="checkBoxFilteredCandid"
+                                [checked]="request.onlyNewCandidate === 'true'"
+                                (change)="displayOnlyNewCandidate($event)"
+                            >
+                                {{ 'Candidate.OnlyNewCandidate' | translate }}
+                            </mat-checkbox>
+                        </div>
+                    </div>
+
+                    <!-- Candidates Section -->
+                    <div>
+                        <h2>{{ 'Global.Candidates' | translate }}</h2>
+                        <div style="display: flex; flex-direction: column">
+                            <nxs-multiple-select
+                                [label]="'Candidate.Status' | translate"
+                                class="nxs-small-mat-input small-width"
+                                appearance="outline"
+                                [(ngModel)]="
+                                    request.candidateStatusListSelected
+                                "
+                                [source]="candidateStatusFullList"
+                                (ngModelChange)="onCandidateStatusSelected()"
+                                [showUnselectAllButton]="true"
+                                [getLabelFunction]="
+                                    GlobalAppService.dbTranslateAppValue.bind(
+                                        this
+                                    )
+                                "
+                                [showSelectAllButton]="false"
+                                valueFieldName="id"
+                                [unselectAllLabel]="
+                                    'Global.UnselectAll' | translate
+                                "
+                                [disabled]="request.onlyNewCandidate === 'true'"
+                            >
+                            </nxs-multiple-select>
+
+                            <app-jobs-selector
+                                fieldAppearance="outline"
+                                [multipleSelection]="true"
+                                [placeholder]="'Candidate.Jobs' | translate"
+                                class="nxs-small-mat-input small-width"
+                                [(ngModel)]="request.jobCategory"
+                                (ngModelChange)="onJobCategoryChanged()"
+                            >
+                            </app-jobs-selector>
+                        </div>
+                    </div>
+
+                    <!-- Location Section -->
+                    <div>
+                        <h2>{{ 'Candidate.Location' | translate }}</h2>
+                        <div>
+                            <app-city-chips
+                                [(cities)]="request.cityArray"
+                                [placeholder]="'Address.City' | translate"
+                                (citiesChange)="onLocationChanged()"
+                                class="candidate-city-filter nxs-small-mat-input long-width"
+                            >
+                            </app-city-chips>
+                        </div>
+
+                        <div>
+                            <mat-form-field
+                                appearance="outline"
+                                class="nxs-small-mat-input long-width"
+                            >
+                                <mat-label>{{
+                                    'Global.Country' | translate
+                                }}</mat-label>
+                                <mat-select
+                                    [(ngModel)]="request.locationsArray"
+                                    completedField
+                                    multiple
+                                    (ngModelChange)="onLocationChanged()"
+                                >
+                                    <mat-option
+                                        *ngFor="let item of countriesList"
+                                        [value]="item.code"
+                                    >
+                                        {{ item.label }}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+
+                        <div>
+                            <mat-form-field
+                                class="nxs-small-mat-input long-width"
+                                appearance="outline"
+                            >
+                                <mat-label>{{
+                                    'Address.Department' | translate
+                                }}</mat-label>
+                                <input
+                                    matInput
+                                    autocomplete="off"
+                                    completedField
+                                    [(ngModel)]="request.department"
+                                    (ngModelChange)="onLocationChangedDelayed()"
+                                    type="text"
+                                    [placeholder]="
+                                        'Address.Department' | translate
+                                    "
+                                />
+                                <mat-icon
+                                    matSuffix
+                                    style="cursor: pointer"
+                                    (click)="
+                                        request.department = null;
+                                        onLocationChanged()
+                                    "
+                                >
+                                    close
+                                </mat-icon>
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                    <!-- Job Offers Section -->
+                    <div>
+                        <h2>{{ 'Menu.JobOffers' | translate }}</h2>
+                        <div>
+                            <app-job-offers-autocomplete
+                                [onlyConnectedConsultant]="true"
+                                [(ngModel)]="jobOfferSelected"
+                                (ngModelChange)="onJobOfferSelected()"
+                                class="nxs-small-mat-input xl-long-width"
+                                [ngModelOptions]="{ standalone: true }"
+                                name="jobRef"
+                                label="Tooltip.JobOffer"
+                                [placeholder]="'Global.Search' | translate"
+                                [displayCandidateApplicationFormat]="true"
+                            >
+                            </app-job-offers-autocomplete>
+                        </div>
+
+                        <div>
+                            <nxs-multiple-select
+                                [label]="'JobOffer.Consultant' | translate"
+                                class="nxs-small-mat-input long-width"
+                                appearance="outline"
+                                [(ngModel)]="request.consultantIds"
+                                [source]="consultantsList"
+                                (ngModelChange)="onConsultantIdsChanged()"
+                                [showUnselectAllButton]="true"
+                                [getLabelFunction]="
+                                    GlobalAppService.getConsultantDisplay.bind(
+                                        this
+                                    )
+                                "
+                                [showSelectAllButton]="false"
+                                valueFieldName="id"
+                                [unselectAllLabel]="
+                                    'Global.UnselectAll' | translate
+                                "
+                            >
+                            </nxs-multiple-select>
+                        </div>
+                    </div>
+
+                    <!-- Actions Section -->
+                    <div>
+                        <div style="display: flex; flex-direction: column; gap: 10px;">
+                            <button
+                                mat-flat-button
+                                color="primary"
+                                matTooltip="{{
+                                    'Tooltip.ResetFilters' | translate
+                                }}"
+                                (click)="resetFilters()"
+                                [disabled]="loading"
+                            >
+                                {{ 'Global.ResetFilters' | translate }}
+                            </button>
+                        </div>
+                    </div>
+                </ng-container>
+            </div>
+        </div>
+
+        <hr class="low-opacity" />
+
+        <div class="applications-list-and-loading-wrapper">
+            <div class="applications-list-wrapper">
+                <div *ngIf="showNoFiltersMessage" class="no-filters-message">
+                    <div class="message-container">
+                        <mat-icon class="info-icon">info</mat-icon>
+                        <h3>{{ 'CandidateApplication.NoFiltersApplied' | translate }}</h3>
+                        <p>{{ 'CandidateApplication.PleaseApplyFilters' | translate }}</p>
+                        <p class="help-text">
+                            {{ 'CandidateApplication.FilterHelpText' | translate }}
+                        </p>
+                    </div>
+                </div>
+
+                <div *ngIf="showNoApplicationsFoundMessage" class="no-applications-found-message">
+                    <div class="message-container">
+                        <mat-icon class="search-icon">search_off</mat-icon>
+                        <h3>{{ 'CandidateApplication.NoApplicationsFound' | translate }}</h3>
+                        <p>{{ 'CandidateApplication.NoApplicationsFoundMessage' | translate }}</p>
+                        <p class="help-text">
+                            {{ 'CandidateApplication.NoApplicationsFoundHelp' | translate }}
+                        </p>
+                    </div>
+                </div>
+
+                <app-candidate-applications-list-minified
+                    *ngIf="typesLoaded && !showNoFiltersMessage && !showNoApplicationsFoundMessage"
+                    [requestComponent]="request"
+                    #candidateListComponent
+                    [displayApplicationStatus]="true"
+                    [displayCandidateStatus]="true"
+                >
+                </app-candidate-applications-list-minified>
+            </div>
+        </div>
+    </div>
+</app-drawer-main-container>

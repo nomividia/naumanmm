@@ -1,0 +1,30 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "declaration": true,
+        "noImplicitAny": false,
+        "removeComments": true,
+        "allowSyntheticDefaultImports": true,
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "target": "es6",
+        "noLib": false,
+        "sourceMap": true,
+        "outDir": "../dist",
+        "resolveJsonModule": true,
+        "sourceRoot": "./",
+        "baseUrl": "./",
+        "skipLibCheck": true
+    },
+    "exclude": [
+        "node_modules",
+        "**/*.spec.ts",
+        "dist",
+        "**/*.log",
+        "**/*.pdf",
+        "**/*.jpg",
+        "**/uploads/**",
+        "**/*.xlsx",
+        "**/*.xlsm"
+    ]
+}

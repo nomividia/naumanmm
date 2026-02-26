@@ -1,0 +1,25 @@
+
+[2026-02-17T05:04:42] - [error] => 
+    Unable to send mail
+    {
+  "to": [
+    "laurine@morganmallet.agency"
+  ],
+  "from": "contact@morganmallet.agency",
+  "subject": "Rapport quotidien des entretiens - Equipe Monde - 15/02/2026",
+  "templateName": "mail_daily_interview_report.mjml"
+}
+[2026-02-17T05:04:42] - [error] => 
+    Failed to send daily interview report for world
+    Unknown mail sending error
+[2026-02-17T05:04:42] - [error] => 
+    Failed to send email: Unknown mail sending error
+ - Technical message : Failed to send email: Unknown mail sending error
+[2026-02-17T05:04:42] - [error] => 
+    Error in sendDailyInterviewReport
+    {
+  "stack": "Error: Failed to send email: Unknown mail sending error\n    at InterviewsService.<anonymous> (/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/modules/interviews/interviews.service.ts:879:23)\n    at Generator.next (<anonymous>)\n    at fulfilled (/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/modules/interviews/interviews.service.ts:17:58)",
+  "message": "Failed to send email: Unknown mail sending error",
+  "technicalMessage": "Failed to send email: Unknown mail sending error",
+  "guid": "0d50e158-b5b5-c6d4-b740-fff59041f23a"
+}

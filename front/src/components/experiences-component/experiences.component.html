@@ -1,0 +1,559 @@
+<div class="experiences-container">
+    <!-- Bulk Actions Bar -->
+    <div class="bulk-actions-bar" *ngIf="hasPendingJobs() && isConsultant">
+        <button
+            mat-button
+            class="bulk-btn btn-validate-all"
+            (click)="validateAllJobs()"
+            [disabled]="loading"
+            [matTooltip]="'Candidate.ValidateAllJobs' | translate"
+        >
+            <mat-icon>check_circle</mat-icon>
+            {{ 'Candidate.ValidateAll' | translate }}
+        </button>
+        <button
+            mat-button
+            class="bulk-btn btn-refuse-all"
+            (click)="refuseAllJobs()"
+            [disabled]="loading"
+            [matTooltip]="'Candidate.RefuseAllJobs' | translate"
+        >
+            <mat-icon>cancel</mat-icon>
+            {{ 'Candidate.RefuseAll' | translate }}
+        </button>
+    </div>
+
+    <!-- Experience Cards -->
+    <ng-container
+        *ngFor="let experience of candidateExperiences; let index = index"
+    >
+        <div
+            class="experience-card"
+            [ngClass]="{
+                'card-validated':
+                    experience.status === CandidateJobStatus.VALIDATED &&
+                    isConsultant,
+                'card-refused':
+                    experience.status === CandidateJobStatus.REFUSED &&
+                    isConsultant,
+                'card-pending':
+                    experience.status === CandidateJobStatus.PENDING &&
+                    isConsultant,
+                collapsed: collapsedCards[index]
+            }"
+        >
+            <!-- Card Header -->
+            <div class="card-header" (click)="toggleCard(index)">
+                <div class="header-left">
+                    <span
+                        class="collapse-toggle"
+                        [class.expanded]="!collapsedCards[index]"
+                    >
+                        <mat-icon>expand_more</mat-icon>
+                    </span>
+                    <span class="experience-number">
+                        {{ 'Candidate.Experience' | translate }} {{ index + 1 }}
+                    </span>
+                    <!-- Collapsed Summary -->
+                    <span
+                        class="collapsed-summary"
+                        *ngIf="collapsedCards[index]"
+                    >
+                        <span class="job-name">
+                            {{ getJobLabel(experience) }}
+                        </span>
+                        <span class="date-range" *ngIf="experience.experienceStartDate">
+                            ({{ experience.experienceStartDate | date : 'MM/yyyy' }}
+                            <ng-container *ngIf="experience.inActivity">
+                                - {{ 'Global.Present' | translate }}
+                            </ng-container>
+                            <ng-container *ngIf="!experience.inActivity && experience.experienceEndDate">
+                                - {{ experience.experienceEndDate | date : 'MM/yyyy' }}
+                            </ng-container>)
+                        </span>
+                    </span>
+                    <!-- Type Badge (when expanded) -->
+                    <span
+                        class="experience-type-badge"
+                        *ngIf="experience.type && !collapsedCards[index]"
+                    >
+                        <mat-icon>{{
+                            experience.type === CandidateJobDto.TypeEnum.Job
+                                ? 'work_outline'
+                                : 'school'
+                        }}</mat-icon>
+                        {{
+                            experience.type === CandidateJobDto.TypeEnum.Job
+                                ? ('Experience.JobExperience' | translate)
+                                : ('Experience.TrainingDiploma' | translate)
+                        }}
+                    </span>
+                    <!-- Status Badge -->
+                    <span
+                        *ngIf="experience.id && isConsultant"
+                        class="status-badge"
+                        [ngClass]="{
+                            'status-validated':
+                                experience.status ===
+                                CandidateJobStatus.VALIDATED,
+                            'status-refused':
+                                experience.status ===
+                                CandidateJobStatus.REFUSED,
+                            'status-pending':
+                                experience.status === CandidateJobStatus.PENDING
+                        }"
+                    >
+                        <mat-icon>{{
+                            experience.status === CandidateJobStatus.VALIDATED
+                                ? 'check_circle'
+                                : experience.status ===
+                                  CandidateJobStatus.REFUSED
+                                ? 'cancel'
+                                : 'pending'
+                        }}</mat-icon>
+                        {{ 'Candidate.JobStatus.' + experience.status | translate }}
+                    </span>
+                </div>
+                <div class="header-actions" (click)="$event.stopPropagation()">
+                    <!-- Status Change Actions -->
+                    <div
+                        class="status-actions"
+                        *ngIf="experience.id && isConsultant"
+                    >
+                        <button
+                            *ngIf="
+                                experience.status !==
+                                CandidateJobStatus.VALIDATED
+                            "
+                            mat-icon-button
+                            class="status-action-btn btn-validate"
+                            [disabled]="loading"
+                            (click)="validateJob(experience)"
+                            [matTooltip]="'Candidate.ValidateJob' | translate"
+                        >
+                            <mat-icon>check_circle</mat-icon>
+                        </button>
+                        <button
+                            *ngIf="
+                                experience.status !== CandidateJobStatus.PENDING
+                            "
+                            mat-icon-button
+                            class="status-action-btn btn-pending"
+                            [disabled]="loading"
+                            (click)="resetJobStatus(experience)"
+                            [matTooltip]="'Candidate.ResetStatus' | translate"
+                        >
+                            <mat-icon>pending</mat-icon>
+                        </button>
+                        <button
+                            *ngIf="
+                                experience.status !==
+                                CandidateJobStatus.REFUSED
+                            "
+                            mat-icon-button
+                            class="status-action-btn btn-refuse"
+                            [disabled]="loading"
+                            (click)="refuseJob(experience)"
+                            [matTooltip]="'Candidate.RefuseJob' | translate"
+                        >
+                            <mat-icon>cancel</mat-icon>
+                        </button>
+                    </div>
+                    <!-- Delete Button -->
+                    <button
+                        mat-icon-button
+                        class="status-action-btn btn-delete"
+                        (click)="removeExperience(experience)"
+                        [matTooltip]="'Experience.RemoveExperience' | translate"
+                        [disabled]="loading"
+                    >
+                        <mat-icon>delete_outline</mat-icon>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Card Body -->
+            <div class="card-body">
+                <!-- Section 1: Job Details -->
+                <div class="form-section">
+                    <div class="section-header" style="cursor: default">
+                        <div class="section-title">
+                            <mat-icon>work_outline</mat-icon>
+                            {{ 'Candidate.JobTitle' | translate }}
+                        </div>
+                    </div>
+                    <div class="section-content">
+                        <div class="form-row">
+                            <div class="form-field field-medium">
+                                <mat-form-field
+                                    appearance="outline"
+                                    class="nxs-small-mat-input"
+                                    style="width: 100%"
+                                >
+                                    <mat-label>{{
+                                        'Experience.Type' | translate
+                                    }}</mat-label>
+                                    <mat-select
+                                        [(ngModel)]="experience.type"
+                                        (ngModelChange)="
+                                            onTypeChange(experience)
+                                        "
+                                        [disabled]="loading"
+                                        required
+                                    >
+                                        <mat-option
+                                            [value]="CandidateJobDto.TypeEnum.Job"
+                                        >
+                                            {{
+                                                'Experience.JobExperience'
+                                                    | translate
+                                            }}
+                                        </mat-option>
+                                        <mat-option
+                                            [value]="
+                                                CandidateJobDto.TypeEnum
+                                                    .Education
+                                            "
+                                        >
+                                            {{
+                                                'Experience.TrainingDiploma'
+                                                    | translate
+                                            }}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <div class="form-field field-large">
+                                <app-jobs-selector
+                                    fieldAppearance="outline"
+                                    [multipleSelection]="false"
+                                    [placeholder]="'Candidate.Jobs' | translate"
+                                    [disabled]="loading"
+                                    class="nxs-small-mat-input"
+                                    style="width: 100%"
+                                    [(ngModel)]="experience.jobId"
+                                    (ngModelChange)="onJobChange(experience)"
+                                    [required]="true"
+                                >
+                                </app-jobs-selector>
+                            </div>
+                            <div
+                                class="form-field field-medium"
+                                *ngIf="isOtherJobSelected(experience)"
+                            >
+                                <mat-form-field
+                                    appearance="outline"
+                                    class="nxs-small-mat-input"
+                                    style="width: 100%"
+                                >
+                                    <mat-label>{{
+                                        'Experience.OtherJobName' | translate
+                                    }}</mat-label>
+                                    <input
+                                        matInput
+                                        type="text"
+                                        [(ngModel)]="experience.jobName"
+                                        (ngModelChange)="emitModification()"
+                                        [placeholder]="
+                                            'Experience.EnterJobName' | translate
+                                        "
+                                    />
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-field field-full">
+                                <label class="rich-editor-label">{{ 'Experience.description' | translate }}</label>
+                                <nxs-rich-editor
+                                    [(ngModel)]="experience.jobDescription"
+                                    (ngModelChange)="emitModification()"
+                                    [placeholder]="'Experience.description' | translate"
+                                    [options]="richEditorOptions"
+                                    height="150px"
+                                ></nxs-rich-editor>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 2: Period -->
+                <div class="form-section">
+                    <div class="section-header" style="cursor: default">
+                        <div class="section-title">
+                            <mat-icon>date_range</mat-icon>
+                            {{ 'Global.Period' | translate }}
+                        </div>
+                    </div>
+                    <div class="section-content">
+                        <div class="checkbox-group" style="margin-bottom: 12px">
+                            <div class="checkbox-item">
+                                <input
+                                    type="checkbox"
+                                    id="inActivity-{{ index }}"
+                                    [(ngModel)]="experience.inActivity"
+                                    (ngModelChange)="
+                                        onInActivityChange(experience)
+                                    "
+                                />
+                                <label for="inActivity-{{ index }}">{{
+                                    'Experience.IsCurrentJob' | translate
+                                }}</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input
+                                    type="checkbox"
+                                    id="showMonth-{{ index }}"
+                                    [(ngModel)]="experience.showMonthInResume"
+                                    (ngModelChange)="emitModification()"
+                                />
+                                <label for="showMonth-{{ index }}">{{
+                                    'Experience.ShowMonthInResume' | translate
+                                }}</label>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-field field-small">
+                                <nxs-year-month-picker
+                                    required
+                                    style="width: 100%"
+                                    class="nxs-small-mat-input"
+                                    [placeholder]="'Global.Start' | translate"
+                                    [label]="'Global.Start' | translate"
+                                    [(ngModel)]="experience.experienceStartDate"
+                                    (ngModelChange)="emitModification()"
+                                >
+                                </nxs-year-month-picker>
+                            </div>
+                            <div
+                                class="form-field field-small"
+                                *ngIf="!experience.inActivity"
+                            >
+                                <nxs-year-month-picker
+                                    required
+                                    style="width: 100%"
+                                    class="nxs-small-mat-input"
+                                    [placeholder]="'Global.End' | translate"
+                                    [label]="'Global.End' | translate"
+                                    [(ngModel)]="experience.experienceEndDate"
+                                    (ngModelChange)="emitModification()"
+                                >
+                                </nxs-year-month-picker>
+                            </div>
+                            <div
+                                class="form-field"
+                                *ngIf="!experience.inActivity"
+                            >
+                                <mat-form-field
+                                    class="nxs-small-mat-input"
+                                    style="width: 100%"
+                                    appearance="outline"
+                                >
+                                    <mat-label>{{
+                                        'Candidate.LeavingReason' | translate
+                                    }}</mat-label>
+                                    <input
+                                        [(ngModel)]="experience.leavingReason"
+                                        (ngModelChange)="emitModification()"
+                                        matInput
+                                        type="text"
+                                    />
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 3: Employer/Reference -->
+                <div class="form-section">
+                    <div class="section-header" style="cursor: default">
+                        <div class="section-title">
+                            <mat-icon>business</mat-icon>
+                            {{ 'Experience.EmployerInfos' | translate }}
+                        </div>
+                    </div>
+                    <div class="section-content">
+                        <!-- Add Reference Button (if no reference) -->
+                        <div
+                            *ngIf="!experience.jobReference"
+                            style="text-align: center; padding: 16px"
+                        >
+                            <button
+                                mat-stroked-button
+                                color="primary"
+                                (click)="addNewJobReference(experience)"
+                            >
+                                <mat-icon>add</mat-icon>
+                                {{ 'Experience.AddReference' | translate }}
+                            </button>
+                        </div>
+
+                        <!-- Reference Form -->
+                        <ng-container *ngIf="experience.jobReference">
+                            <!-- Employer Type Selector -->
+                            <div class="employer-type-selector">
+                                <span class="type-label">{{
+                                    'Experience.EmployerIs' | translate
+                                }}</span>
+                                <mat-radio-group
+                                    [(ngModel)]="
+                                        experience.jobReference.isCompany
+                                    "
+                                    (ngModelChange)="
+                                        emitModification();
+                                        setJobReferenceCompanyOrPerson(
+                                            experience.jobReference
+                                        )
+                                    "
+                                    [name]="'employerType-' + index"
+                                >
+                                    <mat-radio-button
+                                        [value]="true"
+                                        style="margin-right: 16px"
+                                    >
+                                        {{ 'Customer.Une' | translate }}
+                                        {{ 'Customer.Company' | translate }}
+                                    </mat-radio-button>
+                                    <mat-radio-button [value]="false">
+                                        {{ 'Customer.Un' | translate }}
+                                        {{
+                                            'Customer.PrivatePerson' | translate
+                                        }}
+                                    </mat-radio-button>
+                                </mat-radio-group>
+                            </div>
+
+                            <!-- Company Name (if company) -->
+                            <div
+                                class="form-row"
+                                *ngIf="experience.jobReference.isCompany"
+                            >
+                                <div class="form-field">
+                                    <mat-form-field
+                                        class="nxs-small-mat-input"
+                                        style="width: 100%"
+                                        appearance="outline"
+                                    >
+                                        <mat-label>{{
+                                            'Customer.CompanyName' | translate
+                                        }}</mat-label>
+                                        <input
+                                            [(ngModel)]="
+                                                experience.jobReference
+                                                    .companyName
+                                            "
+                                            (ngModelChange)="emitModification()"
+                                            matInput
+                                            type="text"
+                                        />
+                                    </mat-form-field>
+                                </div>
+                            </div>
+
+                            <!-- Contact Information -->
+                            <div class="contact-info-grid">
+                                <mat-form-field
+                                    class="nxs-small-mat-input"
+                                    appearance="outline"
+                                >
+                                    <mat-label>{{
+                                        'Experience.ContactFullName' | translate
+                                    }}</mat-label>
+                                    <input
+                                        [(ngModel)]="
+                                            experience.jobReference
+                                                .contactFullName
+                                        "
+                                        (ngModelChange)="emitModification()"
+                                        matInput
+                                        type="text"
+                                    />
+                                </mat-form-field>
+
+                                <mat-form-field
+                                    class="nxs-small-mat-input"
+                                    appearance="outline"
+                                >
+                                    <mat-label>{{
+                                        'Experience.EmployerEmail' | translate
+                                    }}</mat-label>
+                                    <input
+                                        [(ngModel)]="
+                                            experience.jobReference.email
+                                        "
+                                        (ngModelChange)="emitModification()"
+                                        matInput
+                                        type="email"
+                                    />
+                                </mat-form-field>
+
+                                <nxs-intl-tel-input
+                                    [matLabel]="
+                                        'Experience.EmployerPhone' | translate
+                                    "
+                                    [class]="'nxs-small-mat-input'"
+                                    [(ngModel)]="experience.jobReference.phone"
+                                    (ngModelChange)="emitModification()"
+                                    [disabled]="loading"
+                                    [name]="'phone-' + index"
+                                >
+                                </nxs-intl-tel-input>
+                            </div>
+
+                            <!-- Notes Section (for consultants) -->
+                            <div
+                                class="notes-section"
+                                *ngIf="notesRefVisible"
+                            >
+                                <div class="notes-header">
+                                    <mat-icon>notes</mat-icon>
+                                    {{ 'Experience.Note' | translate }}
+                                </div>
+                                <mat-form-field
+                                    appearance="outline"
+                                    class="nxs-small-mat-input"
+                                    style="width: 100%"
+                                >
+                                    <textarea
+                                        matInput
+                                        rows="3"
+                                        [(ngModel)]="
+                                            experience.jobReference.note
+                                        "
+                                        (ngModelChange)="emitModification()"
+                                        cdkTextareaAutosize
+                                        cdkAutosizeMinRows="2"
+                                        cdkAutosizeMaxRows="5"
+                                        [placeholder]="
+                                            'Experience.Note' | translate
+                                        "
+                                    ></textarea>
+                                </mat-form-field>
+                            </div>
+                        </ng-container>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+
+    <!-- Empty State -->
+    <div
+        class="empty-state"
+        *ngIf="!candidateExperiences || candidateExperiences.length === 0"
+    >
+        <mat-icon>work_off</mat-icon>
+        <p>{{ 'Aucune expérience n\'a été saisie pour ce candidat' | translate }}</p>
+    </div>
+
+    <!-- Add Experience Button -->
+    <div class="add-experience-container">
+        <button
+            class="add-experience-btn"
+            [disabled]="loading || !isExperienceFullCompleted()"
+            (click)="addNewExperience()"
+        >
+            <mat-icon>add_circle_outline</mat-icon>
+            {{ 'Candidate.AddExperience' | translate }}
+        </button>
+    </div>
+</div>

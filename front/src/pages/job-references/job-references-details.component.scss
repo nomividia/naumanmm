@@ -1,0 +1,59 @@
+@import '../../variables';
+
+app-job-references-details {
+    .long-width {
+        width: 300px;
+    }
+    .medium-width {
+        width: 200px;
+    }
+    .small-width {
+        width: 130px;
+    }
+
+    .nxs-list-page-content {
+        padding: 20px 10px;
+    }
+
+    .bordered-icon {
+        height: 40px !important;
+        line-height: 0;
+        mat-icon {
+            margin-right: unset !important;
+        }
+    }
+
+    .actions-btn {
+        justify-content: end;
+        .mat-flat-button.mat-primary {
+            background-color: $mmi-green;
+            color: #ffffff;
+            border: unset;
+        }
+        p {
+            color: $mmi-orange;
+            font-size: 13px;
+            padding: 0 15px 0 15px;
+            font-weight: 500;
+        }
+
+        .mat-flat-button {
+            background-color: #ffffff;
+            color: $mmi-orange;
+            border: 1px solid $mmi-orange;
+            width: 150px;
+        }
+    }
+
+    .nxs-list-item-wrapper-container {
+        justify-content: space-between;
+        flex-direction: row;
+
+        .job-offer-wrapper-item {
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            align-items: center;
+        }
+    }
+}

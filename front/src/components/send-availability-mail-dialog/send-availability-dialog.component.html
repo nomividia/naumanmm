@@ -1,0 +1,73 @@
+<div class="dialog-main-container">
+    <div class="loading-wrapper" [style.display]="loading ? '' : 'none'">
+        <mat-spinner diameter="50" strokeWidth="6"></mat-spinner>
+    </div>
+
+    <button mat-icon-button class="close-btn" (click)="dialogRef.close()">
+        <mat-icon fontSet="material-icons-outlined">close</mat-icon>
+    </button>
+
+    <h1>Follow-up Availability Status</h1>
+
+    <form (ngSubmit)="onValidate()">
+        <mat-form-field class="w-100" appearance="outline">
+            <mat-label>{{ 'Global.Sender' | translate }}</mat-label>
+            <mat-select
+                [disabled]="loading"
+                [(ngModel)]="mailObject.sender"
+                name="sender"
+                required
+            >
+                <mat-option *ngFor="let item of SenderMailList" [value]="item"
+                    >{{ item }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field class="w-100" appearance="outline">
+            <mat-label>Subject</mat-label>
+            <input
+                placeholder="Objet"
+                matInput
+                type="text"
+                [disabled]="loading"
+                [(ngModel)]="mailObject.object"
+                name="object"
+                required
+            />
+        </mat-form-field>
+
+        <p *ngIf="mailError" class="error">{{ mailError }}</p>
+        <mat-form-field class="w-100" appearance="outline">
+            <mat-label>Email</mat-label>
+            <input
+                placeholder="Email"
+                matInput
+                type="text"
+                [disabled]="loading"
+                [(ngModel)]="mailObject.email"
+                name="email"
+                required
+            />
+        </mat-form-field>
+
+        <nxs-rich-editor
+            placeholder="Message"
+            [(ngModel)]="mailObject.content"
+            name="content"
+            [disabled]="loading"
+        >
+        </nxs-rich-editor>
+
+        <div class="btns-container">
+            <button
+                class="validate-btn"
+                mat-raised-button
+                color="primary"
+                [disabled]="loading"
+            >
+                Valider
+            </button>
+        </div>
+    </form>
+</div>

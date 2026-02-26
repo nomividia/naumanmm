@@ -1,0 +1,48 @@
+<h2 mat-dialog-title>{{ 'Dialog.AssociateJobToCandidate' | translate }}</h2>
+
+<div class="content" mat-dialog-content>
+    <app-jobs-selector
+        fieldAppearance="outline"
+        [multipleSelection]="true"
+        [placeholder]="'Candidate.Jobs' | translate"
+        [disabled]="loading"
+        class="nxs-small-mat-input long-width"
+        style="width: 100%"
+        [(ngModel)]="selectedCurrentJobIds"
+        (ngModelChange)="onCurrentJobsChange()"
+    >
+    </app-jobs-selector>
+
+    <!-- <p>{{ 'Dialog.SelectedJobDisplay' | translate }}</p> -->
+    <ng-container *ngIf="jobList?.length && selectedCurrentJobIds?.length">
+        <ul>
+            <li *ngFor="let item of selectedCurrentJobIds">
+                {{ 'label' | dbTranslate : getJobLabel(item) }}
+            </li>
+        </ul>
+    </ng-container>
+
+    <!-- <mat-form-field appearance="outline" class="nxs-small-mat-input long-width mt-2"
+        *ngIf="!data.isGenderDefined && genders?.length">
+        <mat-label>{{'Global.Gender' | translate}}</mat-label>
+        <mat-select [(ngModel)]="selectedGender" [disabled]="loading">
+            <mat-option *ngFor="let item of genders" [value]="item">
+                {{'label' | dbTranslate: item}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field> -->
+</div>
+
+<div mat-dialog-actions>
+    <button
+        color="primary"
+        mat-button
+        [disabled]="loading"
+        (click)="validate()"
+    >
+        {{ 'Global.Validate' | translate }}
+    </button>
+    <button color="warn" mat-button [disabled]="loading" (click)="cancel()">
+        {{ 'Global.Cancel' | translate }}
+    </button>
+</div>

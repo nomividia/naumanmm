@@ -1,0 +1,61 @@
+.candidate-process-warning-dialog {
+    min-width: 500px;
+    max-width: 600px;
+    text-align: center;
+
+    .warning-header {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 20px;
+
+        .warning-icon {
+            font-size: 48px;
+            width: 48px;
+            height: 48px;
+            color: #f57c00;
+            margin-bottom: 16px;
+        }
+
+        h2 {
+            margin: 0;
+            color: #d32f2f;
+            font-size: 24px;
+            font-weight: 500;
+        }
+    }
+
+    .warning-message {
+        margin-bottom: 24px;
+
+        p {
+            margin: 0 0 16px 0;
+            font-size: 16px;
+            line-height: 1.5;
+            color: #333;
+
+            &.warning-details {
+                font-size: 14px;
+                color: #666;
+                font-style: italic;
+                margin-top: 20px;
+                padding: 16px;
+                background-color: #fff3e0;
+                border-radius: 8px;
+                border-left: 4px solid #f57c00;
+            }
+        }
+    }
+
+    .understand-button {
+        min-width: 150px;
+        padding: 12px 24px;
+        font-size: 16px;
+        font-weight: 500;
+    }
+
+    mat-dialog-actions {
+        padding: 16px 0 0 0;
+        margin: 0;
+    }
+}

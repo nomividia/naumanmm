@@ -1,0 +1,390 @@
+<h2 mat-dialog-title>
+    <ng-container *ngIf="mode === 'sendCandidate'; else sendResumes">
+        {{ 'CandidateSendResume.SendCandidateResume' | translate }}
+        {{ candidate.firstName | titlecase }}
+        {{ candidate.lastName | uppercase }}
+    </ng-container>
+    <ng-template #sendResumes>
+        {{ 'CandidateSendResume.SendResumesToCustomer' | translate }}
+        {{ customer?.firstName | titlecase }}
+        {{ customer?.lastName | uppercase }}
+    </ng-template>
+    <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
+</h2>
+<mat-dialog-content class="mat-typography">
+    <!-- Show error message when candidate is not eligible -->
+    <div *ngIf="candidateNotEligible && mode === 'sendCandidate'" style="
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 40px 20px;
+        text-align: center;
+    ">
+        <mat-icon style="font-size: 64px; height: 64px; width: 64px; color: #f44336; margin-bottom: 20px;">
+            block
+        </mat-icon>
+        <h3 style="color: #f44336; margin-bottom: 10px;">
+            {{ 'CandidateSendResume.CandidateNotEligibleTitle' | translate }}
+        </h3>
+        <p style="color: #666; max-width: 400px;">
+            {{ 'CandidateSendResume.CandidateNotEligibleMessage' | translate }}
+        </p>
+    </div>
+
+    <!-- Normal content when candidate is eligible -->
+    <ng-container *ngIf="!candidateNotEligible || mode !== 'sendCandidate'">
+    <h4>{{ 'CandidateSendResume.ChoiceRecipient' | translate }}</h4>
+    <div class="d-flex" style="gap: 16px; margin-bottom: 20px">
+        <app-customers-autocomplete
+            *ngIf="canSelectCustomers"
+            class="nxs-small-mat-input"
+            style="min-width: 250px"
+            [disabled]="loading"
+            [placeholder]="
+                'CandidateSendResume.CustomerAutoSelection' | translate
+            "
+            [(ngModel)]="selectedCustomer"
+            (ngModelChange)="onSelectCustomer()"
+            [label]="'CandidateSendResume.CustomerAutoSelection' | translate"
+        >
+        </app-customers-autocomplete>
+        <mat-form-field
+            class="nxs-small-mat-input"
+            style="min-width: 250px"
+            appearance="outline"
+        >
+            <mat-label>{{
+                'CandidateSendResume.RecipientMail' | translate
+            }}</mat-label>
+            <input
+                [readonly]="!canSelectCustomers"
+                [(ngModel)]="email"
+                matInput
+                [placeholder]="'CandidateSendResume.RecipientMail' | translate"
+                [disabled]="loading"
+            />
+            <button
+                *ngIf="email && canSelectCustomers"
+                matSuffix
+                [disabled]="loading"
+                mat-icon-button
+                aria-label="Clear"
+                (click)="email = ''"
+            >
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-form-field>
+    </div>
+    <h4>{{ 'CandidateSendResume.InformationsProvided' | translate }}</h4>
+    <div class="d-flex" style="flex-direction: column; margin-bottom: 20px">
+        <mat-form-field
+            class="nxs-small-mat-input"
+            style="min-width: 41vw"
+            appearance="outline"
+        >
+            <mat-label>{{
+                'CandidateSendResume.MailObject' | translate
+            }}</mat-label>
+            <input
+                [(ngModel)]="subject"
+                matInput
+                [placeholder]="'CandidateSendResume.MailObject' | translate"
+                [disabled]="loading"
+            />
+            <button
+                *ngIf="subject"
+                matSuffix
+                mat-icon-button
+                aria-label="Clear"
+                [disabled]="loading"
+                (click)="subject = ''"
+            >
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-form-field>
+        <mat-form-field
+            class="nxs-small-mat-input"
+            style="min-width: 41vw"
+            appearance="outline"
+        >
+            <mat-label>{{
+                'CandidateSendResume.ContentMail' | translate
+            }}</mat-label>
+            <textarea
+                cdkTextareaAutosize
+                [(ngModel)]="body"
+                matInput
+                [placeholder]="'CandidateSendResume.ContentMail' | translate"
+                rows="10"
+                [disabled]="loading"
+            ></textarea>
+        </mat-form-field>
+    </div>
+    <ng-container *ngIf="mode === 'sendResumes'">
+        <div class="d-flex justify-content-between items-header">
+            <h4>{{ 'CandidateSendResume.CandidateSelection' | translate }}</h4>
+        </div>
+        <div style="width: 300px">
+            <app-candidate-autocomplete
+                [placeholder]="
+                    'CandidateSendResume.SearchCandidate' | translate
+                "
+                [label]="'CandidateSendResume.SearchCandidate' | translate"
+                [tooltip]="'CandidateSendResume.SearchCandidate' | translate"
+                [candidateStatusToTake]="candidateStatusListIds"
+                class="nxs-small-mat-input"
+                [(ngModel)]="selectedCandidate"
+                (ngModelChange)="onCandidateSelected()"
+            >
+            </app-candidate-autocomplete>
+        </div>
+        <div class="d-flex item-wrapper" style="flex-direction: column">
+            <div
+                class="item"
+                *ngFor="let candidateWrapper of candidates"
+                style="
+                    width: 100%;
+                    margin-bottom: 15px;
+                    padding: 15px;
+                    border: 1px solid #e9ecef;
+                    border-radius: 8px;
+                    background: #f8f9fa;
+                "
+            >
+                <div
+                    *ngIf="candidateWrapper.candidate"
+                    style="
+                        display: flex;
+                        flex-direction: column;
+                        gap: 10px;
+                        width: 100%;
+                    "
+                >
+                    <!-- Candidate name and preview button -->
+                    <div
+                        class="d-flex"
+                        style="
+                            gap: 10px;
+                            align-items: center;
+                            justify-content: space-between;
+                        "
+                    >
+                        <div
+                            class="d-flex"
+                            style="
+                                gap: 10px;
+                                align-items: center;
+                                font-weight: 600;
+                            "
+                        >
+                            <div>
+                                <mat-icon>account_circle</mat-icon>
+                            </div>
+                            <div>
+                                {{
+                                    candidateWrapper.candidate.firstName
+                                        | titlecase
+                                }}
+                                -
+                                {{
+                                    candidateWrapper.candidate.lastName
+                                        | uppercase
+                                }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Resume options -->
+                    <div
+                        style="
+                            display: flex;
+                            gap: 20px;
+                            align-items: center;
+                            justify-content: space-between;
+                        "
+                    >
+                        <div
+                            style="
+                                display: flex;
+                                gap: 20px;
+                                align-items: center;
+                            "
+                        >
+                            <!-- Language selector -->
+                            <mat-form-field
+                                appearance="outline"
+                                style="width: 150px"
+                                class="nxs-small-mat-input"
+                            >
+                                <mat-label>{{
+                                    'Candidate.Language' | translate
+                                }}</mat-label>
+                                <mat-select
+                                    [(ngModel)]="candidateWrapper.language"
+                                >
+                                    <mat-option value="fr">{{
+                                        'Global.French' | translate
+                                    }}</mat-option>
+                                    <mat-option value="en">{{
+                                        'Global.English' | translate
+                                    }}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+
+                            <!-- Age checkbox (hidden for US candidates) -->
+                            <mat-checkbox
+                                *ngIf="
+                                    !isUSCandidate(candidateWrapper.candidate)
+                                "
+                                [(ngModel)]="candidateWrapper.showAge"
+                                color="primary"
+                            >
+                                {{ 'Candidate.ShowAge' | translate }}
+                            </mat-checkbox>
+
+                            <!-- Nationality checkbox (hidden for US candidates) -->
+                            <mat-checkbox
+                                *ngIf="
+                                    !isUSCandidate(candidateWrapper.candidate)
+                                "
+                                [(ngModel)]="candidateWrapper.showNationality"
+                                color="primary"
+                            >
+                                {{ 'Candidate.ShowNationality' | translate }}
+                            </mat-checkbox>
+
+                            <!-- US indicator -->
+                            <small
+                                *ngIf="
+                                    isUSCandidate(candidateWrapper.candidate)
+                                "
+                                style="color: #666; font-style: italic"
+                            >
+                                (US candidate - age/nationality hidden for legal
+                                compliance)
+                            </small>
+                        </div>
+                        <div>
+                            <button
+                                mat-stroked-button
+                                color="primary"
+                                [disabled]="loading"
+                                (click)="
+                                    previewCandidateResume(candidateWrapper)
+                                "
+                                style="min-width: auto"
+                            >
+                                <mat-icon>visibility</mat-icon>
+                                {{
+                                    'CandidateSendResume.PreviewResume'
+                                        | translate
+                                }}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="send-resume-candidates-list-end-anchor"></div>
+    </ng-container>
+    <ng-container *ngIf="mode === 'sendCandidate'">
+        <div class="d-flex justify-content-between items-header">
+            <h4>
+                {{ 'CandidateSendResume.CandidateFilesSubmitted' | translate }}
+                {{ candidateFilesToSend.length }}/{{
+                    candidateFilesWrapper.length
+                }}
+            </h4>
+            <p
+                *ngIf="
+                    candidateFilesToSend.length !== candidateFilesWrapper.length
+                "
+                (click)="selectAllFiles()"
+            >
+                {{ 'Global.SelectAll' | translate }}
+            </p>
+            <p
+                *ngIf="
+                    candidateFilesToSend.length === candidateFilesWrapper.length
+                "
+                (click)="selectAllFiles()"
+                class="advertising"
+                (click)="selectAllFiles()"
+            >
+                {{ 'Global.UnselectAll' | translate }}
+            </p>
+        </div>
+        <div class="d-flex item-wrapper">
+            <div
+                class="item"
+                *ngFor="let candidateFile of candidateFilesWrapper"
+            >
+                <div class="d-flex" style="gap: 10px; align-items: center">
+                    <div>
+                        <mat-icon>file</mat-icon>
+                    </div>
+                    <div>
+                        {{
+                            'label' | dbTranslate : candidateFile.file.fileType
+                        }}
+                        <i>({{ candidateFile.file.file?.name }})</i>
+                    </div>
+                </div>
+                <div class="d-flex" style="gap: 10px; align-items: center">
+                    <mat-slide-toggle
+                        color="primary"
+                        [(ngModel)]="candidateFile.selected"
+                        (ngModelChange)="onSelectFile(candidateFile.file)"
+                        [checked]="candidateFile.selected"
+                        [disabled]="loading"
+                    >
+                    </mat-slide-toggle>
+
+                    <span>
+                        <i
+                            *ngIf="!candidateFile.selected"
+                            class="selected-file-indicator unselected"
+                            >{{
+                                'CandidateSendResume.FileNotSelected'
+                                    | translate
+                            }}</i
+                        >
+                        <i
+                            *ngIf="candidateFile.selected"
+                            class="selected-file-indicator selected"
+                            >{{
+                                'CandidateSendResume.FileSelected' | translate
+                            }}</i
+                        >
+                    </span>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+    </ng-container>
+</mat-dialog-content>
+<mat-dialog-actions
+    mat-dialog-actions
+    style="display: flex; justify-content: space-between; align-items: flex-end"
+>
+    <button
+        mat-raised-button
+        mat-dialog-close
+        class="cancel-button"
+        [disabled]="loading"
+    >
+        <mat-icon> cancel </mat-icon>
+        {{ 'CandidateSendResume.Cancel' | translate }}
+    </button>
+    <button
+        mat-raised-button
+        color="primary"
+        class="app-green-button"
+        [disabled]="sendDisabled()"
+        (click)="sendEmail()"
+    >
+        <mat-icon> send </mat-icon>
+        {{ 'CandidateSendResume.Send' | translate }}
+    </button>
+</mat-dialog-actions>

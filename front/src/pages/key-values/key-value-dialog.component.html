@@ -1,0 +1,46 @@
+<h1 mat-dialog-title>
+    Clé / Valeur - {{ !!keyValueDto.id ? 'Modification' : 'Ajout' }}
+</h1>
+<div
+    mat-dialog-content
+    style="
+        min-height: 200px;
+        max-height: 60vh;
+        overflow: auto;
+        min-width: 500px;
+    "
+>
+    <mat-form-field style="width: 100%" appearance="outline">
+        <mat-label>Clé</mat-label>
+        <input
+            matInput
+            autocomplete="off"
+            required
+            [(ngModel)]="keyValueDto.key"
+            placeholder="Clé"
+        />
+    </mat-form-field>
+    <br />
+    <br />
+    <mat-form-field style="width: 100%" appearance="outline">
+        <mat-label>Valeur</mat-label>
+        <textarea
+            cdkTextareaAutosize
+            rows="6"
+            matInput
+            [(ngModel)]="keyValueDto.value"
+            placeholder="Valeur"
+        ></textarea>
+    </mat-form-field>
+</div>
+<div mat-dialog-actions>
+    <button
+        color="primary"
+        mat-raised-button
+        (click)="validate()"
+        style="margin: 0 6px"
+    >
+        Valider
+    </button>
+    <button mat-button mat-dialog-close>Close</button>
+</div>

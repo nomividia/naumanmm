@@ -1,0 +1,22 @@
+<app-drawer-main-container
+    [headerTitle]="'Menu.CandidateApplications' | translate"
+>
+    <div class="nxs-list-page">
+        <div class="nxs-list-page-filters">
+            <h2>MATCHING</h2>
+
+            <div class="filters-wrapper">
+                <!-- test -->
+            </div>
+        </div>
+
+        <hr class="low-opacity" />
+        <app-job-offer-list-minified
+            [request]="request"
+            *ngIf="typesLoaded"
+            #jobOfferListComponent
+            [onClickGoToPublicLink]="true"
+        >
+        </app-job-offer-list-minified>
+    </div>
+</app-drawer-main-container>

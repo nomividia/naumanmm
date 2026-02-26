@@ -1,0 +1,18 @@
+@import './variables';
+
+app-jobs-selector {
+}
+
+.jobs-selector-opt-group .mat-optgroup-label .mat-icon {
+    margin: 0;
+    margin-right: 0;
+}
+
+.jobs-selector-opt-group .mat-optgroup-label {
+    padding-left: 0;
+    padding-right: 0;
+}
+.orange-optgroup-label .mat-optgroup-label,
+.orange-optgroup-label .mat-optgroup-label button {
+    color: $mmi-orange !important;
+}

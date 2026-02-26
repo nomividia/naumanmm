@@ -1,0 +1,50 @@
+@import '../../variables.scss';
+
+app-newsletter-templates-dialog {
+    .no-items {
+        opacity: 0.7;
+        font-style: italic;
+    }
+
+    h1 {
+        margin: 0 !important;
+    }
+
+    h3 {
+        font-weight: normal;
+        font-size: 15px;
+    }
+
+    .templates-list-container {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 20px;
+
+        & > div {
+            background: #f2f2f2;
+            border-radius: 5px;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            .title {
+                margin: 0;
+            }
+
+            .content {
+                margin: 0;
+                opacity: 0.7;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                max-width: 300px;
+
+                @media screen and (max-width: $mobile-screen-size) {
+                    max-width: 100px !important;
+                }
+            }
+        }
+    }
+}

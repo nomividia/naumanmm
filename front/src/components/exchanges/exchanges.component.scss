@@ -1,0 +1,106 @@
+@import '../../variables.scss';
+
+app-exchanges {
+    .exchanges-container {
+        border: 1px solid #e6e6e6;
+        padding: 30px;
+        border-radius: 5px;
+        overflow: auto;
+        max-height: 70vh;
+
+        .msg-container {
+            display: flex;
+            align-items: center;
+
+            .sender,
+            .receiver {
+                width: fit-content;
+                max-width: 350px;
+                margin-bottom: 10px;
+
+                .msg-content {
+                    padding: 10px 10px 10px 10px;
+                    border-radius: 5px;
+                    font-size: 14px;
+                    position: relative;
+                    min-width: 150px;
+
+                    .msg-info {
+                        // position: absolute;
+                        // bottom: 2px;
+                        // right: 2px;
+                        font-size: 11px;
+                        margin-top: 8px;
+                        display: flex;
+                        justify-content: flex-start;
+                        align-items: center;
+                    }
+                }
+
+                .msg-seen {
+                    font-size: 10px;
+                }
+            }
+
+            .sender {
+                margin-left: auto;
+
+                .msg-content {
+                    background-color: #ffc99f;
+                }
+
+                .msg-info {
+                    text-align: right;
+                }
+
+                .msg-seen {
+                    text-align: right;
+                }
+            }
+
+            .receiver {
+                .msg-content {
+                    background-color: #e6e6e6;
+                }
+
+                .msg-info {
+                    text-align: left;
+                }
+
+                .msg-seen {
+                    text-align: left;
+                }
+            }
+        }
+
+        .send-msg-container {
+            display: flex;
+            align-items: center;
+            margin-top: 30px;
+
+            textarea {
+                resize: none;
+            }
+        }
+    }
+    .consultant-status {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        gap: 5px;
+        align-items: baseline;
+    }
+    .status {
+        height: 10px;
+        width: 10px;
+        border: 1px solid transparent;
+        border-radius: 50%;
+        background-color: transparent;
+    }
+    .status-green {
+        background-color: $mmi-green;
+    }
+    .status-grey {
+        background-color: #8f8f8f;
+    }
+}

@@ -1,0 +1,218 @@
+<app-drawer-main-container
+    [headerTitle]="
+        ('Menu.References' | translate) +
+        ' | ' +
+        ((request.company | titlecase) ??
+            (request.firstName | titlecase) +
+                ' ' +
+                (request.lastName | uppercase))
+    "
+>
+    <div class="nxs-list-pag">
+        <div class="nxs-list-page-filters d-flex justify-content-between">
+            <button
+                mat-raised-button
+                color="primary"
+                [routerLink]="['/' + RoutesList.JobReferences]"
+            >
+                <mat-icon>arrow_back_ios</mat-icon>
+                {{ 'Global.Back' | translate }}
+            </button>
+            <!-- <div *ngIf="!isArchived">
+                <button
+                    mat-icon-button
+                    class="bordered-icon"
+                    color="primary"
+                    [disabled]="loading"
+                    [matTooltip]="'Experience.ArchiveReference' | translate"
+                    (click)="archiveJobReferences()"
+                >
+                    <mat-icon fontSet="material-icons-outlined">
+                        inventory_2
+                    </mat-icon>
+                </button>
+            </div> -->
+        </div>
+        <mat-tab-group
+            mat-align-tabs="center"
+            (selectedTabChange)="onTabChange($event)"
+        >
+            <mat-tab [label]="'JobReference.References' | translate">
+                <ng-template matTabContent>
+                    <div class="nxs-list-page-content">
+                        <div
+                            class="loading-wrapper"
+                            [style.display]="loading ? '' : 'none'"
+                        >
+                            <mat-spinner
+                                diameter="50"
+                                strokeWidth="6"
+                            ></mat-spinner>
+                        </div>
+                        <div
+                            *ngFor="let item of jobReferences"
+                            class="nxs-list-item-wrapper-container no-animation"
+                        >
+                            <ng-container *ngIf="item">
+                                <div class="job-offer-wrapper-item">
+                                    <div
+                                        class="d-flex align-items-center long-width"
+                                    >
+                                        <div class="avatar avatar-sm">
+                                            <span class="avatar-content">{{
+                                                displayInitial(item) | uppercase
+                                            }}</span>
+                                        </div>
+                                        <div
+                                            class="ml-1 d-flex align-items-center"
+                                        >
+                                            <ng-container
+                                                *ngIf="item?.isPrivatePerson"
+                                            >
+                                                <mat-icon
+                                                    class="grey-icon"
+                                                    [matTooltip]="
+                                                        'Tooltip.PersonPrivate'
+                                                            | translate
+                                                    "
+                                                >
+                                                    account_circle
+                                                </mat-icon>
+                                                {{
+                                                    item?.privatePersonLastName
+                                                        | uppercase
+                                                }}
+                                                {{
+                                                    item?.privatePersonFirstName
+                                                        | titlecase
+                                                }}
+                                            </ng-container>
+                                            <ng-container
+                                                *ngIf="item?.isCompany"
+                                            >
+                                                <mat-icon
+                                                    class="grey-icon"
+                                                    [matTooltip]="
+                                                        'Tooltip.Company'
+                                                            | translate
+                                                    "
+                                                >
+                                                    business
+                                                </mat-icon>
+                                                {{
+                                                    item?.companyName
+                                                        | uppercase
+                                                }}
+                                            </ng-container>
+                                        </div>
+                                    </div>
+                                    <div class="vertical-separator"></div>
+                                    <div
+                                        class="ml-1 d-flex align-items-center long-width"
+                                    >
+                                        <mat-icon
+                                            class="grey-icon"
+                                            [matTooltip]="
+                                                'Candidate.Contact' | translate
+                                            "
+                                        >
+                                            person
+                                        </mat-icon>
+                                        <ng-container
+                                            *ngIf="item?.contactFullName"
+                                            >{{ item?.contactFullName }} <br />
+                                        </ng-container>
+                                        <ng-container
+                                            *ngIf="item?.functionLabel"
+                                            >{{ item.functionLabel }} <br />
+                                        </ng-container>
+                                        <ng-container *ngIf="item?.email"
+                                            >{{ item?.email }} <br
+                                        /></ng-container>
+                                        <ng-container *ngIf="item?.phone">{{
+                                            item?.phone
+                                        }}</ng-container>
+                                    </div>
+                                    <div class="vertical-separator"></div>
+                                    <div
+                                        class="ml-1 d-flex align-items-center medium-width"
+                                    >
+                                        <mat-icon
+                                            class="grey-icon"
+                                            [matTooltip]="
+                                                'Tooltip.Location' | translate
+                                            "
+                                        >
+                                            place
+                                        </mat-icon>
+                                        <ng-container
+                                            *ngIf="
+                                                item.line1 || item.country;
+                                                else noAddress
+                                            "
+                                        >
+                                            {{ item.line1 | titlecase }}
+                                            {{ item.line2 | titlecase }} <br />
+                                            {{ item.postalCode }}
+                                            {{ item.city | titlecase }} <br />
+                                            {{ item.department | titlecase }}
+                                            {{
+                                                RefData.getCountryLabel(
+                                                    item.country
+                                                )
+                                            }}
+                                        </ng-container>
+                                        <ng-template #noAddress>
+                                            {{
+                                                'Global.NotInformed' | translate
+                                            }}
+                                        </ng-template>
+                                    </div>
+                                </div>
+                                <div
+                                    class="ml-2 d-flex align-items-center medium-width actions-btn"
+                                >
+                                    <button
+                                        mat-flat-button
+                                        color="primary"
+                                        *ngIf="
+                                            !item.customerHasBeenCreated;
+                                            else customerCreated
+                                        "
+                                        (click)="
+                                            checkCustomerAlreadyExistBeforeGenerate(
+                                                item
+                                            )
+                                        "
+                                    >
+                                        {{
+                                            'JobReference.CreateCustomer'
+                                                | translate
+                                        }}
+                                    </button>
+                                    <ng-template #customerCreated>
+                                        <button mat-flat-button>
+                                            {{
+                                                'JobReference.AlreadyGenerate'
+                                                    | translate
+                                            }}
+                                        </button>
+                                    </ng-template>
+                                </div>
+                            </ng-container>
+                        </div>
+                    </div>
+                </ng-template>
+            </mat-tab>
+            <mat-tab [label]="'JobReference.CandidatesFromRef' | translate">
+                <ng-template matTabContent>
+                    <app-candidate-list-minified
+                        [candidates]="candidates"
+                        [loading]="loading"
+                    >
+                    </app-candidate-list-minified>
+                </ng-template>
+            </mat-tab>
+        </mat-tab-group>
+    </div>
+</app-drawer-main-container>

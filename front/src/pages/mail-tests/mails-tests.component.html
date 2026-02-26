@@ -1,0 +1,53 @@
+<app-drawer-main-container>
+    <h2>Test envoi d'e-mails</h2>
+    <fieldset *ngIf="mailConfigResponse">
+        <legend>Configuration pour l'envoi d'e-mails</legend>
+        <div>Mail provider : {{ mailConfigResponse.mailProvider }}</div>
+        <div>Default mail sender : {{ mailConfigResponse.mailSender }}</div>
+        <div>SMTP Host : {{ mailConfigResponse.host }}</div>
+        <div>SMTP User : {{ mailConfigResponse.username }}</div>
+        <div>SMTP Password : {{ mailConfigResponse.password }}</div>
+        <div>SMTP Port : {{ mailConfigResponse.port }}</div>
+        <div>
+            SMTP Secure ? : {{ mailConfigResponse.secure ? 'Oui' : 'Non' }}
+        </div>
+    </fieldset>
+
+    <div *ngIf="mailConfigResponse" style="margin: 14px 0">
+        <div>
+            <mat-form-field appearance="outline" style="width: 400px">
+                <mat-label>Expéditeur</mat-label>
+                <input
+                    matInput
+                    autocomplete="off"
+                    [(ngModel)]="from"
+                    type="text"
+                    placeholder="Expéditeur"
+                />
+            </mat-form-field>
+        </div>
+        <div>
+            <mat-form-field appearance="outline" style="width: 400px">
+                <mat-label>Destinataire</mat-label>
+                <input
+                    matInput
+                    autocomplete="off"
+                    [(ngModel)]="recipients"
+                    type="text"
+                    placeholder="Destinataire"
+                />
+            </mat-form-field>
+        </div>
+
+        <div>
+            <button
+                [disabled]="!from || !recipients"
+                color="primary"
+                mat-raised-button
+                (click)="sendMail()"
+            >
+                Envoyer
+            </button>
+        </div>
+    </div>
+</app-drawer-main-container>

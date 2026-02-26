@@ -1,0 +1,128 @@
+<app-drawer-main-container>
+    <div class="list-page-wrapper shadow-block">
+        <div class="list-header">
+            <h2>Paramétrage global</h2>
+            <ng-container *ngIf="request">
+                <mat-form-field appearance="outline">
+                    <mat-label>Recherche</mat-label>
+                    <input
+                        matInput
+                        autocomplete="off"
+                        [(ngModel)]="request['search']"
+                        (ngModelChange)="loadDataDelayed()"
+                        type="text"
+                        placeholder="Recherche"
+                    />
+                </mat-form-field>
+            </ng-container>
+        </div>
+        <div class="table-wrapper">
+            <div
+                class="loading-wrapper"
+                [style.display]="loading ? '' : 'none'"
+            >
+                <mat-spinner diameter="50" strokeWidth="6"></mat-spinner>
+            </div>
+            <table
+                style="width: 100%"
+                mat-table
+                [dataSource]="datasource"
+                matSort
+                matSortActive="key"
+                matSortDirection="desc"
+                (matSortChange)="sortChange($event)"
+            >
+                <ng-container matColumnDef="items-selection">
+                    <th mat-header-cell *matHeaderCellDef></th>
+                    <td mat-cell *matCellDef="let element" style="width: 30px">
+                        <mat-checkbox
+                            color="primary"
+                            [ngModel]="isItemChecked(element)"
+                            (ngModelChange)="itemCheckedChange(element, $event)"
+                        >
+                        </mat-checkbox>
+                    </td>
+                </ng-container>
+
+                <ng-container
+                    [matColumnDef]="column"
+                    *ngFor="let column of autoColumnsNames"
+                >
+                    <th
+                        mat-header-cell
+                        mat-sort-header
+                        [disabled]="!getAutoColumnSortable(column)"
+                        [class.notVisibleOnBigScreen]="column === 'forMobile'"
+                        [class.notVisibleOnSmallScreen]="column !== 'forMobile'"
+                        *matHeaderCellDef
+                    >
+                        {{ getAutoColumnLabel(column) }}
+                    </th>
+                    <td
+                        mat-cell
+                        *matCellDef="let element"
+                        [class.notVisibleOnBigScreen]="column === 'forMobile'"
+                        [class.notVisibleOnSmallScreen]="column !== 'forMobile'"
+                        [innerHTML]="
+                            getAutoColumnValue(element, column) | noSanitize
+                        "
+                    ></td>
+                </ng-container>
+                <ng-container matColumnDef="actions">
+                    <th mat-header-cell *matHeaderCellDef></th>
+                    <td mat-cell *matCellDef="let row">
+                        <div class="actions-wrapper">
+                            <button
+                                mat-icon-button
+                                matTooltip="{{ 'Tooltip.Update' | translate }}"
+                                (click)="openItem(row.item)"
+                            >
+                                <mat-icon fontSet="material-icons-outlined"
+                                    >edit</mat-icon
+                                >
+                            </button>
+                            <button
+                                mat-icon-button
+                                color="warn"
+                                matTooltip="{{ 'Tooltip.Delete' | translate }}"
+                                (click)="remove(row.item)"
+                            >
+                                <mat-icon fontSet="material-icons-outlined"
+                                    >delete</mat-icon
+                                >
+                            </button>
+                        </div>
+                    </td>
+                </ng-container>
+                <tr
+                    mat-header-row
+                    *matHeaderRowDef="allVisibleColumns; sticky: true"
+                ></tr>
+                <tr
+                    mat-row
+                    *matRowDef="let row; columns: allVisibleColumns"
+                ></tr>
+            </table>
+        </div>
+        <mat-paginator
+            class="mat-paginator-sticky"
+            [length]="filteredItemsCount"
+            [pageSize]="20"
+            [pageSizeOptions]="[10, 20, 100]"
+        ></mat-paginator>
+
+        <div>
+            <button
+                [disabled]="itemsChecked.length === 0"
+                mat-raised-button
+                color="warn"
+                (click)="removeSelectedItems()"
+            >
+                Supprimer
+            </button>
+            <button mat-raised-button color="primary" (click)="openItem(null)">
+                Nouveau
+            </button>
+        </div>
+    </div>
+</app-drawer-main-container>

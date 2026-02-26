@@ -1,0 +1,217 @@
+<mjml>
+    <mj-head>
+        <mj-attributes>
+            <mj-text
+                padding="0"
+                color="#707070"
+                font-size="20px"
+                line-height="2"
+            />
+            <mj-button inner-padding="20px 40px" font-size="16px" />
+            <mj-all font-family="Open Sans, Calibri" />
+            <mj-class name="blue" color="#0073aa" />
+            <mj-class
+                name="blue-btn"
+                background-color="#247AFF"
+                color="#FFFFFF"
+                inner-padding="20px 40px"
+            />
+            <mj-class name="blue-text" color="#247AFF" />
+            <mj-class
+                name="transparent-btn"
+                font-size="14px"
+                padding="2px 8px"
+                background-color="transparent"
+                color="black"
+                inner-padding="0"
+                line-height="2"
+                font-weight="bold"
+                align="left"
+            />
+            <mj-class name="social-btn" width="30px" vertical-align="middle" />
+            <mj-class
+                name="social-btn-wrapper"
+                width="60px"
+                padding="14px 14px"
+                vertical-align="middle"
+                align="center"
+            />
+            <mj-class name="itw-btn" color="#FFFFFF" />
+            <mj-class
+                name="itw-btn-wrapper"
+                padding="20px 0 40px 0"
+                background-color="#FFFFFF"
+            />
+        </mj-attributes>
+
+        <mj-style> td { word-break:initial !important; } </mj-style>
+    </mj-head>
+    <mj-body width="800px" background-color="#F3F3F3">
+        <mj-wrapper>
+            <mj-section>
+                <mj-column>
+                    <mj-image
+                        width="150px"
+                        src="{{{SITE_BASE_URL}}}/assets/logos/logo-new.png"
+                    />
+                </mj-column>
+            </mj-section>
+        </mj-wrapper>
+        <mj-wrapper padding="0 20px">
+            <mj-section padding="0">
+                <mj-column
+                    background-color="#FFFFFF"
+                    border-radius="10px 10px 0 0"
+                >
+                    <mj-text
+                        align="left"
+                        padding="20px 60px 2px 60px"
+                        font-size="16px"
+                    >
+                        <!-- TODO : traduire -->
+                        {{#ifEquals language 'fr'}} Bonjour,<br />Morgan &
+                        Mallet International a le plaisir de vous convier à un
+                        entretien : {{/ifEquals}} {{#ifEquals language 'en'}}
+                        Dear,<br />Morgan & Mallet International is pleased to
+                        invite you for an interview : {{/ifEquals}}
+
+                        <br />
+
+                        <!-- {{#ifEquals language 'fr'}}
+                        Objet de l'entretien :
+                        {{/ifEquals}}
+                        {{#ifEquals language 'en'}}
+                        Purpose of the interview :
+                        {{/ifEquals}}
+                        {{{title}}}
+                        <br /> -->
+                        {{#ifEquals language 'fr'}} - Heure de l'entretien : le
+                        {{{ interviewDate }}} à {{{ interviewTime }}}
+                        {{/ifEquals}} {{#ifEquals language 'en'}} - Date and
+                        time : {{{ interviewDate }}} at {{{ interviewTime }}}
+                        {{/ifEquals}}
+                        <br />
+
+                        {{#ifEquals interviewLocationCode "visio"}} {{#ifEquals
+                        language 'fr'}} - L'entretien se fera en VISIO
+                        {{/ifEquals}} {{#ifEquals language 'en'}} - The
+                        interview will take place in VISIO {{/ifEquals}}
+                        {{else}} {{#if interviewLocationAddress}} {{#ifEquals
+                        language 'fr'}} - Lieu de l'entretien : {{/ifEquals}}
+                        {{#ifEquals language 'en'}} - Place : {{/ifEquals}}
+                        <br />
+                        {{{ interviewLocationAddress }}} {{/if}} {{/ifEquals}}
+
+                        <br />
+                        <br />
+                        <!-- Précision : {{{comment}}} -->
+                    </mj-text>
+                </mj-column>
+            </mj-section>
+
+            <mj-section padding="0">
+                <mj-column background-color="#FFFFFF">
+                    <mj-text
+                        padding="20px 20px"
+                        font-size="16px"
+                        align="center"
+                    >
+                        {{#ifEquals language 'fr'}} Nous vous invitons à nous
+                        confirmer votre présence en cliquant sur l'un des
+                        boutons ci-dessous : {{/ifEquals}} {{#ifEquals language
+                        'en'}} We invite you to confirm your presence by
+                        clicking on one of the buttons below: {{/ifEquals}}
+                    </mj-text>
+                </mj-column>
+            </mj-section>
+            <mj-section padding="0">
+                <mj-column mj-class="itw-btn-wrapper">
+                    <mj-button
+                        mj-class="itw-btn"
+                        background-color="#067f00"
+                        href="{{{SITE_BASE_URL}}}/interview-manage/{{{guid}}}?response=accepted"
+                    >
+                        {{#ifEquals language 'fr'}} Accepter {{/ifEquals}}
+                        {{#ifEquals language 'en'}} Accept {{/ifEquals}}
+                    </mj-button>
+                </mj-column>
+
+                <mj-column mj-class="itw-btn-wrapper">
+                    <mj-button
+                        mj-class="itw-btn"
+                        background-color="#ea5900"
+                        href="{{{SITE_BASE_URL}}}/interview-manage/{{{guid}}}?response=refused"
+                    >
+                        {{#ifEquals language 'fr'}} Décliner {{/ifEquals}}
+                        {{#ifEquals language 'en'}} Refuse {{/ifEquals}}
+                    </mj-button>
+                </mj-column>
+            </mj-section>
+        </mj-wrapper>
+
+        <mj-section padding="30px 0 0 0">
+            <mj-column padding="0">
+                <mj-text align="center" padding="0" font-size="14px">
+                    {{#ifEquals language 'fr'}} À bientôt sur notre site
+                    {{/ifEquals}} {{#ifEquals language 'en'}} See you soon on
+                    our website {{/ifEquals}}
+                    <br /><br />
+                </mj-text>
+            </mj-column>
+        </mj-section>
+
+        <mj-section padding="0">
+            <mj-column padding="0">
+                <mj-text align="center" padding="0" font-size="14px">
+                    Morgan And Mallet International
+                    <br /><br />
+                </mj-text>
+            </mj-column>
+        </mj-section>
+        <mj-section padding="0px 10px 60px 10px">
+            <mj-column mj-class="social-btn-wrapper">
+                <mj-image
+                    padding="0"
+                    mj-class="social-btn"
+                    src="{{{SITE_BASE_URL}}}/assets/facebook.png"
+                    href="https://www.facebook.com/Householdstaffagency/"
+                />
+            </mj-column>
+
+            <mj-column mj-class="social-btn-wrapper">
+                <mj-image
+                    padding="0"
+                    mj-class="social-btn"
+                    src="{{{SITE_BASE_URL}}}/assets/twitter.png"
+                    href="https://twitter.com/UkMallet?lang=fr"
+                />
+            </mj-column>
+
+            <mj-column mj-class="social-btn-wrapper">
+                <mj-image
+                    padding="0"
+                    mj-class="social-btn"
+                    src="{{{SITE_BASE_URL}}}/assets/linkedin.png"
+                    href="https://www.linkedin.com/in/household-staff-domestic-recruitment-agency-273a329a"
+                />
+            </mj-column>
+
+            <mj-column mj-class="social-btn-wrapper">
+                <mj-image
+                    padding="0"
+                    mj-class="social-btn"
+                    src="{{{SITE_BASE_URL}}}/assets/instagram.png"
+                    href="https://www.instagram.com/morgan_mallet/"
+                />
+            </mj-column>
+            <mj-column mj-class="social-btn-wrapper">
+                <mj-image
+                    padding="0"
+                    mj-class="social-btn"
+                    src="{{{SITE_BASE_URL}}}/assets/youtube.png"
+                    href="https://www.youtube.com/channel/UCdSCHH1GQhxmOXPYA-9ZJ3g"
+                />
+            </mj-column>
+        </mj-section>
+    </mj-body>
+</mjml>

@@ -1,0 +1,384 @@
+<app-drawer-main-container
+    [headerTitle]="'Menu.MyFolder' | translate"
+    padding="0"
+    [showPendingModifications]="hasPendingModifications"
+>
+    <div class="edit-page-header">
+        <div
+            class="candidat-header-container"
+            *ngIf="entity"
+            style="flex-wrap: wrap; row-gap: 6px"
+        >
+            <div class="d-flex align-items-center color-primary">
+                <div class="d-flex align-items-center">
+                    <mat-slide-toggle
+                        color="primary"
+                        class="ml-1"
+                        [disabled]="loading"
+                        [(ngModel)]="entity.isAvailable"
+                        (ngModelChange)="save()"
+                    ></mat-slide-toggle>
+                    <span
+                        class="ml-1"
+                        [ngClass]="{ 't-grey': !entity.isAvailable }"
+                        style="font-size: 13px"
+                        >{{ 'Candidate.IAmAvailable' | translate }}</span
+                    >
+
+                    <mat-slide-toggle
+                        class="ml-3"
+                        color="primary"
+                        [disabled]="loading"
+                        [(ngModel)]="entity.isOnPost"
+                        (ngModelChange)="save()"
+                    ></mat-slide-toggle>
+                    <span
+                        class="ml-1"
+                        [ngClass]="{ 't-grey': !entity.isOnPost }"
+                        style="font-size: 13px"
+                        >{{ 'Candidate.IamOnPost' | translate }}</span
+                    >
+                </div>
+            </div>
+
+            <!-- <div class="d-flex align-items-center dossier-progress-container">
+                <ng-container
+                    *ngIf="entity.manuallyCompleted; else autoComplete"
+                >
+                    <div class="ml-3 d-flex align-items-center">
+                        <div class="completion-dot complete"></div>
+                        {{ 'Global.Complete' | translate }}
+                        <mat-icon class="ml-1" fontSet="material-icons-outlined"
+                            >folder_shared</mat-icon
+                        >
+                    </div>
+                </ng-container>
+                <ng-template #autoComplete>
+                    <div
+                        *ngIf="
+                            candidateAdvancementPercent >= 100;
+                            else notCompleted
+                        "
+                        class="ml-3 d-flex align-items-center"
+                    >
+                        <div class="completion-dot complete"></div>
+                        {{ 'Global.Complete' | translate }}
+                        <mat-icon class="ml-1" fontSet="material-icons-outlined"
+                            >folder_shared</mat-icon
+                        >
+                    </div>
+
+                    <ng-template #notCompleted>
+                        <div class="d-flex ml-3 align-items-center">
+                            <div class="completion-dot incomplete"></div>
+                            <span>{{ 'Global.Incomplete' | translate }}</span>
+                            <mat-icon
+                                class="ml-1"
+                                fontSet="material-icons-outlined"
+                                >folder_shared</mat-icon
+                            >
+                        </div>
+                    </ng-template>
+                </ng-template>
+            </div> -->
+        </div>
+        <!-- <div class="left">
+            <div *ngIf="hasPendingModifications">
+                {{'Global.UnsavedChanges' | translate}}
+            </div>
+        </div> -->
+
+        <!-- <div class="right" *ngIf="loading">
+            <mat-spinner diameter="30" strokeWidth="3"></mat-spinner>
+        </div> -->
+        <div class="mainLoadingOverlay" *ngIf="loading">
+            <div style="position: relative; margin-top: 10vh">
+                <mat-spinner diameter="80" strokeWidth="7"></mat-spinner>
+            </div>
+            <!-- <div class="mainLoadingOverlayMessage"></div> -->
+        </div>
+    </div>
+
+    <div class="container">
+        <mat-tab-group
+            class="container"
+            [(selectedIndex)]="tabIndex"
+            (selectedIndexChange)="onTabChange()"
+        >
+            <!-- Global informations -->
+            <!-- <mat-tab [label]="'Global.GeneralInfo' | translate">
+                <candidate-informations-component
+                    *ngIf="entity"
+                    [isMyDossier]="true"
+                    (onSave)="save()"
+                    [entity]="entity"
+                    [showNotes]="false"
+                    [showConditions]="true"
+                    [showLanguage]="true"
+                    [showConsultant]="false"
+                    (onModification)="hasPendingModifications = $event"
+                >
+                </candidate-informations-component>
+            </mat-tab> -->
+            <!-- End Global informations -->
+
+            <!-- References -->
+            <!-- <mat-tab [label]="'Experience.References' | translate">
+                <div *ngIf="this.entity" class="row-container">
+                    <div class="edit-page-block mt-3 mt-3">
+                        <button
+                            class="edit-btn"
+                            mat-raised-button
+                            mat-icon-button
+                            color="primary"
+                            (click)="onEditClick()"
+                            [disabled]="loading"
+                            *ngIf="!isReadonly('jobs')"
+                        >
+                            <mat-icon *ngIf="!editMode">edit</mat-icon>
+                            <mat-icon *ngIf="editMode">done</mat-icon>
+                        </button>
+                        <h2>{{ 'Candidate.Experiences' | translate }}</h2>
+                        <hr />
+                        <ng-container *ngIf="editMode">
+                            <experiences-component
+                                [jobList]="jobList"
+                                [candidateExperiences]="entity.candidateJobs"
+                                (onModification)="emitModification()"
+                            >
+                            </experiences-component>
+                        </ng-container>
+                        <ng-container *ngIf="!editMode && entity">
+                            <p *ngIf="!entity.candidateJobs?.length">
+                                {{ 'Global.NotInformed' | translate }}
+                            </p>
+                            <div
+                                *ngFor="let item of entity.candidateJobs"
+                                class="w-100"
+                            >
+                                <div
+                                    class="d-flex align-items-center justify-content-between mb-3"
+                                >
+                                    <div
+                                        class="d-flex align-items-center"
+                                        style="width: 200px"
+                                    >
+                                        <div class="mr-2">
+                                            <mat-icon
+                                                class="material-icons-outlined"
+                                                color="primary"
+                                                >work_outline
+                                            </mat-icon>
+                                        </div>
+                                        <div *ngIf="item">
+                                            <p *ngIf="item.job">
+                                                {{
+                                                    'label'
+                                                        | dbTranslate : item.job
+                                                }}
+                                            </p>
+                                            <p *ngIf="!item.job">
+                                                {{
+                                                    'Experience.jobNotCompleted'
+                                                        | translate
+                                                }}
+                                            </p>
+                                            <p
+                                                *ngIf="
+                                                    item.experienceStartDate &&
+                                                    item.experienceEndDate
+                                                "
+                                            >
+                                                {{ 'Global.From' | translate }}
+                                                {{
+                                                    item.experienceStartDate
+                                                        | date : 'MM/yyyy'
+                                                }}
+                                                {{
+                                                    'Global.To'
+                                                        | translate
+                                                        | lowercase
+                                                }}
+                                                {{
+                                                    item.experienceEndDate
+                                                        | date : 'MM/yyyy'
+                                                }}
+                                            </p>
+                                            <p *ngIf="item.leavingReason">
+                                                Raison du départ :
+                                                {{ item.leavingReason }}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div
+                                        class="d-flex align-items-center"
+                                        style="width: 250px"
+                                        *ngIf="item && item.jobReference"
+                                    >
+                                        <div class="mr-2">
+                                            <mat-icon
+                                                *ngIf="
+                                                    item.jobReference
+                                                        .isPrivatePerson
+                                                "
+                                                [matTooltip]="
+                                                    'Experience.References'
+                                                        | translate
+                                                "
+                                                class="material-icons-outlined"
+                                                color="primary"
+                                                >account_circle
+                                            </mat-icon>
+                                            <mat-icon
+                                                *ngIf="
+                                                    item.jobReference.isCompany
+                                                "
+                                                matTooltip="Entreprise"
+                                                class="material-icons-outlined"
+                                                color="primary"
+                                                >business
+                                            </mat-icon>
+                                        </div>
+                                        <div>
+                                            <p>
+                                                <ng-container
+                                                    *ngIf="
+                                                        item.jobReference
+                                                            .isPrivatePerson
+                                                    "
+                                                >
+                                                    {{
+                                                        item.jobReference
+                                                            .privatePersonFirstName
+                                                            | titlecase
+                                                    }}
+                                                    {{
+                                                        item.jobReference
+                                                            .privatePersonLastName
+                                                            | titlecase
+                                                    }}
+                                                </ng-container>
+                                                <ng-container
+                                                    *ngIf="
+                                                        item.jobReference
+                                                            .isCompany
+                                                    "
+                                                >
+                                                    {{
+                                                        item.jobReference
+                                                            .companyName
+                                                            | titlecase
+                                                    }}
+                                                </ng-container>
+                                            </p>
+                                            <p>
+                                                contact :
+                                                {{
+                                                    item.jobReference
+                                                        .contactFullName ??
+                                                        'Experience.notCompleted'
+                                                        | translate
+                                                }}
+                                                <br />
+                                            </p>
+                                            <p
+                                                *ngIf="
+                                                    item.jobReference?.addresses
+                                                "
+                                            >
+                                                <ng-container
+                                                    *ngIf="
+                                                        item.jobReference
+                                                            ?.addresses[0]?.city
+                                                    "
+                                                >
+                                                    {{
+                                                        item.jobReference
+                                                            .addresses[0]?.city
+                                                            | titlecase
+                                                    }},
+                                                </ng-container>
+                                                {{
+                                                    RefData.getCountryLabel(
+                                                        item.jobReference
+                                                            ?.addresses[0]
+                                                            ?.country
+                                                    ) | titlecase
+                                                }}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div
+                                        class="d-flex align-items-center"
+                                        style="width: 150px"
+                                        *ngIf="
+                                            item.jobReference && isConsultant
+                                        "
+                                    >
+                                        <div class="mr-2">
+                                            <mat-icon
+                                                [matTooltip]="
+                                                    'Candidate.Availability'
+                                                        | translate
+                                                "
+                                                [style.Color]="
+                                                    item.jobReference
+                                                        ?.candidateAcceptContact
+                                                        ? '#7ba483'
+                                                        : '#752b2b'
+                                                "
+                                                fontSet="material-icons-outlined"
+                                                >contact_phone
+                                            </mat-icon>
+                                        </div>
+                                        <div>
+                                            <p
+                                                *ngIf="
+                                                    !item.jobReference
+                                                        ?.candidateAcceptContact
+                                                "
+                                            >
+                                                {{
+                                                    'MyFolder.CandidateNotAcceptCallRef'
+                                                        | translate
+                                                }}
+                                            </p>
+                                            <p
+                                                *ngIf="
+                                                    item.jobReference
+                                                        ?.candidateAcceptContact
+                                                "
+                                            >
+                                                {{
+                                                    'MyFolder.CandidateAcceptCallRef'
+                                                        | translate
+                                                }}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr />
+                            </div>
+                        </ng-container>
+                    </div>
+                </div>
+            </mat-tab> -->
+            <!-- End References -->
+
+            <!-- Files -->
+            <mat-tab [label]="'Global.Files' | translate">
+                <ng-template matTabContent>
+                    <app-candidate-files
+                        *ngIf="entity"
+                        [loading]="loading"
+                        [candidate]="entity"
+                        (filesChanged)="save()"
+                        (onLoading)="loading = $event"
+                    >
+                    </app-candidate-files>
+                </ng-template>
+            </mat-tab>
+            <!-- End Files -->
+        </mat-tab-group>
+    </div>
+</app-drawer-main-container>

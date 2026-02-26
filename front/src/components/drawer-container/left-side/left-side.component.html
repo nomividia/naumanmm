@@ -1,0 +1,573 @@
+<div class="left-side-wrapper">
+    <!-- User Profile Section - Fixed -->
+    <div class="logged-user-wrapper" *ngIf="AuthDataService.currentUser">
+        <div class="menu-style-div"></div>
+        <div class="logged-user-image">
+            <img
+                *ngIf="
+                    !AuthDataService.currentUser.image ||
+                    !AuthDataService.currentUser.image.name
+                "
+                src="/assets/no_avatar.png"
+            />
+            <img
+                *ngIf="
+                    AuthDataService.currentUser.image &&
+                    AuthDataService.currentUser.image.physicalName
+                "
+                [src]="GlobalAppService.getCurrentUserPicture()"
+            />
+        </div>
+        <div>
+            <div
+                class="name"
+                *ngIf="
+                    AuthDataService.currentUser.firstName &&
+                    AuthDataService.currentUser.lastName
+                "
+            >
+                {{ AuthDataService.currentUser.firstName }}
+                {{ AuthDataService.currentUser.lastName }}
+            </div>
+            <div
+                class="name"
+                *ngIf="
+                    !AuthDataService.currentUser.firstName &&
+                    !AuthDataService.currentUser.lastName
+                "
+            >
+                {{ AuthDataService.currentUser.userName }}
+            </div>
+        </div>
+    </div>
+
+    <!-- Menu Items Section - Scrollable -->
+    <div class="left-side-content">
+        <ul #menuWrapper *ngIf="AuthDataService.currentUser">
+            <!-- Candidate section -->
+            <ng-container
+                *ngIf="
+                    GlobalAppService.userHasRole(
+                        AuthDataService.currentUser,
+                        RolesList.Candidate
+                    )
+                "
+            >
+                <li>
+                    <a
+                        routerLinkActive="active-route"
+                        [routerLink]="['/' + RoutesList.Candidate_MyDashBoard]"
+                    >
+                        <mat-icon fontSet="material-icons-outlined"
+                            >space_dashboard</mat-icon
+                        >
+                        {{ 'Menu.MyDashboard' | translate }}
+                    </a>
+                </li>
+                <li>
+                    <a
+                        routerLinkActive="active-route"
+                        [routerLink]="[
+                            '/' + RoutesList.Candidate_MyApplications
+                        ]"
+                    >
+                        <mat-icon fontSet="material-icons-outlined"
+                            >assignment_ind</mat-icon
+                        >
+                        {{ 'Menu.MyCandidateApplications' | translate }}
+                    </a>
+                </li>
+                <li>
+                    <a
+                        routerLinkActive="active-route"
+                        [routerLink]="['/' + RoutesList.Candidate_MyDossier]"
+                    >
+                        <mat-icon fontSet="material-icons-outlined"
+                            >folder_shared</mat-icon
+                        >
+                        {{ 'Menu.MyFolder' | translate }}
+                    </a>
+                </li>
+                <!-- <li>
+                    <a
+                        routerLinkActive="active-route"
+                        [routerLink]="['/' + RoutesList.Candidate_MyMmiResume]"
+                    >
+                        <mat-icon fontSet="material-icons-outlined"
+                            >description</mat-icon
+                        >
+                        {{ 'Menu.MyMMICV' | translate }}
+                    </a>
+                </li> -->
+                <!-- <li>
+                    <a
+                        class="left-menu-item"
+                        routerLinkActive="active-route"
+                        [routerLink]="['/' + RoutesList.Candidate_MmiAndMe]"
+                        [matBadge]="
+                            !GlobalAppService.unSeenMessagesCount
+                                ? null
+                                : GlobalAppService.unSeenMessagesCount > 99
+                                ? '+99'
+                                : GlobalAppService.unSeenMessagesCount
+                        "
+                    >
+                        <mat-icon fontSet="material-icons-outlined"
+                            >chat</mat-icon
+                        >
+                        {{ 'Menu.MMIAndMe' | translate }}
+                    </a>
+                </li> -->
+            </ng-container>
+
+            <li
+                *ngIf="
+                    GlobalAppService.userHasOneOfRoles(
+                        AuthDataService.currentUser,
+                        [
+                            RolesList.Consultant,
+                            RolesList.Admin,
+                            RolesList.AdminTech,
+                            RolesList.RH
+                        ]
+                    )
+                "
+            >
+                <a
+                    routerLinkActive="active-route"
+                    [routerLink]="['/' + RoutesList.AdminHome]"
+                >
+                    <mat-icon fontSet="material-icons-outlined"
+                        >dashboard_outline</mat-icon
+                    >
+                    {{ 'Global.Home' | translate }}
+                </a>
+            </li>
+
+            <li
+                *ngIf="
+                    GlobalAppService.userHasOneOfRoles(
+                        AuthDataService.currentUser,
+                        [
+                            RolesList.Consultant,
+                            RolesList.Admin,
+                            RolesList.AdminTech,
+                            RolesList.RH
+                        ]
+                    )
+                "
+            >
+                <a
+                    class="left-menu-item"
+                    routerLinkActive="active-route"
+                    [matBadge]="
+                        !GlobalAppService.unSeenCandidateApplication
+                            ? null
+                            : GlobalAppService.unSeenCandidateApplication > 99
+                            ? '+99'
+                            : GlobalAppService.unSeenCandidateApplication
+                    "
+                    [routerLink]="['/' + RoutesList.CandidateApplicationsList]"
+                >
+                    <mat-icon fontSet="material-icons-outlined"
+                        >perm_contact_calendar</mat-icon
+                    >{{ 'Menu.CandidateApplications' | translate }}
+                </a>
+            </li>
+
+            <li
+                *ngIf="
+                    GlobalAppService.userHasOneOfRoles(
+                        AuthDataService.currentUser,
+                        [
+                            RolesList.Consultant,
+                            RolesList.Admin,
+                            RolesList.AdminTech,
+                            RolesList.RH
+                        ]
+                    )
+                "
+            >
+                <a
+                    routerLinkActive="active-route"
+                    [routerLink]="['/' + RoutesList.CandidatesList]"
+                >
+                    <mat-icon fontSet="material-icons-outlined">school</mat-icon
+                    >{{ 'Menu.Candidates' | translate }}
+                </a>
+            </li>
+
+            <li
+                *ngIf="
+                    GlobalAppService.userHasOneOfRoles(
+                        AuthDataService.currentUser,
+                        [
+                            RolesList.Consultant,
+                            RolesList.Admin,
+                            RolesList.AdminTech,
+                            RolesList.RH
+                        ]
+                    )
+                "
+            >
+                <a
+                    routerLinkActive="active-route"
+                    [routerLink]="['/' + RoutesList.JobOffers]"
+                >
+                    <mat-icon fontSet="material-icons-outlined"
+                        >assignment</mat-icon
+                    >{{ 'Menu.JobOffers' | translate }}
+                </a>
+            </li>
+            <li
+                *ngIf="
+                    GlobalAppService.userHasOneOfRoles(
+                        AuthDataService.currentUser,
+                        [RolesList.Admin, RolesList.AdminTech]
+                    )
+                "
+            >
+                <a
+                    routerLinkActive="active-route"
+                    [routerLink]="['/' + RoutesList.Customers]"
+                >
+                    <mat-icon fontSet="material-icons-outlined">home</mat-icon
+                    >{{ 'Menu.Customer' | translate }}
+                </a>
+            </li>
+            <li
+                *ngIf="
+                    GlobalAppService.userHasOneOfRoles(
+                        AuthDataService.currentUser,
+                        [RolesList.Admin, RolesList.AdminTech]
+                    )
+                "
+            >
+                <a
+                    routerLinkActive="active-route"
+                    [routerLink]="['/' + RoutesList.AdminUsers]"
+                >
+                    <mat-icon fontSet="material-icons-outlined">lock</mat-icon
+                    >{{ 'Menu.Users' | translate }}
+                </a>
+            </li>
+            <!-- <li
+                *ngIf="
+                    GlobalAppService.userHasOneOfRoles(
+                        AuthDataService.currentUser,
+                        [
+                            RolesList.Consultant,
+                            RolesList.Admin,
+                            RolesList.AdminTech,
+                            RolesList.RH
+                        ]
+                    )
+                "
+            >
+                <a
+                    class="left-menu-item"
+                    routerLinkActive="active-route"
+                    [routerLink]="['/' + RoutesList.Messaging]"
+                    [matBadge]="
+                        !GlobalAppService.unSeenMessagesCount
+                            ? null
+                            : GlobalAppService.unSeenMessagesCount > 99
+                            ? '+99'
+                            : GlobalAppService.unSeenMessagesCount
+                    "
+                >
+                    <mat-icon fontSet="material-icons-outlined">chat</mat-icon
+                    >{{ 'Menu.Messaging' | translate }}
+                </a>
+            </li> -->
+            <li
+                *ngIf="
+                    GlobalAppService.userHasOneOfRoles(
+                        AuthDataService.currentUser,
+                        [RolesList.Admin, RolesList.AdminTech]
+                    )
+                "
+            >
+                <a
+                    class="left-menu-item"
+                    routerLinkActive="active-route"
+                    [routerLink]="['/' + RoutesList.JobReferences]"
+                >
+                    <mat-icon fontSet="material-icons-outlined"
+                        >contact_mail</mat-icon
+                    >{{ 'Menu.References' | translate }}
+                </a>
+            </li>
+            <li
+                *ngIf="
+                    GlobalAppService.userHasOneOfRoles(
+                        AuthDataService.currentUser,
+                        [
+                            RolesList.Admin,
+                            RolesList.AdminTech,
+                            RolesList.Newsletter
+                        ]
+                    )
+                "
+            >
+                <a
+                    class="left-menu-item"
+                    routerLinkActive="active-route"
+                    [routerLink]="['/' + RoutesList.Newsletters]"
+                >
+                    <mat-icon fontSet="material-icons-outlined"
+                        >attach_email</mat-icon
+                    >{{ 'Menu.Newsletters' | translate }}
+                </a>
+            </li>
+            <li
+                *ngIf="
+                    GlobalAppService.userHasOneOfRoles(
+                        AuthDataService.currentUser,
+                        [
+                            RolesList.Admin,
+                            RolesList.AdminTech,
+                            RolesList.Consultant,
+                            RolesList.RH
+                        ]
+                    )
+                "
+            >
+                <a
+                    class="left-menu-item"
+                    routerLinkActive="active-route"
+                    [routerLink]="['/' + RoutesList.Interviews]"
+                >
+                    <mat-icon fontSet="material-icons-outlined"
+                        >perm_identity</mat-icon
+                    >
+                    {{ 'Menu.MyInterviews' | translate }}
+                </a>
+            </li>
+            <li
+                *ngIf="
+                    GlobalAppService.userHasOneOfRoles(
+                        AuthDataService.currentUser,
+                        [
+                            RolesList.Admin,
+                            RolesList.AdminTech,
+                            RolesList.Consultant,
+                            RolesList.RH
+                        ]
+                    )
+                "
+                [ngStyle]="{ cursor: 'pointer' }"
+            >
+                <a
+                    href="https://outlook.live.com/"
+                    target="_blank"
+                    class="left-menu-item"
+                    routerLinkActive="active-route"
+                >
+                    <mat-icon fontSet="material-icons-outlined"
+                        >mail_outline</mat-icon
+                    >
+                    {{ 'Menu.OpenOutlook' | translate }}
+                </a>
+            </li>
+            <li
+                *ngIf="
+                    GlobalAppService.userHasOneOfRoles(
+                        AuthDataService.currentUser,
+                        [
+                            RolesList.Admin,
+                            RolesList.AdminTech,
+                            RolesList.Consultant,
+                            RolesList.RH
+                        ]
+                    )
+                "
+                [ngStyle]="{ cursor: 'pointer' }"
+            >
+                <a
+                    href="https://acrobat.adobe.com/"
+                    target="_blank"
+                    class="left-menu-item"
+                    routerLinkActive="active-route"
+                >
+                    <mat-icon fontSet="material-icons-outlined"
+                        >picture_as_pdf</mat-icon
+                    >
+                    {{ 'Menu.OpenPDF' | translate }}
+                </a>
+            </li>
+            <li
+                *ngIf="
+                    GlobalAppService.userHasOneOfRoles(
+                        AuthDataService.currentUser,
+                        [RolesList.AdminTech, RolesList.Admin]
+                    )
+                "
+            >
+                <button class="btn-expandable-section" type="button">
+                    <mat-icon fontSet="material-icons-outlined"
+                        >settings</mat-icon
+                    >
+                    <div>Administration</div>
+                </button>
+                <ul class="sub-menu">
+                    <li
+                        *ngIf="
+                            GlobalAppService.userHasRole(
+                                AuthDataService.currentUser,
+                                RolesList.AdminTech
+                            )
+                        "
+                    >
+                        <a
+                            routerLinkActive="active-route"
+                            [routerLink]="['/' + RoutesList.AdminRoles]"
+                        >
+                            <mat-icon fontSet="material-icons-outlined"
+                                >supervised_user_circle</mat-icon
+                            >{{ 'Menu.ManageRoles' | translate }}
+                        </a>
+                    </li>
+                    <li
+                        *ngIf="
+                            GlobalAppService.userHasRole(
+                                AuthDataService.currentUser,
+                                RolesList.Admin
+                            )
+                        "
+                    >
+                        <a
+                            routerLinkActive="active-route"
+                            [routerLink]="['/' + RoutesList.AdminAppTypes]"
+                        >
+                            <mat-icon fontSet="material-icons-outlined"
+                                >settings</mat-icon
+                            >Types dynamiques
+                        </a>
+                    </li>
+                    <li
+                        *ngIf="
+                            GlobalAppService.userHasRole(
+                                AuthDataService.currentUser,
+                                RolesList.AdminTech
+                            )
+                        "
+                    >
+                        <a
+                            routerLinkActive="active-route"
+                            [routerLink]="['/' + RoutesList.AdminTest]"
+                        >
+                            <mat-icon fontSet="material-icons-outlined"
+                                >science</mat-icon
+                            >{{ 'Menu.Tests' | translate }}
+                        </a>
+                    </li>
+                    <li
+                        *ngIf="
+                            GlobalAppService.userHasRole(
+                                AuthDataService.currentUser,
+                                RolesList.AdminTech
+                            )
+                        "
+                    >
+                        <a
+                            routerLinkActive="active-route"
+                            [routerLink]="['/' + RoutesList.AdminKeyValues]"
+                        >
+                            <mat-icon fontSet="material-icons-outlined"
+                                >compare_arrows</mat-icon
+                            >{{ 'Menu.GlobalSettings' | translate }}
+                        </a>
+                    </li>
+                    <li
+                        *ngIf="
+                            GlobalAppService.userHasRole(
+                                AuthDataService.currentUser,
+                                RolesList.AdminTech
+                            )
+                        "
+                    >
+                        <a
+                            routerLinkActive="active-route"
+                            [routerLink]="['/' + RoutesList.AdminActivityLogs]"
+                        >
+                            <mat-icon fontSet="material-icons-outlined"
+                                >history</mat-icon
+                            >{{ 'Menu.ActivityLogs' | translate }}
+                        </a>
+                    </li>
+                    <li
+                        *ngIf="
+                            GlobalAppService.userHasRole(
+                                AuthDataService.currentUser,
+                                RolesList.AdminTech
+                            )
+                        "
+                    >
+                        <a
+                            routerLinkActive="active-route"
+                            [routerLink]="['/' + RoutesList.AdminLogs]"
+                        >
+                            <mat-icon fontSet="material-icons-outlined"
+                                >bug_report</mat-icon
+                            >Logs
+                        </a>
+                    </li>
+                    <li
+                        *ngIf="
+                            GlobalAppService.userHasRole(
+                                AuthDataService.currentUser,
+                                RolesList.AdminTech
+                            )
+                        "
+                    >
+                        <a
+                            routerLinkActive="active-route"
+                            [routerLink]="['/' + RoutesList.AdminJobs]"
+                        >
+                            <mat-icon fontSet="material-icons-outlined"
+                                >schedule</mat-icon
+                            >Jobs
+                        </a>
+                    </li>
+                    <li
+                        *ngIf="
+                            GlobalAppService.userHasRole(
+                                AuthDataService.currentUser,
+                                RolesList.AdminTech
+                            )
+                        "
+                    >
+                        <a
+                            routerLinkActive="active-route"
+                            [routerLink]="['/' + RoutesList.AdminLiveTracking]"
+                        >
+                            <mat-icon fontSet="material-icons-outlined"
+                                >track_changes</mat-icon
+                            >Live tracking
+                        </a>
+                    </li>
+                    <li
+                        *ngIf="
+                            GlobalAppService.userHasRole(
+                                AuthDataService.currentUser,
+                                RolesList.AdminTech
+                            )
+                        "
+                    >
+                        <a
+                            routerLinkActive="active-route"
+                            [routerLink]="['/' + RoutesList.AdminMailsTests]"
+                        >
+                            <mat-icon>mail</mat-icon>Test E-mails
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <!-- <div class="left-side-header flex-wrapper-center-horizontal">
+        <a href="https://www.nextalys.com" target="_blank" class="flex-wrapper-center-horizontal logo-container"><img
+                style="height: 40%;" src="/assets/logos/logo_menu.png"></a>
+    </div> -->
+</div>

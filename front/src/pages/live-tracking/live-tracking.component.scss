@@ -1,0 +1,17 @@
+app-live-tracking {
+    .main-live-tracking-wrapper {
+        flex-wrap: wrap;
+        display: flex;
+        justify-content: center;
+        > div {
+            margin: 10px;
+            min-height: 300px;
+        }
+        > div:nth-child(1) {
+            flex-basis: 60%;
+        }
+        > div:nth-child(2) {
+            flex: auto;
+        }
+    }
+}

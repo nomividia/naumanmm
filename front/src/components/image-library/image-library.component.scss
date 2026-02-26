@@ -1,0 +1,41 @@
+app-image-library {
+    display: block;
+    min-width: 500px;
+    height: 100%;
+    .images-library-main-wrapper {
+        display: flex;
+        flex-direction: row;
+        height: 100%;
+        > div {
+            display: flex;
+            .separator {
+                margin: 0 6px;
+                height: 100%;
+                width: 2px;
+                background: gray;
+            }
+        }
+    }
+    .images-library-list {
+        flex: auto;
+        position: relative;
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: row;
+        align-content: flex-start;
+        .image-library-wrapper {
+            height: 100px;
+            width: 100px;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            cursor: pointer;
+            margin: 10px;
+            border-radius: 4px;
+            overflow: hidden;
+            &.selected {
+                border: 2px solid blue;
+            }
+        }
+    }
+}

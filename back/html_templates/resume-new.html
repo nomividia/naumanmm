@@ -1,0 +1,197 @@
+<html>
+
+<head>
+    <link rel="stylesheet" href="css/default-new.css" />
+    <link
+        href="https://fonts.googleapis.com/css?family=Material+Icons%7CMaterial+Icons+Outlined%7CMaterial+Icons+Two+Tone%7CMaterial+Icons+Round%7CMaterial+Icons+Sharp"
+        rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+</head>
+
+<style>
+    * {
+        font-family: 'Times New Roman', Times, serif;
+    }
+</style>
+
+<body>
+    <div class="header-banner-main-new" style="box-sizing: border-box">
+        <div style="margin-left:20px;padding-top: 20px;box-sizing: border-box">
+            <img src="./images/logo-new.png"
+                style="height:130px;width:130px;border-radius:50% ;border:2px solid white;" />
+        </div>
+        <div
+            style="color:white;height:100%;display: flex;align-items: flex-end;padding-bottom: 20px;box-sizing: border-box;">
+            Cabinet de Recrutement en Personnel de Maison
+        </div>
+    </div>
+    <div class="container">
+        <div class="d-flex justify-center mt-13">
+            <div class="picture" style="background-image: url('{{photo}}');">
+            </div>
+            <div class="main-infos">
+                <h2 class="name">{{firstName}} {{lastName}}</h2>
+                {{#if isMen}}
+                <p>{{docBirth}} {{birthDate}}</p>
+                {{/if}}
+                {{#unless isMen}}
+                <p>{{docSheBirth}} {{birthDate}}</p>
+                {{/unless}}
+                {{#if showDataAddress}}
+                <p>{{docLivesIn}} {{city}}, {{country}}</p>
+                {{/if}}
+
+
+                {{#if hasLicence}}
+                <p>{{docLicences}}
+                    {{#each permis}}
+                    <span>
+                        {{#unless @last}}{{licence.label}}, {{/unless}}
+                        {{#if @last}}{{licence.label}}{{/if}}
+                    </span>
+                    {{/each}}
+                </p>
+                {{/if}}
+
+                {{#unless hasLicence}}
+                <p>{{docNoLicence}}</p>
+                {{/unless}}
+
+                {{#if hasVehicle}}
+
+                {{#if isMen}}
+                {{#if showDataVehicle}}
+                <p>{{docVehicleMen}}</p>
+                {{/if}}
+                {{/if}}
+
+                {{#unless isMen}}
+                {{#if showDataVehicle}}
+                <p>{{docVehicleWomen}}</p>
+                {{/if}}
+                {{/unless}}
+
+                {{/if}}
+
+                {{#unless hasVehicle}}
+
+                {{#if isMen}}
+                {{#if showDataVehicle}}
+                <p>{{docNoVehicleMen}}</p>
+                {{/if}}
+                {{/if}}
+
+                {{#unless isMen}}
+                {{#if showDataVehicle}}
+                <p>{{docNoVehicleWomen}}</p>
+                {{/if}}
+                {{/unless}}
+
+                {{/unless}}
+                </p>
+                <p>{{relationshipStatus}}</p>
+                {{#if hasChild}}
+                <p>
+                    {{candidateChildStringValue}}
+                </p>
+                {{/if}}
+                {{#unless hasChild}}
+                <p>{{docNoChild}}</p>
+                {{/unless}}
+
+                {{#if hasPets}}
+                <p>{{#each pets}}
+                    {{#unless @last}} {{stringValue}}, {{/unless}}
+                    {{#if @last}}{{stringValue}}{{/if}}
+                    {{/each}}
+                </p>
+                {{/if}}
+                {{#unless hasPets}}
+                <p>{{docNoPet}}</p>
+                {{/unless}}
+
+                <p>{{nationality}}</p>
+
+                {{#if hasLanguage}}
+                <p style="word-wrap: break-word; max-width: 60%;">
+                    {{#each spokenLanguages}}
+                    {{languageString}}
+                    {{/each}}
+                </p>
+                {{/if}}
+
+                {{#if jobHoused}}
+                <p>{{docHousedJob}}</p>
+                {{/if}}
+                {{#unless jobHoused}}
+                <p>{{docUnHousedJob}}</p>
+                {{/unless}}
+
+                {{#if mobility}}
+                <p>{{docAbleToMoove}}</p>
+                {{/if}}
+                {{#unless mobility}}
+                <p>{{docNoAbleToMoove}}</p>
+                {{/unless}}
+
+                <p>{{contractSearched}}</p>
+            </div>
+        </div>
+        <div class="mt-13" style="overflow-wrap: break-word;">
+            <h2 class="blue-title">{{docDetails}}</h2>
+            <p id="description-candidate">{{{presentationcandidate}}}</p>
+        </div>
+    </div>
+    <div class="page-break"></div>
+    <div class="container">
+        <h2 class="blue-title">{{docExpPro}}</h2>
+        {{#each experiences}}
+        <div>
+            <p class="subtitle d-flex">
+                <span class="material-icons-outlined">event</span>{{experienceStartDateString}}
+                {{../docTo}}
+                {{experienceEndDateString}}
+            </p>
+            <p class="subtitle d-flex"> <span class="material-icons-outlined">work_outline</span>{{postTitle}}</p>
+            <p>{{{postDescription}}}</p> <br> <br>
+            <p class="subtitle">{{docResponsabilites}}</p>
+            <p>{{{postResponsability}}}</p>
+            <br> {{#ifEquals @index ( math ../experiences.length "-" "1" )}} {{else}}
+            <hr> {{/ifEquals}}
+        </div>
+        {{/each}}
+    </div>
+    {{#if hasFormations}}
+    <div class="page-break"></div>
+    <div class="container">
+        <h2 class="blue-title">{{docDiplomas}}</h2>
+        {{#each formations}}
+        <div class="mt-2">
+            <p class="subtitle d-flex"><span class="material-icons-outlined">event</span>
+                {{../docFrom}} {{formationStartMonthString}}{{#if formationStartMonth}} {{/if}} {{formationStartYear}}
+                {{../docTo}}
+                {{formationEndMonthString}}{{#if formationEndMonth}}/{{/if}}{{formationEndYear}}</p>
+            <p class="subtitle d-flex"><span class="material-icons-outlined">work_outline</span>{{formationDiplomeName}}
+            </p>
+            <p>{{school}}</p>
+            <p>{{place}}</p>
+            <br>
+            <br>
+        </div>
+        {{/each}}
+    </div>
+    {{/if}}
+
+
+    <!-- <script>
+        var descCandidate = document.getElementById('description-candidate');
+        var descCandidateHeight = descCandidate.clientHeight;
+
+        if (descCandidateHeight > 400) {
+
+        }
+    </script> -->
+</body>
+
+</html>

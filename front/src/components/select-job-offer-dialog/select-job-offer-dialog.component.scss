@@ -1,0 +1,88 @@
+.select-job-offer-dialog {
+    min-width: 500px;
+    max-width: 600px;
+
+    .dialog-description {
+        margin-bottom: 20px;
+        color: #666;
+        font-size: 14px;
+    }
+
+    .job-offer-selection {
+        margin-bottom: 20px;
+    }
+
+    .warning-message {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: #f57c00;
+        font-size: 14px;
+        margin-top: 10px;
+
+        mat-icon {
+            font-size: 18px;
+            width: 18px;
+            height: 18px;
+        }
+    }
+
+    .info-message {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: #1976d2;
+        font-size: 14px;
+        margin-top: 10px;
+
+        mat-icon {
+            font-size: 18px;
+            width: 18px;
+            height: 18px;
+        }
+    }
+
+    mat-dialog-actions {
+        padding: 16px 0 0 0;
+        margin: 0;
+    }
+
+    .placement-details {
+        margin-top: 16px;
+
+        .date-picker-field {
+            width: 100%;
+        }
+    }
+
+    .file-upload-section {
+        margin: 16px 0;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+
+        .upload-label {
+            color: #666;
+            font-size: 14px;
+            margin: 0;
+        }
+
+        nxs-file-upload {
+            display: none;
+        }
+    }
+
+    .file-upload-success {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: #4caf50;
+        font-size: 14px;
+
+        mat-icon {
+            font-size: 18px;
+            width: 18px;
+            height: 18px;
+        }
+    }
+}

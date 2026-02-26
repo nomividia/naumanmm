@@ -1,0 +1,146 @@
+<app-drawer-main-container
+    [headerTitle]="'Menu.MyInterviews' | translate"
+    [headerLinkText]="'Menu.CreateNewInterview' | translate"
+>
+    <div class="nxs-list-pag">
+        <div class="nxs-list-page-filters">
+            <div class="filters-wrapper mt-2">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <ng-container *ngIf="request">
+                            <mat-form-field
+                                class="nxs-small-mat-input long-width"
+                                appearance="outline"
+                            >
+                                <mat-label>{{
+                                    'Global.Status' | translate
+                                }}</mat-label>
+                                <mat-select
+                                    [(ngModel)]="request.interviewCurrentDate"
+                                    (ngModelChange)="loadCustomData()"
+                                >
+                                    <mat-option [value]="null">{{
+                                        'Global.NoMatter' | translate
+                                    }}</mat-option>
+                                    <mat-option value="past">{{
+                                        'Candidate.FilterPast' | translate
+                                    }}</mat-option>
+                                    <mat-option value="coming">{{
+                                        'Candidate.FilterComing' | translate
+                                    }}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <mat-form-field
+                                class="nxs-small-mat-input long-width"
+                                appearance="outline"
+                            >
+                                <mat-label>{{
+                                    'Global.Year' | translate
+                                }}</mat-label>
+                                <mat-select
+                                    [(ngModel)]="request.interviewFilterYear"
+                                    (ngModelChange)="loadCustomData()"
+                                >
+                                    <mat-option [value]="null">{{
+                                        'Global.NoMatter' | translate
+                                    }}</mat-option>
+                                    <mat-option
+                                        *ngFor="let date of yearList"
+                                        [value]="date"
+                                        >{{ date }}</mat-option
+                                    >
+                                </mat-select>
+                            </mat-form-field>
+                            <mat-form-field
+                                *ngIf="request.interviewFilterYear"
+                                class="nxs-small-mat-input long-width"
+                                appearance="outline"
+                            >
+                                <mat-label>{{
+                                    'Global.Month' | translate
+                                }}</mat-label>
+                                <mat-select
+                                    [(ngModel)]="request.interviewFilterMonth"
+                                    (ngModelChange)="loadCustomData()"
+                                >
+                                    <mat-option [value]="null">{{
+                                        'Global.NoMatter' | translate
+                                    }}</mat-option>
+                                    <mat-option
+                                        *ngFor="let month of monthList"
+                                        [value]="month.code"
+                                        >{{ month.label }}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <mat-form-field
+                                class="nxs-small-mat-input long-width"
+                                appearance="outline"
+                            >
+                                <mat-label>{{
+                                    'Interview.InterviewStatus' | translate
+                                }}</mat-label>
+                                <mat-select
+                                    [(ngModel)]="
+                                        request.interviewConfirmationStatus
+                                    "
+                                    (ngModelChange)="loadCustomData()"
+                                >
+                                    <mat-option [value]="null">{{
+                                        'Global.NoMatter' | translate
+                                    }}</mat-option>
+                                    <mat-option
+                                        [value]="
+                                            InterviewConfirmationStatus.ACCEPTED
+                                        "
+                                        >{{
+                                            'Interview.Accepted' | translate
+                                        }}</mat-option
+                                    >
+                                    <mat-option
+                                        [value]="
+                                            InterviewConfirmationStatus.REFUSED
+                                        "
+                                        >{{
+                                            'Interview.Refused' | translate
+                                        }}</mat-option
+                                    >
+                                </mat-select>
+                            </mat-form-field>
+                            <mat-checkbox
+                                [(ngModel)]="request.noShow"
+                                (ngModelChange)="loadCustomData()"
+                                style="margin-left: 16px;"
+                            >
+                                {{ 'Interview.NoShowFilter' | translate }}
+                            </mat-checkbox>
+                        </ng-container>
+                    </div>
+                    <!--BUTTON FOR CREATE INTERVIEW-->
+                    <!-- <button mat-raised-button color="primary" (click)="onAddInterview()"
+                        [matTooltip]="'Interview.AddInterviewForCandidate' | translate">
+                        <mat-icon style="color: white;">add</mat-icon> {{'Interview.AddInterview' | translate}}
+                    </button>-->
+                </div>
+            </div>
+            <hr class="low-opacity" />
+            <app-interview-list
+                mode="consultant"
+                [candidateInterviewsList]="candidateInterviews"
+                [displayConsultant]="false"
+                [displayCandidate]="true"
+                [openDialogDataOnClick]="true"
+                (onInterviewClick)="openDetailInterviewDialog($event)"
+            >
+            </app-interview-list>
+            <div class="nxs-list-page-bottom">
+                <mat-paginator
+                    class="mat-paginator-sticky"
+                    [length]="filteredItemsCount"
+                    [pageSize]="20"
+                    [pageSizeOptions]="[20, 50, 100]"
+                ></mat-paginator>
+            </div>
+        </div>
+    </div>
+</app-drawer-main-container>

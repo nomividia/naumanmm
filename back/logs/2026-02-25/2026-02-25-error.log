@@ -1,0 +1,47 @@
+
+[2026-02-25T00:48:44] - [error] => 
+    Unable to run job  "Daily Interview Report - World" (id=dailyInterviewReportWorld)
+[2026-02-25T00:48:44] - [error] => 
+    Guid = 6b3496b2-74f8-65b4-50b6-ff6812270939
+    connect ETIMEDOUT
+---Stack---
+Error: connect ETIMEDOUT
+    at PoolConnection._handleTimeoutError (/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/node_modules/mysql2/lib/connection.js:189:17)
+    at listOnTimeout (node:internal/timers:564:17)
+    at processTimers (node:internal/timers:507:7)
+---End of Stack---
+[2026-02-25T05:41:04] - [error] => 
+    Unable to run job  "Actualisation des statuts des newsletter" (id=nxsNewsletterRefreshLoop)
+[2026-02-25T05:41:04] - [error] => 
+    Guid = 32837f10-321d-4049-41ce-635b6ce3ae25
+    connect ETIMEDOUT
+---Stack---
+Error: connect ETIMEDOUT
+    at PoolConnection._handleTimeoutError (/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/node_modules/mysql2/lib/connection.js:189:17)
+    at listOnTimeout (node:internal/timers:564:17)
+    at processTimers (node:internal/timers:507:7)
+---End of Stack---
+[2026-02-25T05:41:05] - [error] => 
+    Unable to run job  "Actualisation des statuts des newsletter" (id=nxsNewsletterRefreshLoop)
+[2026-02-25T05:41:06] - [error] => 
+    Guid = 2ea68bf1-07b1-1345-76e0-92f1d59fefc6
+    write EPIPE
+---Stack---
+Error: write EPIPE
+    at afterWriteDispatched (node:internal/stream_base_commons:160:15)
+    at writeGeneric (node:internal/stream_base_commons:151:3)
+    at Socket._writeGeneric (node:net:917:11)
+    at Socket._write (node:net:929:8)
+    at writeOrBuffer (node:internal/streams/writable:392:12)
+    at _write (node:internal/streams/writable:333:10)
+    at Socket.Writable.write (node:internal/streams/writable:337:10)
+    at PoolConnection.write (/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/node_modules/mysql2/lib/connection.js:245:32)
+    at PoolConnection.writePacket (/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/node_modules/mysql2/lib/connection.js:294:12)
+    at ClientHandshake.sendCredentials (/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/node_modules/mysql2/lib/commands/client_handshake.js:69:16)
+    at ClientHandshake.handshakeInit (/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/node_modules/mysql2/lib/commands/client_handshake.js:142:12)
+    at ClientHandshake.execute (/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/node_modules/mysql2/lib/commands/command.js:45:22)
+    at PoolConnection.handlePacket (/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/node_modules/mysql2/lib/connection.js:456:32)
+    at PacketParser.onPacket (/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/node_modules/mysql2/lib/connection.js:85:12)
+    at PacketParser.executeStart (/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/node_modules/mysql2/lib/packet_parser.js:75:16)
+    at Socket.<anonymous> (/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/node_modules/mysql2/lib/connection.js:92:25)
+---End of Stack---

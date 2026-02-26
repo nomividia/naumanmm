@@ -1,0 +1,146 @@
+<div
+    class="d-flex justify-content-between align-items-baseline"
+    style="height: 43px; margin-bottom: 20px"
+    *ngIf="
+        selectCandidateName &&
+        selectCandidateFirstName &&
+        GlobalAppService.userHasOneOfRoles(AuthDataService.currentUser, [
+            RolesList.RH,
+            RolesList.Consultant,
+            RolesList.Admin,
+            RolesList.AdminTech
+        ])
+    "
+>
+    <h2>
+        {{ selectCandidateName | uppercase }} {{ selectCandidateFirstName }}
+    </h2>
+    <div>
+        <!-- <button
+            mat-icon-button
+            (click)="archiveOrDeleteExchange(false)"
+            [matTooltip]="'Global.Archive' | translate"
+        >
+            <mat-icon class="material-icons-outlined" color="primary"
+                >inventory_2</mat-icon
+            >
+        </button> -->
+        <button
+            *ngIf="
+                GlobalAppService.userHasRole(
+                    AuthDataService.currentUser,
+                    RolesList.AdminTech
+                )
+            "
+            mat-icon-button
+            (click)="archiveOrDeleteExchange(true)"
+            [matTooltip]="'Global.DeleteConversation' | translate"
+        >
+            <mat-icon class="material-icons-outlined" color="primary"
+                >delete</mat-icon
+            >
+        </button>
+    </div>
+</div>
+<!-- <hr *ngIf="GlobalAppService.userHasOneOfRoles(AuthDataService.currentUser,[RolesList.Consultant, RolesList.Admin, RolesList.AdminTech])"> -->
+
+<!--<div style="margin-bottom: 10px;font-style: italic;padding: 6px;text-align: start;font-size: small;color: #5b5b5bde;"
+    *ngIf="GlobalAppService.userHasOneOfRoles(AuthDataService.currentUser,[RolesList.Candidate]) && anyConsultantConnected!=null">
+    <div *ngIf="anyConsultantConnected" class="consultant-status">
+        {{'MMIAndMe.ConsultantOnline' |translate}}
+        <div class="status status-green"></div>
+    </div>
+    <div *ngIf="!anyConsultantConnected" class="consultant-status">
+        {{'MMIAndMe.ConsultantOffline' |translate}}
+        <div class="status status-grey"></div>
+    </div>
+</div>-->
+<div class="exchanges-container" #exchangesContainer>
+    <!--<div style="margin-bottom: 16px;font-style: italic;padding: 6px;border-radius: 4px;"
+        *ngIf="GlobalAppService.userHasOneOfRoles(AuthDataService.currentUser,[RolesList.Candidate]) && anyConsultantConnected!=null"
+        [style.backgroundColor]="anyConsultantConnected ? 'lightgreen':'#d76004'">
+        <div *ngIf="anyConsultantConnected">
+
+            {{ 'Global.ConsultantOnline' | translate }}
+        </div>
+        <div *ngIf="!anyConsultantConnected">
+
+            {{ 'Global.ConsultantOffline' | translate }}
+        </div>
+    </div>-->
+
+    <div class="msg-container" *ngFor="let item of candidateMessages">
+        <div
+            [class.sender]="item.senderType === senderType"
+            [class.receiver]="item.senderType !== senderType"
+        >
+            <div
+                class="msg-content"
+                [style.textAlign]="
+                    item.senderType === senderType ? 'right' : 'left'
+                "
+            >
+                <div [innerHTML]="item.content | noSanitize"></div>
+                <div class="msg-info">
+                    <div *ngIf="!item.loading">
+                        {{
+                            item.sender?.firstName || item.sender?.userName
+                        }}&nbsp;-&nbsp;{{
+                            item.creationDate | date : ' dd/MM/YYY - HH:mm'
+                        }}
+                    </div>
+                    <div
+                        style="display: flex; align-items: center"
+                        *ngIf="item.loading"
+                    >
+                        <mat-spinner
+                            style="margin: 0 3px 0 0; padding: 0"
+                            [diameter]="15"
+                            [strokeWidth]="2"
+                        ></mat-spinner>
+                        {{ 'Global.SendingInProgress' | translate }}
+                    </div>
+                    &nbsp;-&nbsp;
+                    <div class="msg-seen">
+                        {{
+                            item.seen
+                                ? ('MMIAndMe.Seen' | translate)
+                                : ('MMIAndMe.Unseen' | translate)
+                        }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="loading-wrapper" [style.display]="loading ? '' : 'none'">
+        <mat-spinner diameter="50" strokeWidth="6"></mat-spinner>
+    </div>
+
+    <form class="send-msg-container">
+        <mat-form-field appearance="outline" class="nxs-small-mat-input w-100">
+            <mat-label>{{
+                'MMIAndMe.WriteYourMessage' | translate | titlecase
+            }}</mat-label>
+            <textarea
+                (keydown.enter)="sendNewCandidateMessage($event)"
+                matInput
+                [(ngModel)]="newCandidateMessageContent"
+                [disabled]="loading"
+                name="message-content"
+                cdkTextareaAutosize
+                cdkAutosizeMinRows="5"
+                cdkAutosizeMaxRows="10"
+            ></textarea>
+        </mat-form-field>
+
+        <button
+            mat-icon-button
+            color="primary"
+            (click)="sendNewCandidateMessage(null)"
+            [disabled]="loading"
+        >
+            <mat-icon fontSet="material-icons-outlined">send</mat-icon>
+        </button>
+    </form>
+</div>

@@ -1,0 +1,98 @@
+@import '../../variables.scss';
+
+app-messaging {
+    .messaging-container {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        .left-side {
+            width: 30%;
+            min-width: 300px;
+
+            .conversations-list {
+                height: calc(100vh - 200px);
+                overflow: auto;
+                padding: 5px 3px;
+
+                .loading-container {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    padding: 40px 0;
+                }
+            }
+            .candidate-item {
+                border-radius: 10px;
+                width: 100%;
+                height: 40px;
+                margin-bottom: 15px;
+                display: flex;
+                align-items: center;
+                padding: 20px;
+                position: relative;
+                box-shadow: 0 0 0.5rem rgb(0 0 0 / 15%);
+                cursor: pointer;
+                border: 1px solid transparent;
+                &:hover {
+                    border: 1px solid $mmi-orange;
+                }
+                &.active {
+                    background-color: $mmi-orange;
+                    color: white;
+                    .picture {
+                        background-color: white;
+                    }
+                }
+                .unseen-icon {
+                    position: absolute;
+                    top: 10px;
+                    right: 10px;
+                    height: 15px;
+                    width: 15px;
+                    border-radius: 50%;
+                    background-color: $mmi-orange;
+                }
+                .picture {
+                    background-color: grey;
+                    height: 30px;
+                    width: 30px;
+                    border-radius: 50%;
+                    margin-right: 10px;
+                    background-position: center;
+                    background-size: cover;
+                    background-repeat: no-repeat;
+                }
+                .candidate-info {
+                    .name {
+                        font-size: 13px;
+                    }
+                    .job {
+                        font-size: 11px;
+                        text-wrap: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
+                        max-width: 14vw;
+                    }
+                    .date {
+                        font-size: 11px;
+                    }
+                }
+            }
+        }
+        .right-side {
+            width: 65%;
+            min-width: 300px;
+        }
+    }
+    hr {
+        margin-bottom: 20px;
+        opacity: 0.5;
+    }
+    h2 {
+        margin-bottom: unset;
+        color: $mmi-orange;
+        font-size: 22px;
+        font-weight: 400;
+    }
+}

@@ -1,0 +1,18 @@
+<nextalys-app-autocomplete
+    [loadData]="loadConsultants"
+    [minLength]="2"
+    label="Nom du consultant"
+    [(ngModel)]="value"
+    matTooltip="{{ 'Tooltip.NameConsultant' | translate }}"
+    matTooltipPosition="after"
+    (clearInputClick)="value = null"
+    [autoActiveFirstOption]="true"
+    [autoCompleteIsLoading]="loading"
+    [showClearButton]="true"
+    [delay]="500"
+    [disabled]="disabled"
+    [autoClearInput]="true"
+    [placeholder]="placeholder || 'Nom du consultant'"
+    [displayLabel]="displayFunction"
+>
+</nextalys-app-autocomplete>

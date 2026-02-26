@@ -1,0 +1,24 @@
+
+[2026-02-18T16:21:46] - [error] => 
+    Unable to send mail
+    {
+  "to": [
+    "brianbills49@yahoo.com"
+  ],
+  "from": "contact@morganmallet.agency",
+  "subject": "Votre avis compte pour nous !",
+  "templateName": "mail_placed_candidate_review.mjml"
+}
+[2026-02-18T16:21:46] - [error] => 
+    Failed to send review request email to candidate c9229b3b-6ee2-43cf-a759-73521169ff89: Unknown mail sending error
+ - Technical message : Failed to send review request email to candidate c9229b3b-6ee2-43cf-a759-73521169ff89: Unknown mail sending error
+[2026-02-18T16:31:15] - [error] => 
+    Unable to send mail
+    {
+  "to": [
+    "omar.elbadaoui1@gmail.com"
+  ],
+  "from": "contact@morganmallet.agency",
+  "subject": "🇫🇷 Plateforme d'emplois / 🇬🇧 Jobs platform",
+  "templateName": "generic-mail.mjml"
+}

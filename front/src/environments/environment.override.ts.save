@@ -1,0 +1,10 @@
+lszexport const environment = {
+  production: true,
+  envName: 'production',
+  apiBaseUrl: 'https://mmi.nextalys.com',
+  googleOAuthClientId: '',
+  facebookAppId: '',
+  googleMapsApiKey: '',
+  mapBoxApiKey: '',
+  httpDelay: 0,
+};

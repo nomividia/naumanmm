@@ -1,0 +1,20 @@
+app-address {
+    .single-width {
+        width: 49%;
+        .margin-inline {
+            margin-left: 12px;
+        }
+    }
+    .multiple-width {
+        width: 25%;
+    }
+    .two-lines {
+        display: flex;
+        flex-direction: column;
+        .d-flex-row {
+            flex-wrap: nowrap;
+            gap: 10px;
+            width: 100%;
+        }
+    }
+}

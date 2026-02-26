@@ -1,0 +1,34 @@
+<div class="star-container" #starContainer (mouseleave)="onLeave()">
+    <mat-icon
+        [ngClass]="{ editMode: editMode, disabled: tempNote < 1 }"
+        (click)="setNote(1)"
+        (mouseover)="applyHover(1)"
+        >star</mat-icon
+    >
+    <mat-icon
+        [ngClass]="{ editMode: editMode, disabled: tempNote < 2 }"
+        (click)="setNote(2)"
+        (mouseover)="applyHover(2)"
+        >star</mat-icon
+    >
+    <mat-icon
+        [ngClass]="{ editMode: editMode, disabled: tempNote < 3 }"
+        (click)="setNote(3)"
+        (mouseover)="applyHover(3)"
+        >star</mat-icon
+    >
+    <mat-icon
+        [ngClass]="{ editMode: editMode, disabled: tempNote < 4 }"
+        (click)="setNote(4)"
+        (mouseover)="applyHover(4)"
+        >star</mat-icon
+    >
+    <mat-icon
+        [ngClass]="{ editMode: editMode, disabled: tempNote < 5 }"
+        (click)="setNote(5)"
+        (mouseover)="applyHover(5)"
+        >star</mat-icon
+    >
+
+    <div style="font-size: 20px; margin-left: 20px">{{ tempNote }} / 5</div>
+</div>

@@ -1,0 +1,253 @@
+<div *ngIf="mode === 'two-lines' && !showOnlyCountry" class="two-lines">
+    <div class="d-flex-row">
+        <mat-form-field
+            style="width: 100%"
+            [class]="smallInput ? 'nxs-small-mat-input' : ''"
+            appearance="outline"
+        >
+            <mat-label>{{ 'Address.Line1' | translate }}</mat-label>
+            <input
+                [placeholder]="'Address.Line1' | translate"
+                matInput
+                type="text"
+                [disabled]="disabled"
+                [(ngModel)]="address.lineOne"
+                (ngModelChange)="addressChangeResult()"
+                required
+            />
+        </mat-form-field>
+        <mat-form-field
+            [class]="smallInput ? 'nxs-small-mat-input' : ''"
+            appearance="outline"
+        >
+            <mat-label>{{ 'Address.Line2' | translate }}</mat-label>
+            <input
+                [placeholder]="'Address.Line2' | translate"
+                matInput
+                type="text"
+                [disabled]="disabled"
+                [(ngModel)]="address.lineTwo"
+                (ngModelChange)="addressChangeResult()"
+            />
+        </mat-form-field>
+    </div>
+    <div class="d-flex-row">
+        <mat-form-field
+            [class]="smallInput ? 'nxs-small-mat-input' : ''"
+            appearance="outline"
+        >
+            <mat-label>{{ 'Address.City' | translate }}</mat-label>
+            <input
+                [placeholder]="'Address.City' | translate"
+                matInput
+                type="text"
+                [disabled]="disabled"
+                [(ngModel)]="address.city"
+                (ngModelChange)="addressChangeResult()"
+                required
+            />
+        </mat-form-field>
+        <mat-form-field
+            [class]="smallInput ? 'nxs-small-mat-input' : ''"
+            class="margin-inline"
+            appearance="outline"
+            appearance="outline"
+        >
+            <mat-label>{{ 'Address.PostalCode' | translate }}</mat-label>
+            <input
+                [placeholder]="'Address.PostalCode' | translate"
+                matInput
+                type="text"
+                [disabled]="disabled"
+                [(ngModel)]="address.postalCode"
+                (ngModelChange)="addressChangeResult()"
+                required
+            />
+        </mat-form-field>
+        <app-departments-autocomplete
+            [required]="true"
+            [countryCodes]="[address.country]"
+            [label]="'Address.Department' | translate"
+            [(ngModel)]="selectedDepartment"
+            (ngModelChange)="onDepartmentSelection()"
+            (textChange)="onDepartmentSelection($event)"
+            [disabled]="!address.country"
+        >
+        </app-departments-autocomplete>
+        <mat-form-field
+            [class]="smallInput ? 'nxs-small-mat-input' : ''"
+            appearance="outline"
+            appearance="outline"
+        >
+            <mat-label>{{ 'Address.Country' | translate }}</mat-label>
+            <mat-select
+                name="pays"
+                [(ngModel)]="address.country"
+                (ngModelChange)="addressChangeResult()"
+                required
+            >
+                <mat-option
+                    *ngFor="let item of countriesList"
+                    [value]="item.code"
+                >
+                    {{ item.label }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <!-- <mat-form-field [class]="smallInput ? 'nxs-small-mat-input':''" class="margin-inline" appearance="outline"
+            appearance="outline">
+            <mat-label>{{'Address.Department' | translate}}</mat-label>
+            <input [placeholder]="'Address.Department' | translate" matInput type="text" [disabled]="disabled"
+                [(ngModel)]="address.department" (ngModelChange)="addressChangeResult()" />
+        </mat-form-field> -->
+    </div>
+</div>
+<div
+    *ngIf="mode !== 'two-lines'"
+    [ngClass]="{ 'd-flex-row': dFlexRow, 'flex-wrapper-horizontal': !dFlexRow }"
+>
+    <mat-form-field
+        *ngIf="!showOnlyCountry"
+        [class]="smallInput ? 'nxs-small-mat-input' : ''"
+        appearance="outline"
+    >
+        <mat-label>{{ 'Address.Line1' | translate }}</mat-label>
+        <input
+            [placeholder]="'Address.Line1' | translate"
+            matInput
+            type="text"
+            [disabled]="disabled"
+            [(ngModel)]="address.lineOne"
+            (ngModelChange)="addressChangeResult()"
+            required
+        />
+    </mat-form-field>
+    <mat-form-field
+        *ngIf="!showOnlyCountry"
+        [class]="smallInput ? 'nxs-small-mat-input' : ''"
+        appearance="outline"
+    >
+        <mat-label>{{ 'Address.Line2' | translate }}</mat-label>
+        <input
+            [placeholder]="'Address.Line2' | translate"
+            matInput
+            type="text"
+            [disabled]="disabled"
+            [(ngModel)]="address.lineTwo"
+            (ngModelChange)="addressChangeResult()"
+        />
+    </mat-form-field>
+    <mat-form-field
+        *ngIf="!showOnlyCountry"
+        [class]="smallInput ? 'nxs-small-mat-input' : ''"
+        appearance="outline"
+    >
+        <mat-label>{{ 'Address.City' | translate }}</mat-label>
+        <input
+            [placeholder]="'Address.City' | translate"
+            matInput
+            type="text"
+            [disabled]="disabled"
+            [(ngModel)]="address.city"
+            (ngModelChange)="addressChangeResult()"
+            required
+        />
+    </mat-form-field>
+    <mat-form-field
+        *ngIf="!showOnlyCountry"
+        [class]="smallInput ? 'nxs-small-mat-input' : ''"
+        class="margin-inline"
+        appearance="outline"
+        appearance="outline"
+    >
+        <mat-label>{{ 'Address.PostalCode' | translate }}</mat-label>
+        <input
+            [placeholder]="'Address.PostalCode' | translate"
+            matInput
+            type="text"
+            [disabled]="disabled"
+            [(ngModel)]="address.postalCode"
+            (ngModelChange)="addressChangeResult()"
+            required
+        />
+    </mat-form-field>
+    <app-departments-autocomplete
+        [required]="true"
+        *ngIf="!showOnlyCountry"
+        [countryCodes]="[address.country]"
+        [label]="'Address.Department' | translate"
+        [(ngModel)]="selectedDepartment"
+        (ngModelChange)="onDepartmentSelection()"
+        (textChange)="onDepartmentSelection($event)"
+        [disabled]="!address.country"
+        [label]="'Address.Department' | translate"
+    >
+    </app-departments-autocomplete>
+    <mat-form-field
+        [class]="smallInput ? 'nxs-small-mat-input' : ''"
+        appearance="outline"
+        appearance="outline"
+    >
+        <mat-label>{{ 'Address.Country' | translate }}</mat-label>
+        <mat-select
+            name="pays"
+            [(ngModel)]="address.country"
+            (ngModelChange)="addressChangeResult()"
+            required
+        >
+            <mat-option *ngFor="let item of countriesList" [value]="item.code">
+                {{ item.label }}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <!-- <mat-form-field [class]="smallInput ? 'nxs-small-mat-input':''" class="margin-inline" appearance="outline"
+        appearance="outline">
+        <mat-label>{{'Address.Department' | translate}}</mat-label>
+        <input [placeholder]="'Address.Department' | translate" matInput type="text" [disabled]="disabled"
+            [(ngModel)]="address.department" (ngModelChange)="addressChangeResult()" />
+    </mat-form-field> -->
+    <!-- <mat-form-field [class]="smallInput ? 'nxs-small-mat-input':''" appearance="outline">
+        <mat-label>Pays</mat-label>
+        <input placeholder="Pays" matInput type="text" [disabled]="loading" [(ngModel)]="address.country"
+            (ngModelChange)="addressChangeResult()" required />
+    </mat-form-field> -->
+
+    <ng-container *ngIf="mode === 'multiple'">
+        <mat-form-field appearance="outline">
+            <mat-label>Nom de l'adresse</mat-label>
+            <input
+                placeholder="Nom de l'adresse"
+                matInput
+                type="text"
+                [disabled]="loading"
+                [(ngModel)]="address.label"
+                (ngModelChange)="addressChangeResult()"
+            />
+        </mat-form-field>
+        <div>
+            <button
+                mat-icon-button
+                color="warn"
+                (click)="removeAddress(address)"
+            >
+                <mat-icon fontSet="material-icons-outlined">delete</mat-icon>
+            </button>
+        </div>
+    </ng-container>
+</div>
+
+<div *ngIf="mode === 'multiple'">
+    <div class="flex-wrapper-horizontal">
+        <button
+            mat-raised-button
+            color="primary"
+            [disabled]="loading"
+            (click)="addAddress()"
+        >
+            <mat-icon fontSet="material-icons-outlined">add</mat-icon
+            >{{ 'Address.Add' | translate }}
+        </button>
+    </div>
+</div>

@@ -1,0 +1,59 @@
+<h2 mat-dialog-title>Clients existants</h2>
+<mat-dialog-content class="mat-typography">
+    <h4>Sélectionner un client dans la liste que vous souhaitez écraser :</h4>
+    <div class="customer-list">
+        <div
+            class="customer-item"
+            [ngClass]="customer.selected ? 'selected' : ''"
+            *ngFor="let customer of data"
+            (click)="onSelectedItem(customer)"
+        >
+            <p>
+                {{ customer.lastName | uppercase }}
+                <ng-container *ngIf="customer.firstName">{{
+                    customer.firstName | titlecase
+                }}</ng-container>
+                <ng-container *ngIf="customer.companyName">{{
+                    customer.companyName | uppercase
+                }}</ng-container>
+            </p>
+            <p>
+                {{ customer.email }}
+            </p>
+            <p>
+                {{ customer.phone }}
+            </p>
+            <ng-container
+                *ngFor="let address of customer.addresses; let index = index"
+            >
+                <p>
+                    <i>
+                        {{ address.lineOne
+                        }}<ng-container *ngIf="address.lineTwo"
+                            >, {{ address.lineTwo }}</ng-container
+                        >, {{ address.postalCode }}, {{ address.city }}
+                        {{ address.department }},
+                        {{ RefData.getCountryLabel(address.country) }}
+                    </i>
+                </p>
+                <hr *ngIf="index < customer.addresses.length - 1" />
+            </ng-container>
+        </div>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions align="center">
+    <button color="warn" mat-button (click)="cancel()">
+        {{ 'JobReference.Drop' | translate }}
+    </button>
+    <button color="primary" mat-button (click)="createNew()">
+        {{ 'JobReference.Duplicate' | translate }}
+    </button>
+    <button
+        color="accent"
+        mat-button
+        [disabled]="!selectedCustomer"
+        (click)="overwriteCustomer()"
+    >
+        {{ 'JobReference.ReplaceCustomer' | translate }}
+    </button>
+</mat-dialog-actions>

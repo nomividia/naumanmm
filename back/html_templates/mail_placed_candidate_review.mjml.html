@@ -1,0 +1,129 @@
+<mjml>
+    <mj-head>
+        <mj-attributes>
+            <mj-text
+                padding="0"
+                color="#707070"
+                font-size="20px"
+                line-height="2"
+            />
+            <mj-button inner-padding="20px 40px" font-size="16px" />
+            <mj-all font-family="Open Sans, Calibri" />
+            <mj-class name="blue" color="#0073aa" />
+            <mj-class
+                name="blue-btn"
+                background-color="#247AFF"
+                color="#FFFFFF"
+                inner-padding="20px 40px"
+            />
+            <mj-class name="blue-text" color="#247AFF" />
+            <mj-class
+                name="transparent-btn"
+                font-size="14px"
+                padding="2px 8px"
+                background-color="transparent"
+                color="black"
+                inner-padding="0"
+                line-height="2"
+                font-weight="bold"
+                align="left"
+            />
+            <mj-class name="social-btn" width="30px" vertical-align="middle" />
+            <mj-class
+                name="social-btn-wrapper"
+                width="60px"
+                padding="14px 14px"
+                vertical-align="middle"
+                align="center"
+            />
+            <mj-class name="itw-btn" color="#FFFFFF" />
+            <mj-class
+                name="itw-btn-wrapper"
+                padding="20px 0 40px 0"
+                background-color="#FFFFFF"
+            />
+        </mj-attributes>
+
+        <mj-style> td { word-break:initial !important; } </mj-style>
+    </mj-head>
+    <mj-body width="800px" background-color="#F3F3F3">
+        <mj-wrapper>
+            <mj-section>
+                <mj-column>
+                    <mj-image
+                        width="150px"
+                        src="{{{SITE_BASE_URL}}}/assets/logos/logo-new.png"
+                    />
+                </mj-column>
+            </mj-section>
+        </mj-wrapper>
+        <mj-wrapper padding="0 20px">
+            <mj-section padding="0">
+                <mj-column
+                    background-color="#FFFFFF"
+                    border-radius="10px 10px 0 0"
+                >
+                    <mj-text
+                        align="left"
+                        padding="20px 60px 2px 60px"
+                        font-size="16px"
+                    >
+                        {{#ifEquals language 'fr'}} Bonjour
+                        {{{candidateFirstName}}},<br /><br />
+                        Nous sommes ravis que vous ayez trouvé un poste et nous
+                        vous félicitons. Afin d'aider les futurs candidats et
+                        d'améliorer continuellement notre accompagnement,
+                        pourriez-vous laisser un avis sur votre expérience en
+                        suivant ce lien :<br />
+                        👉
+                        <a href="{{{googleReviewUrl}}}" style="color: #247aff"
+                            >Laissez votre avis Google</a
+                        ><br /><br />
+                        Votre retour sera précieux pour nous !<br /><br />
+                        Je vous remercie d'avance et vous souhaite une
+                        excellente journée.<br /><br />
+                        Cordialement,<br />
+                        L'équipe Morgan & Mallet International {{/ifEquals}}
+                        {{#ifEquals language 'en'}} Dear
+                        {{{candidateFirstName}}},<br /><br />
+                        We're delighted you've found a position and we
+                        congratulate you. To help future candidates and
+                        continually improve our support, could you leave a
+                        review of your experience by following this link?<br />
+                        👉
+                        <a href="{{{googleReviewUrl}}}" style="color: #247aff"
+                            >Leave your Google review</a
+                        ><br /><br />
+                        Your feedback will be invaluable to us!<br /><br />
+                        Thank you in advance and wish you a wonderful day.<br /><br />
+                        Best regards,<br />
+                        The Morgan & Mallet International Team {{/ifEquals}}
+                    </mj-text>
+                </mj-column>
+            </mj-section>
+        </mj-wrapper>
+
+        <mj-wrapper padding="0 20px">
+            <mj-section padding="0">
+                <mj-column
+                    background-color="#FFFFFF"
+                    border-radius="0 0 10px 10px"
+                    padding-bottom="40px"
+                >
+                    <mj-text
+                        align="center"
+                        padding="20px 60px"
+                        font-size="14px"
+                        color="#999999"
+                    >
+                        {{#ifEquals language 'fr'}} Morgan & Mallet
+                        International - Recrutement de personnel de maison et
+                        yacht {{/ifEquals}} {{#ifEquals language 'en'}} Morgan &
+                        Mallet International - Household staff and yacht
+                        recruitment {{/ifEquals}}
+                    </mj-text>
+                </mj-column>
+            </mj-section>
+        </mj-wrapper>
+    </mj-body>
+</mjml>

@@ -1,0 +1,95 @@
+app-candidate-files {
+    a {
+        cursor: pointer;
+    }
+    .transmitted {
+        color: #7ba483 !important;
+    }
+    .custom-btn {
+        width: 100px !important;
+    }
+
+    .alert-wrapper {
+        height: 40px;
+        background-color: #ececec;
+        border-radius: 5px;
+        margin: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        mat-icon {
+            margin-right: 10px;
+        }
+        
+        @media (max-width: 599px) {
+            font-size: 10px;
+            padding: 0 10px;
+            height: auto;
+            min-height: 40px;
+            
+            mat-icon {
+                font-size: 16px;
+                width: 16px;
+                height: 16px;
+                margin-right: 5px;
+            }
+        }
+    }
+
+    .file-wrapper-single,
+    .file-wrapper-multiple {
+    }
+    .file-name-input-wrapper {
+        width: 100%;
+        .mat-form-field {
+            width: 100%;
+        }
+    }
+    .file-wrapper-single {
+        font-size: 11px;
+        margin-left: 90px;
+    }
+    .file-wrapper-multiple {
+        font-size: 11px;
+        margin-left: 0;
+        flex: auto;
+    }
+    .file-name-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+    }
+    .edit-file-mode-button {
+        width: 13px;
+        height: 13px;
+        font-size: 13px;
+        line-height: 13px;
+        margin-left: 10px;
+        .mat-icon {
+            width: 14px;
+            height: 14px;
+            font-size: 14px;
+            line-height: 14px;
+        }
+    }
+    
+    @media (max-width: 599px) {
+        .nxs-list-item-wrapper-container {
+            flex-direction: column !important;
+            
+            > div {
+                width: 100% !important;
+                margin: 5px 0 !important;
+            }
+        }
+        
+        .file-wrapper-single {
+            margin-left: 0 !important;
+        }
+        
+        button {
+            width: 100% !important;
+            margin: 5px 0 !important;
+        }
+    }
+}

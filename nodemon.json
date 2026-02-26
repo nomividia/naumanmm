@@ -1,0 +1,17 @@
+{
+  "watch": [
+    "./back"
+  ],
+  "ext": "ts",
+  "ignore": [
+    "./back/**/*.spec.ts",
+    "./back/**/*.log",
+    "./back/**/*.pdf",
+    "./back/**/*.jpg",
+    "./back/uploads/**",
+    "./back/**/*.xlsx",
+    "./back/**/*.xlsm"
+  ],
+  "delay": "700",
+  "exec": "ts-node-dev --transpileOnly --no-deps --project back/tsconfig.json back/main.ts"
+}

@@ -1,0 +1,50 @@
+<h2 mat-dialog-title>
+    {{ 'CandidateApplication.ApplyToAJobOffer' | translate }}
+</h2>
+<mat-dialog-content>
+    <div style="margin: 20px auto; font-style: italic">
+        {{ 'CandidateApplication.PleaseSelectJobOffers' | translate }} :
+    </div>
+    <div style="margin: 20px auto">
+        <app-job-offers-autocomplete
+            [onlyActiveJobOffers]="true"
+            [(ngModel)]="currentJobOffer"
+            (ngModelChange)="addJobOfferInSelectionList()"
+            class="nxs-small-mat-input"
+            [ngModelOptions]="{ standalone: true }"
+            [disabled]="loading"
+            name="jobRef"
+        >
+        </app-job-offers-autocomplete>
+    </div>
+    <div style="margin: 20px auto">
+        <mat-chip-list aria-label="Jobs selection">
+            <mat-chip
+                [disabled]="loading"
+                *ngFor="let jobOffer of currentJobOfferList"
+                color="accent"
+                selected
+            >
+                {{ jobOffer?.ref }} - {{ jobOffer?.title | truncate : 45 : 1 }}
+                <mat-icon
+                    matChipRemove
+                    (click)="removeJobFromSelection(jobOffer)"
+                    >cancel
+                </mat-icon>
+            </mat-chip>
+        </mat-chip-list>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button
+        color="primary"
+        mat-button
+        [disabled]="loading || !currentJobOfferList?.length"
+        (click)="validate()"
+    >
+        {{ 'Global.Validate' | translate }}
+    </button>
+    <button color="warn" mat-button [disabled]="loading" (click)="cancel()">
+        {{ 'Global.Cancel' | translate }}
+    </button>
+</mat-dialog-actions>

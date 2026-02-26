@@ -1,0 +1,1202 @@
+<app-drawer-main-container
+    [headerTitle]="
+        entity?.id
+            ? ('Menu.JobOffers' | translate) +
+              ' | ' +
+              entity?.title +
+              ' ' +
+              entity?.ref
+            : ('Menu.CreateJobOffer' | translate)
+    "
+    [headerSmallText]="
+        entity?.id
+            ? ('Global.LastUpdate' | translate) + (entity?.modifDate | date)
+            : undefined
+    "
+    padding="0"
+    [showPendingModifications]="hasPendingModifications"
+>
+    <div class="edit-page-header edit-header-container">
+        <div class="d-flex align-items-center color-primary">
+            <button
+                [disabled]="loading"
+                mat-raised-button
+                color="primary"
+                (click)="goBack()"
+            >
+                <ng-container *ngIf="!isNewJobOffer">
+                    <mat-icon fontSet="material-icons-outlined"
+                        >arrow_back_ios</mat-icon
+                    >{{ 'JobOffer.Return' | translate }}
+                </ng-container>
+                <ng-container *ngIf="isNewJobOffer">
+                    <mat-icon fontSet="material-icons-outlined">clear</mat-icon
+                    >{{ 'Global.Cancel' | translate }}
+                </ng-container>
+            </button>
+        </div>
+        <div class="d-flex align-items-center gap-10 color-primary">
+            <ng-container *ngIf="modifyStatus">
+                <mat-form-field
+                    class="nxs-small-mat-input ml-3"
+                    appearance="outline"
+                >
+                    <mat-label>Statut</mat-label>
+                    <mat-select
+                        [(ngModel)]="entity.stateId"
+                        (ngModelChange)="onStateChange()"
+                    >
+                        <mat-option
+                            *ngFor="let status of statesList"
+                            [value]="status.id"
+                        >
+                            {{ 'label' | dbTranslate : status }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </ng-container>
+
+            <ng-container *ngIf="!modifyStatus && !isNewJobOffer">
+                <button
+                    mat-raised-button
+                    color="primary"
+                    class="ml-2 btn-normal edit-btn"
+                    [class]="getStateClassColor()"
+                    [disabled]="loading"
+                    (click)="onStateClicked()"
+                >
+                    <ng-container *ngIf="entity?.state; else noStatus">
+                        {{ 'label' | dbTranslate : entity.state }}
+                    </ng-container>
+                    <ng-template #noStatus>
+                        {{ 'Candidate.EditStatus' | translate }}
+                    </ng-template>
+                    <mat-icon fontSet="material-icons-outlined">edit</mat-icon>
+                </button>
+            </ng-container>
+
+            <!-- <div *ngIf="hasPendingModifications" class="mr-2">
+                {{'Global.UnsavedChanges' | translate}}
+            </div> -->
+            <button
+                [routerLink]="'/' + RoutesList.CandidateApplicationsList"
+                [queryParams]="{ jobOfferRef: entity.ref }"
+                mat-raised-button
+                color="primary"
+                [matTooltip]="'JobOffer.SeeApplications' | translate"
+                *ngIf="entity?.id"
+                [disabled]="loading"
+                class="btn-normal"
+            >
+                {{ 'JobOffer.SeeApplications' | translate }}
+            </button>
+
+            <button
+                mat-icon-button
+                color="primary"
+                [matTooltip]="'JobOffer.SendEmail' | translate"
+                *ngIf="entity?.id"
+                [disabled]="loading || !entity.publicLink"
+                (click)="onSendJobOfferByMail()"
+                class="bordered-icon"
+            >
+                <mat-icon fontSet="material-icons-outlined">email</mat-icon>
+            </button>
+
+            <!-- <button
+                mat-icon-button
+                color="primary"
+                [matTooltip]="'JobOffer.ArchiveOffer' | translate"
+                *ngIf="
+                    entity?.id &&
+                    GlobalAppService.userHasOneOfRoles(
+                        AuthDataService.currentUser,
+                        [RolesList.Admin, RolesList.AdminTech, RolesList.RH]
+                    )
+                "
+                [disabled]="loading || !entity.publicLink || entity.disabled"
+                (click)="onArchive()"
+                class="bordered-icon"
+            >
+                <mat-icon fontSet="material-icons-outlined">
+                    inventory_2
+                </mat-icon>
+            </button> -->
+
+            <button
+                mat-icon-button
+                color="primary"
+                [matTooltip]="'Global.Delete' | translate"
+                *ngIf="
+                    entity?.id &&
+                    GlobalAppService.userHasRole(
+                        AuthDataService.currentUser,
+                        RolesList.AdminTech
+                    )
+                "
+                [disabled]="loading"
+                (click)="removeJobOffer()"
+                class="bordered-icon"
+            >
+                <mat-icon class="material-icons-outlined"> delete </mat-icon>
+            </button>
+        </div>
+        <div
+            class="d-flex align-items-center color-primary"
+            style="padding-right: 15px"
+            *ngIf="isNewJobOffer"
+        >
+            <button
+                [disabled]="loading"
+                mat-raised-button
+                color="primary"
+                (click)="generateJobOffer()"
+            >
+                <mat-icon fontSet="material-icons-outlined">assignment</mat-icon
+                >{{ 'JobOffer.GenerateJobOffer' | translate }}
+            </button>
+        </div>
+        <!-- <div class="right" *ngIf="loading">
+            <mat-spinner diameter="30" strokeWidth="3"></mat-spinner>
+        </div> -->
+        <div class="mainLoadingOverlay" *ngIf="loading">
+            <div style="position: relative; margin-top: 10vh">
+                <mat-spinner diameter="80" strokeWidth="7"></mat-spinner>
+            </div>
+            <!-- <div class="mainLoadingOverlayMessage"></div> -->
+        </div>
+    </div>
+
+    <div *ngIf="entity" style="padding: 20px 50px">
+        <div class="d-flex row-container mt-1">
+            <div class="column-container">
+                <div
+                    class="edit-page-block"
+                    [class.selected]="editModes.informations"
+                >
+                    <ng-container *ngIf="!isNewJobOffer">
+                        <ng-container
+                            *ngTemplateOutlet="
+                                editBtn;
+                                context: { editModeKey: 'informations' }
+                            "
+                        ></ng-container>
+                    </ng-container>
+                    <h2>{{ 'Global.GeneralInfo' | translate }}</h2>
+                    <hr />
+                    <ng-container *ngIf="editModes.informations">
+                        <mat-form-field
+                            class="nxs-small-mat-input"
+                            appearance="outline"
+                        >
+                            <mat-label>{{
+                                'JobOffer.Title' | translate
+                            }}</mat-label>
+                            <input
+                                required
+                                [placeholder]="'JobOffer.Title' | translate"
+                                matInput
+                                type="text"
+                                [disabled]="loading"
+                                [(ngModel)]="entity.title"
+                                (ngModelChange)="hasPendingModifications = true"
+                            />
+                        </mat-form-field>
+                        <mat-form-field
+                            class="nxs-small-mat-input"
+                            appearance="outline"
+                        >
+                            <mat-label>{{
+                                'Global.Ref' | translate
+                            }}</mat-label>
+                            <input
+                                required
+                                [placeholder]="'Global.Ref' | translate"
+                                matInput
+                                type="text"
+                                [disabled]="loading"
+                                [(ngModel)]="entity.ref"
+                                (ngModelChange)="hasPendingModifications = true"
+                            />
+                        </mat-form-field>
+                        <mat-form-field
+                            class="nxs-small-mat-input"
+                            appearance="outline"
+                        >
+                            <mat-label>{{
+                                'JobOffer.City' | translate
+                            }}</mat-label>
+                            <input
+                                required
+                                [placeholder]="'JobOffer.City' | translate"
+                                matInput
+                                type="text"
+                                [disabled]="loading"
+                                [(ngModel)]="entity.city"
+                                (ngModelChange)="hasPendingModifications = true"
+                            />
+                        </mat-form-field>
+                        <mat-form-field
+                            class="nxs-small-mat-input"
+                            appearance="outline"
+                        >
+                            <mat-label>{{
+                                'JobOffer.Country' | translate
+                            }}</mat-label>
+                            <mat-select
+                                required
+                                [(ngModel)]="entity.country"
+                                (ngModelChange)="hasPendingModifications = true"
+                            >
+                                <mat-option
+                                    *ngFor="let country of countriesList"
+                                    [value]="country.code"
+                                >
+                                    {{ country.label }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field
+                            class="nxs-small-mat-input"
+                            appearance="outline"
+                        >
+                            <mat-label>{{
+                                'JobOffer.Link' | translate
+                            }}</mat-label>
+                            <input
+                                required
+                                [placeholder]="'JobOffer.Link' | translate"
+                                matInput
+                                type="text"
+                                [disabled]="loading"
+                                [(ngModel)]="entity.publicLink"
+                                (ngModelChange)="hasPendingModifications = true"
+                            />
+                        </mat-form-field>
+                        <!-- <mat-form-field class="nxs-small-mat-input" appearance="outline">
+                            <mat-label>{{"JobOffer.SyncJob" | translate}}</mat-label>
+                            <mat-select required [(ngModel)]="entity.jobId"
+                                (ngModelChange)="hasPendingModifications=true;">
+                                <mat-option *ngFor="let job of jobList" [value]="job.id">
+                                    {{job.label}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field> -->
+                        <app-jobs-selector
+                            fieldAppearance="outline"
+                            [multipleSelection]="false"
+                            [placeholder]="'JobOffer.SyncJob' | translate"
+                            [disabled]="loading"
+                            class="nxs-small-mat-input"
+                            [longInput]="true"
+                            [(ngModel)]="entity.jobId"
+                            (ngModelChange)="hasPendingModifications = true"
+                        >
+                        </app-jobs-selector>
+                        <mat-form-field
+                            class="nxs-small-mat-input"
+                            appearance="outline"
+                        >
+                            <mat-label>{{
+                                'Candidate.CoupleApplication' | translate
+                            }}</mat-label>
+                            <mat-select
+                                required
+                                [(ngModel)]="entity.applyInCouple"
+                                (ngModelChange)="hasPendingModifications = true"
+                            >
+                                <mat-option [value]="true">{{
+                                    'Global.Yes' | translate
+                                }}</mat-option>
+                                <mat-option [value]="false">{{
+                                    'Global.No' | translate
+                                }}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </ng-container>
+                    <ng-container *ngIf="!editModes.informations">
+                        <div class="edit-page-block-item">
+                            <p class="title">
+                                {{ 'JobOffer.Title' | translate }}
+                            </p>
+                            <p>
+                                {{
+                                    (entity.title | uppercase) ||
+                                        'Global.NotInformed' | translate
+                                }}
+                            </p>
+                        </div>
+                        <div class="edit-page-block-item">
+                            <p class="title">{{ 'Global.Ref' | translate }}</p>
+                            <p>
+                                {{
+                                    entity.ref ||
+                                        ('Global.NotInformed' | translate)
+                                }}
+                            </p>
+                        </div>
+                        <div class="edit-page-block-item">
+                            <p class="title">
+                                {{ 'JobOffer.City' | translate }}
+                            </p>
+                            <p>
+                                {{
+                                    entity.city ||
+                                        ('Global.NotInformed' | translate)
+                                        | titlecase
+                                }}
+                            </p>
+                        </div>
+                        <div class="edit-page-block-item">
+                            <p class="title">
+                                {{ 'JobOffer.Country' | translate }}
+                            </p>
+                            <p>
+                                {{
+                                    (entity.country
+                                        ? RefData.getCountryLabel(
+                                              entity.country
+                                          )
+                                        : ('Global.NotInformed' | translate)
+                                    ) | titlecase
+                                }}
+                            </p>
+                        </div>
+                        <div class="edit-page-block-item">
+                            <p class="title">
+                                {{ 'JobOffer.Link' | translate }}
+                            </p>
+                            <a
+                                mat-raised-button
+                                color="accent"
+                                target="_blank"
+                                [href]="entity.publicLink"
+                                class="blue-btn"
+                                *ngIf="entity.publicLink"
+                                >{{ 'JobOffer.SeeAd' | translate }}</a
+                            >
+                            <p *ngIf="!entity.publicLink">
+                                {{ 'Global.NotInformed' | translate }}
+                            </p>
+                        </div>
+                        <div class="edit-page-block-item">
+                            <p class="title">
+                                {{ 'JobOffer.SyncJob' | translate }}
+                            </p>
+                            <p>
+                                {{
+                                    ('label' | dbTranslate : entity.job) ||
+                                        ('Global.NotInformed' | translate)
+                                }}
+                            </p>
+                        </div>
+                        <div class="edit-page-block-item">
+                            <p class="title">
+                                {{ 'Candidate.CoupleApplication' | translate }}
+                            </p>
+                            <p>
+                                {{
+                                    entity.applyInCouple
+                                        ? entity.applyInCouple
+                                            ? ('Global.Yes' | translate)
+                                            : ('Global.No' | translate)
+                                        : ('Global.NotInformed' | translate)
+                                }}
+                            </p>
+                        </div>
+                        <div class="edit-page-block-item">
+                            <p class="title">
+                                {{ 'JobOffer.CreationDate' | translate }}
+                            </p>
+                            <p>
+                                {{ entity.creationDate | date : 'dd/MM/yyyy' }}
+                            </p>
+                        </div>
+                    </ng-container>
+                </div>
+                <div
+                    class="edit-page-block mt-3"
+                    [class.selected]="editModes.consultant"
+                >
+                    <ng-container *ngIf="!isNewJobOffer">
+                        <ng-container
+                            *ngTemplateOutlet="
+                                editBtn;
+                                context: { editModeKey: 'consultant' }
+                            "
+                        ></ng-container>
+                    </ng-container>
+                    <h2>{{ 'JobOffer.Consultant' | translate }}</h2>
+                    <hr />
+                    <ng-container *ngIf="editModes.consultant">
+                        <app-consultant-autocomplete
+                            [placeholder]="'JobOffer.Consultant' | translate"
+                            [(ngModel)]="tempConsultant"
+                            (ngModelChange)="
+                                hasPendingModifications = true;
+                                setCandidateFromAutocomplete($event)
+                            "
+                            class="nxs-small-mat-input"
+                            [ngModelOptions]="{ standalone: true }"
+                            [disabled]="loading"
+                            name="consultant"
+                        >
+                        </app-consultant-autocomplete>
+                    </ng-container>
+                    <ng-container *ngIf="!editModes.consultant">
+                        <div class="edit-page-block-item">
+                            <div
+                                class="d-flex align-items-center"
+                                *ngIf="
+                                    entity.consultant?.firstName &&
+                                    entity.consultant?.lastName
+                                "
+                            >
+                                <div
+                                    class="consultant-picture"
+                                    [style.backgroundImage]="
+                                        'url(' +
+                                        ImageHelpers.getUserPicture(
+                                            entity.consultant
+                                        ) +
+                                        ')'
+                                    "
+                                ></div>
+                                <p class="m-0">
+                                    {{
+                                        entity.consultant?.firstName | titlecase
+                                    }}
+                                    {{
+                                        entity.consultant?.lastName | uppercase
+                                    }}
+                                </p>
+                            </div>
+                            <ng-container
+                                *ngIf="
+                                    !entity.consultant?.firstName &&
+                                    !entity.consultant?.lastName
+                                "
+                            >
+                                <p class="title">
+                                    {{
+                                        'JobOffer.RelatedConsultant' | translate
+                                    }}
+                                </p>
+                                <p>{{ 'Global.NotInformed' | translate }}</p>
+                            </ng-container>
+                        </div>
+                    </ng-container>
+                </div>
+                <div
+                    class="edit-page-block mt-3"
+                    [class.selected]="editModes.customer"
+                >
+                    <ng-container *ngIf="!isNewJobOffer">
+                        <ng-container
+                            *ngTemplateOutlet="
+                                editBtn;
+                                context: { editModeKey: 'customer' }
+                            "
+                        ></ng-container>
+                    </ng-container>
+                    <h2>{{ 'Customer.Customer' | translate }}</h2>
+                    <hr />
+                    <ng-container *ngIf="editModes.customer">
+                        <ng-container *ngIf="!createCustomerMode">
+                            <app-customers-autocomplete
+                                [placeholder]="'Customer.Customer' | translate"
+                                [(ngModel)]="tempCustomer"
+                                (ngModelChange)="
+                                    hasPendingModifications = true;
+                                    setCustomerFromAutocomplete($event)
+                                "
+                                class="nxs-small-mat-input"
+                                [ngModelOptions]="{ standalone: true }"
+                                [disabled]="loading"
+                                name="customer"
+                            >
+                            </app-customers-autocomplete>
+                            <div class="d-flex justifiy-end mt-2">
+                                <button
+                                    mat-flat-button
+                                    color="primary"
+                                    (click)="initializeNewCustomer()"
+                                >
+                                    {{
+                                        'Customer.CreateNewCustomer' | translate
+                                    }}
+                                </button>
+                            </div>
+                        </ng-container>
+                        <ng-container *ngIf="createCustomerMode">
+                            <mat-radio-group
+                                [(ngModel)]="newCustomer.isCompany"
+                                (ngModelChange)="
+                                    hasPendingModifications = true;
+                                    setCustomerCompanyOrPerson()
+                                "
+                                aria-label="Select an option"
+                                class="nxs-small-mat-input"
+                            >
+                                <mat-radio-button [value]="true" class="mr-2"
+                                    >{{ 'Customer.Une' | translate }}
+                                    {{
+                                        'Customer.Company' | translate
+                                    }}</mat-radio-button
+                                >
+                                <mat-radio-button [value]="false"
+                                    >{{ 'Customer.Un' | translate }}
+                                    {{
+                                        'Customer.PrivatePerson' | translate
+                                    }}</mat-radio-button
+                                >
+                            </mat-radio-group>
+                            <ng-container *ngIf="newCustomer.isPrivatePerson">
+                                <mat-form-field
+                                    class="nxs-small-mat-input"
+                                    appearance="outline"
+                                >
+                                    <mat-label>{{
+                                        'Global.FirstName' | translate
+                                    }}</mat-label>
+                                    <input
+                                        required
+                                        [placeholder]="
+                                            'JobOffer.Link' | translate
+                                        "
+                                        matInput
+                                        type="text"
+                                        [disabled]="loading"
+                                        [(ngModel)]="newCustomer.firstName"
+                                        (ngModelChange)="
+                                            hasPendingModifications = true
+                                        "
+                                    />
+                                </mat-form-field>
+                                <mat-form-field
+                                    class="nxs-small-mat-input"
+                                    appearance="outline"
+                                >
+                                    <mat-label>{{
+                                        'Global.LastName' | translate
+                                    }}</mat-label>
+                                    <input
+                                        required
+                                        [placeholder]="
+                                            'JobOffer.Link' | translate
+                                        "
+                                        matInput
+                                        type="text"
+                                        [disabled]="loading"
+                                        [(ngModel)]="newCustomer.lastName"
+                                        (ngModelChange)="
+                                            hasPendingModifications = true
+                                        "
+                                    />
+                                </mat-form-field>
+                            </ng-container>
+                            <ng-container *ngIf="newCustomer.isCompany">
+                                <mat-form-field
+                                    class="nxs-small-mat-input"
+                                    appearance="outline"
+                                >
+                                    <mat-label>{{
+                                        'Customer.CompanyName' | translate
+                                    }}</mat-label>
+                                    <input
+                                        required
+                                        [placeholder]="
+                                            'Customer.CompanyName' | translate
+                                        "
+                                        matInput
+                                        type="text"
+                                        [disabled]="loading"
+                                        [(ngModel)]="newCustomer.companyName"
+                                        (ngModelChange)="
+                                            hasPendingModifications = true
+                                        "
+                                    />
+                                </mat-form-field>
+                            </ng-container>
+                            <mat-form-field
+                                class="nxs-small-mat-input"
+                                appearance="outline"
+                            >
+                                <mat-label>{{
+                                    'Candidate.Email' | translate
+                                }}</mat-label>
+                                <input
+                                    [placeholder]="'JobOffer.Link' | translate"
+                                    matInput
+                                    type="text"
+                                    [disabled]="loading"
+                                    [(ngModel)]="newCustomer.email"
+                                    (ngModelChange)="
+                                        hasPendingModifications = true
+                                    "
+                                />
+                            </mat-form-field>
+                            <nxs-intl-tel-input
+                                [matLabel]="'Global.Phone' | translate"
+                                class="nxs-small-mat-input"
+                                name="phone"
+                                [(ngModel)]="newCustomer.phone"
+                                (ngModelChange)="hasPendingModifications = true"
+                                [ngModelOptions]="{ standalone: true }"
+                                [disabled]="loading"
+                                [required]="false"
+                            >
+                            </nxs-intl-tel-input>
+                            <mat-form-field
+                                class="nxs-small-mat-input"
+                                appearance="outline"
+                            >
+                                <mat-label>{{
+                                    'Customer.DateOfContact' | translate
+                                }}</mat-label>
+                                <input
+                                    matInput
+                                    [(ngModel)]="newCustomer.dateOfContact"
+                                    [matDatepicker]="pickerSelected"
+                                    [disabled]="loading"
+                                    [max]="today"
+                                    (ngModelChange)="
+                                        hasPendingModifications = true
+                                    "
+                                />
+                                <mat-datepicker-toggle
+                                    matSuffix
+                                    [for]="pickerSelected"
+                                ></mat-datepicker-toggle>
+                                <mat-datepicker
+                                    #pickerSelected
+                                ></mat-datepicker>
+                            </mat-form-field>
+                            <div class="d-flex justify-content-between mt-2">
+                                <button
+                                    mat-flat-button
+                                    color="warning"
+                                    (click)="createCustomerMode = false"
+                                >
+                                    {{ 'Global.Cancel' | translate }}
+                                </button>
+                                <button
+                                    mat-flat-button
+                                    color="primary"
+                                    (click)="saveCustomer()"
+                                >
+                                    {{ 'JobOffer.SaveNewCustomer' | translate }}
+                                </button>
+                            </div>
+                        </ng-container>
+                    </ng-container>
+                    <ng-container *ngIf="!editModes.customer">
+                        <div class="edit-page-block-item">
+                            <div
+                                class="d-flex align-items-center justify-content-between"
+                                *ngIf="entity.customer"
+                            >
+                                <div class="d-flex align-items-center">
+                                    <div class="avatar avatar-sm">
+                                        <span class="avatar-content">{{
+                                            displayInitial(entity.customer)
+                                                | uppercase
+                                        }}</span>
+                                    </div>
+                                    <p
+                                        class="ml-2"
+                                        *ngIf="entity.customer?.isPrivatePerson"
+                                    >
+                                        {{
+                                            entity.customer?.firstName
+                                                | titlecase
+                                        }}
+                                        {{
+                                            entity.customer?.lastName
+                                                | uppercase
+                                        }}
+                                    </p>
+                                    <p
+                                        class="ml-2"
+                                        *ngIf="entity.customer?.isCompany"
+                                    >
+                                        {{
+                                            entity.customer?.companyName
+                                                | uppercase
+                                        }}
+                                    </p>
+                                </div>
+                                <div>
+                                    <button
+                                        mat-flat-button
+                                        color="primary"
+                                        (click)="gotToCustomerInfos()"
+                                    >
+                                        {{ 'Global.CustomerSheet' | translate }}
+                                    </button>
+                                </div>
+                            </div>
+                            <ng-container
+                                *ngIf="
+                                    !entity.customer?.firstName &&
+                                    !entity.customer?.lastName &&
+                                    !entity.customer?.companyName
+                                "
+                            >
+                                <p class="title">
+                                    {{ 'Customer.CustomerLinked' | translate }}
+                                </p>
+                                <p>{{ 'Global.NotInformed' | translate }}</p>
+                            </ng-container>
+                        </div>
+                    </ng-container>
+                </div>
+                <div
+                    class="edit-page-block mt-3"
+                    [class.selected]="editModes.linkedCandidate"
+                >
+                    <h2>{{ 'JobOffer.LinkedCandidate' | translate }}</h2>
+                    <hr />
+                    <div
+                        *ngIf="linkedCandidateLoading"
+                        class="loading-container"
+                    >
+                        <mat-spinner
+                            diameter="30"
+                            strokeWidth="3"
+                        ></mat-spinner>
+                        <span class="loading-text">{{
+                            'Global.Loading' | translate
+                        }}</span>
+                    </div>
+
+                    <ng-container *ngIf="!linkedCandidateLoading">
+                        <ng-container *ngIf="linkedCandidate">
+                            <div class="edit-page-block-item">
+                                <div
+                                    class="d-flex align-items-center justify-content-between"
+                                    *ngIf="
+                                        linkedCandidate?.firstName &&
+                                        linkedCandidate?.lastName
+                                    "
+                                >
+                                    <div class="d-flex align-items-center">
+                                        <div
+                                            class="consultant-picture"
+                                            [style.backgroundImage]="
+                                                'url(' +
+                                                ImageHelpers.getUserPicture(
+                                                    linkedCandidate
+                                                ) +
+                                                ')'
+                                            "
+                                        ></div>
+                                        <p class="m-0">
+                                            {{
+                                                linkedCandidate?.firstName
+                                                    | titlecase
+                                            }}
+                                            {{
+                                                linkedCandidate?.lastName
+                                                    | uppercase
+                                            }}
+                                        </p>
+                                    </div>
+
+                                    <button
+                                        mat-raised-button
+                                        color="primary"
+                                        [routerLink]="
+                                            '/' +
+                                            RoutesList.CandidatesList +
+                                            '/' +
+                                            linkedCandidate.id
+                                        "
+                                        class="btn-normal"
+                                    >
+                                        <mat-icon>person</mat-icon>
+                                        {{
+                                            'JobOffer.ViewCandidateProfile'
+                                                | translate
+                                        }}
+                                    </button>
+                                </div>
+                            </div>
+                        </ng-container>
+
+                        <ng-container *ngIf="!linkedCandidate">
+                            <div class="edit-page-block-item">
+                                <p class="text-muted">
+                                    {{
+                                        'JobOffer.NoLinkedCandidate' | translate
+                                    }}
+                                </p>
+                            </div>
+                        </ng-container>
+                    </ng-container>
+                </div>
+                <div
+                    class="edit-page-block mt-3"
+                    [class.selected]="editModes.candidateTimeline"
+                >
+                    <h2>{{ 'JobOffer.CandidateTimeline' | translate }}</h2>
+                    <hr />
+
+                    <!-- Loading state -->
+                    <div
+                        class="loading-container"
+                        *ngIf="candidateTimelineLoading"
+                    >
+                        <mat-spinner
+                            diameter="40"
+                            strokeWidth="4"
+                        ></mat-spinner>
+                        <p class="loading-text">
+                            {{ 'Global.Loading' | translate }}
+                        </p>
+                    </div>
+
+                    <!-- Timeline content -->
+                    <ng-container *ngIf="!candidateTimelineLoading">
+                        <div class="candidate-timeline">
+                            <div
+                                class="timeline-item"
+                                *ngFor="
+                                    let candidate of candidateTimeline;
+                                    let i = index
+                                "
+                            >
+                                <div
+                                    class="timeline-marker"
+                                    [ngClass]="{
+                                        'timeline-marker-linked':
+                                            candidate.action === 'LINKED',
+                                        'timeline-marker-unlinked':
+                                            candidate.action === 'UNLINKED'
+                                    }"
+                                ></div>
+                                <div class="timeline-content">
+                                    <div
+                                        class="candidate-info"
+                                        [ngClass]="{
+                                            'candidate-info-linked':
+                                                candidate.action === 'LINKED',
+                                            'candidate-info-unlinked':
+                                                candidate.action === 'UNLINKED'
+                                        }"
+                                    >
+                                        <div class="d-flex align-items-center">
+                                            <mat-icon
+                                                class="mr-2 timeline-icon"
+                                                [ngClass]="{
+                                                    'timeline-icon-linked':
+                                                        candidate.action ===
+                                                        'LINKED',
+                                                    'timeline-icon-unlinked':
+                                                        candidate.action ===
+                                                        'UNLINKED'
+                                                }"
+                                            >
+                                                {{
+                                                    candidate.action ===
+                                                    'LINKED'
+                                                        ? 'person_add'
+                                                        : 'person_remove'
+                                                }}
+                                            </mat-icon>
+                                            <span class="candidate-name">
+                                                {{
+                                                    candidate.firstName
+                                                        | titlecase
+                                                }}
+                                                {{
+                                                    candidate.lastName
+                                                        | uppercase
+                                                }}
+                                            </span>
+                                        </div>
+                                        <div class="d-flex align-items-center">
+                                            <span class="candidate-action mr-2">
+                                                {{
+                                                    candidate.action ===
+                                                    'LINKED'
+                                                        ? ('JobOffer.CandidateLinked'
+                                                          | translate)
+                                                        : ('JobOffer.CandidateUnlinked'
+                                                          | translate)
+                                                }}
+                                            </span>
+                                            <span class="candidate-date">
+                                                {{
+                                                    candidate.linkedDate
+                                                        | date
+                                                            : 'dd/MM/yyyy HH:mm'
+                                                }}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div
+                                class="no-candidates"
+                                *ngIf="
+                                    !candidateTimeline ||
+                                    candidateTimeline.length === 0
+                                "
+                            >
+                                <p class="text-muted">
+                                    {{ 'Global.NotInformed' | translate }}
+                                </p>
+                            </div>
+                        </div>
+                    </ng-container>
+                </div>
+            </div>
+            <div class="column-container">
+                <div
+                    class="edit-page-block"
+                    [class.selected]="editModes.descriptions"
+                >
+                    <ng-container *ngIf="!isNewJobOffer">
+                        <ng-container
+                            *ngTemplateOutlet="
+                                editBtn;
+                                context: { editModeKey: 'descriptions' }
+                            "
+                        >
+                        </ng-container>
+                    </ng-container>
+                    <h2>{{ 'JobOffer.Description' | translate }}</h2>
+                    <hr />
+                    <ng-container *ngIf="editModes.descriptions">
+                        <mat-form-field
+                            appearance="outline"
+                            class="nxs-small-mat-input"
+                        >
+                            <mat-label>{{
+                                'JobOffer.JobDescription' | translate
+                            }}</mat-label>
+                            <textarea
+                                required
+                                [placeholder]="
+                                    'JobOffer.JobDescription' | translate
+                                "
+                                [disabled]="loading"
+                                matInput
+                                cols="5 "
+                                rows="5 "
+                                [(ngModel)]="entity.jobDescription"
+                                (ngModelChange)="hasPendingModifications = true"
+                            ></textarea>
+                        </mat-form-field>
+                        <mat-form-field
+                            appearance="outline"
+                            class="nxs-small-mat-input"
+                        >
+                            <mat-label>{{
+                                'JobOffer.Task' | translate
+                            }}</mat-label>
+                            <textarea
+                                [placeholder]="'JobOffer.Task' | translate"
+                                [disabled]="loading"
+                                matInput
+                                cols="5 "
+                                rows="5 "
+                                [(ngModel)]="
+                                    entity.taskResponsabilitiesDescription
+                                "
+                                (ngModelChange)="hasPendingModifications = true"
+                            ></textarea>
+                        </mat-form-field>
+                        <mat-form-field
+                            appearance="outline"
+                            class="nxs-small-mat-input"
+                        >
+                            <mat-label>{{
+                                'JobOffer.Profile' | translate
+                            }}</mat-label>
+                            <textarea
+                                [placeholder]="'JobOffer.Profile' | translate"
+                                [disabled]="loading"
+                                matInput
+                                cols="5 "
+                                rows="5 "
+                                [(ngModel)]="entity.candidateProfileDescription"
+                                (ngModelChange)="hasPendingModifications = true"
+                            ></textarea>
+                        </mat-form-field>
+
+                        <mat-form-field
+                            appearance="outline"
+                            class="nxs-small-mat-input"
+                        >
+                            <mat-label>{{
+                                'JobOffer.Conditions' | translate
+                            }}</mat-label>
+                            <textarea
+                                [placeholder]="
+                                    'JobOffer.Conditions' | translate
+                                "
+                                [disabled]="loading"
+                                matInput
+                                cols="5 "
+                                rows="5 "
+                                [(ngModel)]="entity.conditionsDescription"
+                                (ngModelChange)="hasPendingModifications = true"
+                            ></textarea>
+                        </mat-form-field>
+
+                        <mat-form-field
+                            class="nxs-small-mat-input"
+                            appearance="outline"
+                        >
+                            <mat-label>{{
+                                'Candidate.ContractType' | translate
+                            }}</mat-label>
+                            <mat-select
+                                required
+                                [(ngModel)]="entity.contractTypeId"
+                                (ngModelChange)="hasPendingModifications = true"
+                            >
+                                <mat-option
+                                    *ngFor="let contract of contractTypeList"
+                                    [value]="contract.id"
+                                >
+                                    {{ contract.label }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field
+                            class="nxs-small-mat-input"
+                            appearance="outline"
+                        >
+                            <mat-label>{{
+                                'JobOffer.Salary' | translate
+                            }}</mat-label>
+                            <input
+                                [placeholder]="'JobOffer.Salary' | translate"
+                                matInput
+                                type="text "
+                                [disabled]="loading"
+                                [(ngModel)]="entity.salary"
+                                (ngModelChange)="hasPendingModifications = true"
+                            />
+                        </mat-form-field>
+                    </ng-container>
+                    <ng-container *ngIf="!editModes.descriptions">
+                        <div class="edit-page-block-item">
+                            <p class="title">
+                                {{ 'JobOffer.JobDescription' | translate }}
+                            </p>
+                            <p
+                                [innerHtml]="
+                                    replaceLineBreakWithBr(
+                                        entity.jobDescription
+                                    )
+                                "
+                            ></p>
+                            <p *ngIf="!entity.jobDescription?.length">
+                                {{ 'Global.NotInformed' | translate }}
+                            </p>
+                        </div>
+                        <div class="edit-page-block-item">
+                            <p class="title">
+                                {{ 'JobOffer.Task' | translate }}
+                            </p>
+                            <p
+                                [innerHtml]="
+                                    replaceLineBreakWithBr(
+                                        entity.taskResponsabilitiesDescription
+                                    )
+                                "
+                            ></p>
+                            <p
+                                *ngIf="
+                                    !entity.taskResponsabilitiesDescription
+                                        ?.length
+                                "
+                            >
+                                {{ 'Global.NotInformed' | translate }}
+                            </p>
+                        </div>
+                        <div class="edit-page-block-item">
+                            <p class="title">
+                                {{ 'JobOffer.Profile' | translate }}
+                            </p>
+                            <p
+                                [innerHtml]="
+                                    replaceLineBreakWithBr(
+                                        entity.candidateProfileDescription
+                                    )
+                                "
+                            ></p>
+                            <p
+                                *ngIf="
+                                    !entity.candidateProfileDescription?.length
+                                "
+                            >
+                                {{ 'Global.NotInformed' | translate }}
+                            </p>
+                        </div>
+                        <div class="edit-page-block-item">
+                            <p class="title">
+                                {{ 'JobOffer.Conditions' | translate }}
+                            </p>
+                            <p
+                                [innerHtml]="
+                                    replaceLineBreakWithBr(
+                                        entity.conditionsDescription
+                                    )
+                                "
+                            ></p>
+                            <p *ngIf="!entity.conditionsDescription?.length">
+                                {{ 'Global.NotInformed' | translate }}
+                            </p>
+                        </div>
+                        <div class="edit-page-block-item">
+                            <p class="title">
+                                {{ 'Candidate.ContractType' | translate }}
+                            </p>
+                            <p>
+                                {{
+                                    entity.contractType?.label ||
+                                        ('Global.NotInformed' | translate)
+                                }}
+                            </p>
+                        </div>
+                        <div class="edit-page-block-item">
+                            <p class="title">
+                                {{ 'JobOffer.Salary' | translate }}
+                            </p>
+                            <p>
+                                {{
+                                    entity.salary ||
+                                        ('Global.NotInformed' | translate)
+                                }}
+                            </p>
+                        </div>
+                    </ng-container>
+                </div>
+            </div>
+        </div>
+    </div>
+</app-drawer-main-container>
+
+<ng-template #editBtn let-editModeKey="editModeKey ">
+    <button
+        class="edit-btn"
+        mat-raised-button
+        mat-icon-button
+        color="primary"
+        (click)="onEditClick(editModeKey)"
+        [matTooltip]="
+            $any(editModes)[editModeKey]
+                ? ('Global.Save' | translate)
+                : ('Global.Edit' | translate)
+        "
+        [disabled]="loading"
+    >
+        <mat-icon *ngIf="!$any(editModes)[editModeKey]">edit</mat-icon>
+        <mat-icon *ngIf="$any(editModes)[editModeKey]">done</mat-icon>
+    </button>
+</ng-template>

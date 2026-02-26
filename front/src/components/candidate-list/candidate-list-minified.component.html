@@ -1,0 +1,354 @@
+<div class="nxs-list-page-content">
+    <div class="loading-wrapper" [style.display]="loading ? '' : 'none'">
+        <mat-spinner diameter="50" strokeWidth="6"></mat-spinner>
+    </div>
+    <div
+        *ngFor="let candidate of pCandidates"
+        class="nxs-list-item-wrapper-container"
+        [style.backgroundColor]="
+            candidate.candidateStatus?.code === CandidateStatus.NotSelected
+                ? '#f6f6f6'
+                : ''
+        "
+    >
+        <a
+            [routerLink]="'/' + RoutesList.CandidatesList + '/' + candidate.id"
+            routerLinkActive="router-link-active"
+        >
+            <!-- Infos -->
+            <div
+                class="candidate-wrapper-item d-flex align-items-center candidate-info-item"
+            >
+                <div
+                    class="category-dot"
+                    [style.backgroundColor]="getCategoryColor(candidate)"
+                    [matTooltip]="getCategoryLabel(candidate) | translate"
+                    matTooltipPosition="above"
+                ></div>
+                <div
+                    class="profile-picture"
+                    [style.backgroundImage]="
+                        'url(' +
+                        ImagesHelper.getCandidatePicture(candidate) +
+                        ')'
+                    "
+                ></div>
+                <div class="candidate-info">
+                    <span
+                        [innerHTML]="
+                            highlightSearchTerm(
+                                candidate.lastName | uppercase,
+                                searchTerm
+                            )
+                        "
+                    ></span>
+                    <span
+                        [innerHTML]="
+                            highlightSearchTerm(candidate.firstName, searchTerm)
+                        "
+                    ></span>
+                    <br />
+                    <span
+                        *ngIf="candidate.email"
+                        class="mt-5px"
+                        [innerHTML]="
+                            highlightSearchTerm(candidate.email, searchTerm)
+                        "
+                    >
+                    </span>
+                    <span class="mt-5px" *ngIf="candidate.birthDate">
+                        <br />
+                        {{ getAge(candidate.birthDate) }}
+                        {{ 'Candidate.Years' | translate }}
+                    </span>
+                    <ng-container *ngIf="candidate.inCouple">
+                        <br />
+                        <hr
+                            style="
+                                margin: 3px 0;
+                                height: 1px;
+                                border: none;
+                                background: #071e30;
+                            "
+                        />
+                        <span
+                            [innerHTML]="
+                                highlightSearchTerm(
+                                    candidate.partnerLastName | uppercase,
+                                    searchTerm
+                                )
+                            "
+                        ></span>
+                        <span
+                            [innerHTML]="
+                                highlightSearchTerm(
+                                    candidate.partnerFirstName || '',
+                                    searchTerm
+                                )
+                            "
+                        ></span>
+                        <ng-container *ngIf="candidate.partnerBirthDate">
+                            <br />
+                            {{ getAge(candidate.partnerBirthDate) }}
+                            {{ 'Candidate.Years' | translate }}
+                        </ng-container>
+                    </ng-container>
+                </div>
+            </div>
+            <!-- End Infos -->
+
+            <div class="vertical-separator"></div>
+
+            <!-- Jobs -->
+            <div
+                class="candidate-wrapper-item d-flex align-items-center candidate-job-item"
+            >
+                <mat-icon
+                    class="grey-icon"
+                    [matTooltip]="'Tooltip.Job' | translate"
+                    >work_outline</mat-icon
+                >
+                <div>
+                    <ng-container *ngIf="candidate.candidateCurrentJobs">
+                        <ng-container
+                            *ngFor="
+                                let currentJob of candidate.candidateCurrentJobs;
+                                let index = index
+                            "
+                        >
+                            <ng-container *ngIf="index < 3">
+                                {{
+                                    'label'
+                                        | dbTranslate : currentJob.currentJob
+                                }}
+                                <br />
+                            </ng-container>
+                            <ng-container *ngIf="index === 3">
+                                ... <br />
+                            </ng-container>
+                        </ng-container>
+                    </ng-container>
+                    <span *ngIf="!candidate.candidateCurrentJobs?.length">
+                        {{ 'Candidate.NoTradesListed' | translate }}
+                    </span>
+                </div>
+            </div>
+            <!-- End Jobs -->
+
+            <div class="vertical-separator"></div>
+
+            <!-- Location -->
+            <div
+                class="candidate-wrapper-item d-flex align-items-center candidate-location-item"
+            >
+                <mat-icon
+                    class="grey-icon material-icons-outlined"
+                    [matTooltip]="'Tooltip.Places' | translate"
+                >
+                    location_on</mat-icon
+                >
+                <div>
+                    {{ candidate?.addresses[0]?.city | titlecase
+                    }}{{
+                        candidate?.addresses[0]?.city &&
+                        (candidate?.addresses[0]?.department ||
+                            candidate?.addresses[0]?.country)
+                            ? ','
+                            : ''
+                    }}
+                    {{
+                        candidate?.addresses[0]?.department
+                            ? (candidate.addresses[0].department | titlecase)
+                            : ''
+                    }}{{
+                        candidate?.addresses[0]?.department &&
+                        candidate?.addresses[0]?.country
+                            ? ','
+                            : ''
+                    }}
+                    {{
+                        candidate?.addresses[0]?.country
+                            ? (RefData.getCountryLabel(
+                                  candidate.addresses[0].country
+                              ) | titlecase)
+                            : ''
+                    }}
+                </div>
+            </div>
+            <!-- End Location -->
+
+            <div class="vertical-separator"></div>
+
+            <!-- Availability -->
+            <!-- <div
+                class="candidate-wrapper-item d-flex align-items-center short-item"
+            >
+                <mat-icon
+                    *ngIf="candidate.isAvailable"
+                    class="green-icon"
+                    fontSet="material-icons-outlined"
+                    [matTooltip]="'Tooltip.Availability' | translate"
+                    >account_circle</mat-icon
+                >
+                <mat-icon
+                    *ngIf="!candidate.isAvailable"
+                    class="red-icon"
+                    [matTooltip]="'Tooltip.Availability' | translate"
+                >
+                    no_accounts</mat-icon
+                >
+                <div>
+                    <span *ngIf="candidate.isAvailable">{{
+                        'Candidate.AvailableStatut' | translate
+                    }}</span>
+                    <span *ngIf="!candidate.isAvailable">{{
+                        'Candidate.NotAvailableStatut' | translate
+                    }}</span>
+                </div>
+            </div> -->
+            <!-- End Availability -->
+
+            <!-- Notes -->
+            <!-- <div
+                class="candidate-wrapper-item d-flex align-items-center very-short-item"
+            >
+                <mat-icon
+                    [class]="
+                        candidate.note >= 1
+                            ? 'orange-star-icon'
+                            : 'grey-star-icon'
+                    "
+                    >star</mat-icon
+                >
+                <mat-icon
+                    [class]="
+                        candidate.note >= 2
+                            ? 'orange-star-icon'
+                            : 'grey-star-icon'
+                    "
+                    >star</mat-icon
+                >
+                <mat-icon
+                    [class]="
+                        candidate.note >= 3
+                            ? 'orange-star-icon'
+                            : 'grey-star-icon'
+                    "
+                    >star</mat-icon
+                >
+                <mat-icon
+                    [class]="
+                        candidate.note >= 4
+                            ? 'orange-star-icon'
+                            : 'grey-star-icon'
+                    "
+                    >star</mat-icon
+                >
+                <mat-icon
+                    [class]="
+                        candidate.note === 5
+                            ? 'orange-star-icon'
+                            : 'grey-star-icon'
+                    "
+                    >star</mat-icon
+                >
+            </div> -->
+            <!-- End Notes -->
+
+            <!-- Completion -->
+            <!-- <div class="candidate-wrapper-item d-flex align-items-center">
+                <ng-container
+                    *ngIf="candidate.manuallyCompleted; else autoComplete"
+                >
+                    <div class="d-flex align-items-center">
+                        <div class="completion-dot complete"></div>
+                        <span class="ml-1">{{
+                            'Global.Complete' | translate
+                        }}</span>
+                    </div>
+                </ng-container>
+                <ng-template #autoComplete>
+                    <div class="d-flex align-items-center">
+                        <div
+                            class="completion-dot"
+                            [class.complete]="
+                                candidate.candidateAdvancementPercent >= 100
+                            "
+                            [class.incomplete]="
+                                candidate.candidateAdvancementPercent < 100
+                            "
+                        ></div>
+                        <span class="ml-1">
+                            {{
+                                candidate.candidateAdvancementPercent >= 100
+                                    ? ('Global.Complete' | translate)
+                                    : ('Global.Incomplete' | translate)
+                            }}
+                        </span>
+                    </div>
+                </ng-template>
+            </div> -->
+            <!-- End Completion -->
+
+            <!-- Actions -->
+            <div class="actions">
+                <button
+                    mat-flat-button
+                    class="statut-btn"
+                    [ngClass]="{
+                        'statut-btn-blue':
+                            candidate.candidateStatus?.code ===
+                            CandidateStatus.Placed,
+                        'statut-btn-green':
+                            candidate.candidateStatus?.code ===
+                            CandidateStatus.Referenced,
+                        'statut-btn-red':
+                            candidate.candidateStatus?.code ===
+                            CandidateStatus.ToBeReferenced,
+                        'statut-btn-border':
+                            candidate.candidateStatus?.code ===
+                            CandidateStatus.BeingReferenced,
+                        'statut-btn-black':
+                            candidate.candidateStatus?.code ===
+                            CandidateStatus.NotSelected,
+                        'statut-btn-yellow':
+                            candidate.candidateStatus?.code ===
+                            CandidateStatus.InProcess
+                    }"
+                >
+                    {{ 'label' | dbTranslate : candidate.candidateStatus }}
+                </button>
+            </div>
+        </a>
+
+        <div>
+            <!-- <a
+                mat-icon-button
+                [disabled]="loading || !hadAnyResume(candidate)"
+                [matTooltip]="
+                    (!hadAnyResume(candidate)
+                        ? 'Candidate.NoCV'
+                        : 'Candidate.ShowCV'
+                    ) | translate
+                "
+                (click)="openMMiResume(candidate)"
+            >
+                <mat-icon>wysiwyg</mat-icon>
+            </a> -->
+        </div>
+
+        <div>
+            <a
+                mat-icon-button
+                [disabled]="loading || !candidate.noteItems?.length"
+                [matTooltip]="
+                    (!candidate.noteItems?.length ? '' : 'Show notes')
+                        | translate
+                "
+                (click)="showCandidateNotesDialog(candidate)"
+            >
+                <mat-icon>note</mat-icon>
+            </a>
+        </div>
+    </div>
+</div>

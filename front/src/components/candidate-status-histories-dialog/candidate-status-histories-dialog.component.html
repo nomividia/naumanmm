@@ -1,0 +1,43 @@
+<div class="dialog-main-container">
+    <h1 mat-dialog-title>
+        {{ 'Candidate.ModificationStatusHistoryCandidate' | translate }}
+    </h1>
+    <button mat-icon-button class="close-btn" mat-dialog-close>
+        <mat-icon fontSet="material-icons-outlined">close</mat-icon>
+    </button>
+
+    <div
+        mat-dialog-content
+        style="min-height: 200px; max-height: 60vh; overflow: auto"
+    >
+        <div class="loading-wrapper" [style.display]="loading ? '' : 'none'">
+            <mat-spinner diameter="50" strokeWidth="6"></mat-spinner>
+        </div>
+
+        <table *ngIf="histories?.length; else noHistories">
+            <tr>
+                <th>{{ 'Candidate.EditedBy' | translate }}</th>
+                <th>{{ 'Candidate.Date' | translate }}</th>
+                <th>{{ 'Candidate.ValueBefore' | translate }}</th>
+                <th>{{ 'Candidate.ValueAfter' | translate }}</th>
+            </tr>
+            <tr *ngFor="let history of histories">
+                <td>{{ history.user.userName }}</td>
+                <td>{{ history.date | date : 'dd/MM/yyyy hh:mm' }}</td>
+                <td>
+                    {{
+                        'label' | dbTranslate : getAppValue(history.valueBefore)
+                    }}
+                </td>
+                <td>
+                    {{
+                        'label' | dbTranslate : getAppValue(history.valueAfter)
+                    }}
+                </td>
+            </tr>
+        </table>
+        <ng-template #noHistories>
+            <div style="text-align: center">Aucune modification</div>
+        </ng-template>
+    </div>
+</div>

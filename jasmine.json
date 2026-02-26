@@ -1,0 +1,12 @@
+{
+  "spec_dir": "back",
+  "helpers": [
+    "../jasmine-helpers/*.js"
+  ],
+  "spec_files": [
+    "**/*[sS]pec.js",
+    "**/*[sS]pec.ts"
+  ],
+  "stopSpecOnExpectationFailure": false,
+  "random": true
+}

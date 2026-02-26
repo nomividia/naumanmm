@@ -1,0 +1,50 @@
+@import '../../variables';
+
+app-login-form {
+    padding: 15vh 0;
+    display: block;
+    height: 100%;
+
+    div.login-dialog-wrapper {
+        background-color: #ffffff;
+        text-align: center;
+        min-width: 300px;
+        max-width: 550px;
+        margin: auto;
+        // padding: 10px 22px;
+        border-radius: 16px;
+        box-shadow: 0 0 25px 10px #50505094;
+
+        .login-form {
+            .mat-form-field {
+                width: 100%;
+            }
+
+            > div {
+                text-align: center;
+            }
+        }
+
+        .buttons-wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .forgot-password-wrapper {
+            margin: 26px auto;
+        }
+    }
+
+    .header-background {
+        background-image: url('/assets/logos/logo-new.png');
+        height: 200px;
+        width: 100%;
+        background-repeat: no-repeat;
+        background-size: auto;
+        background-position: center;
+        background-color: $mmi-blue;
+        border-top-left-radius: 16px;
+        border-top-right-radius: 16px;
+    }
+}

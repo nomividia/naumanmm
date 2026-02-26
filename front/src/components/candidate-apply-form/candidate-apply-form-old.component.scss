@@ -1,0 +1,217 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap');
+@import '../../variables.scss';
+
+app-candidate-apply,
+app-candidate-ref-apply-form {
+    .intro-btn {
+        border: 1px solid #c29b40;
+        background-color: #002349;
+        margin: 1em;
+        color: #fff;
+        text-decoration: none;
+        font-family: 'Work Sans', Sans-serif;
+        font-size: 16px;
+        font-weight: 400;
+        text-transform: uppercase;
+        padding: 15px 60px;
+        text-align: center;
+    }
+    .intro-btn:hover {
+        color: #666;
+    }
+    .intro-btn.white {
+        background-color: #fff !important;
+        color: #002349;
+        padding: 15px 60px;
+    }
+    .intro-btn.white:hover {
+        background-color: #002349 !important;
+        color: #fff !important ;
+    }
+
+    .intro-btn.blue {
+        background-color: #002349 !important;
+        color: #fff;
+    }
+    .intro-btn.blue:hover {
+        background-color: #fff !important;
+        color: #002349;
+    }
+
+    .mat-raised-button {
+        white-space: normal;
+    }
+    .mat-checkbox-layout {
+        white-space: normal;
+    }
+    a {
+        color: $mmi-orange;
+    }
+    a:visited {
+        color: $mmi-orange;
+    }
+    span {
+        color: $mmi-orange;
+    }
+    button:disabled {
+        background-color: #8b8b8b;
+        color: black;
+    }
+    .btn-send-form {
+        background-color: $mmi-orange;
+        color: white;
+        height: 40px;
+        width: 115px;
+        border-radius: 5px;
+        font-size: 1rem;
+        border: none;
+    }
+    .container {
+        width: 100%;
+        padding-right: var(--bs-gutter-x, 0.75rem);
+        padding-left: var(--bs-gutter-x, 0.75rem);
+        margin-right: auto;
+        margin-left: auto;
+    }
+    @media (min-width: 576px) {
+        .container,
+        .container-sm {
+            max-width: 540px;
+        }
+    }
+    @media (min-width: 768px) {
+        .container,
+        .container-md,
+        .container-sm {
+            max-width: 720px;
+        }
+    }
+    @media (min-width: 992px) {
+        .container,
+        .container-lg,
+        .container-md,
+        .container-sm {
+            max-width: 960px;
+        }
+    }
+    @media (min-width: 1200px) {
+        .container,
+        .container-lg,
+        .container-md,
+        .container-sm,
+        .container-xl {
+            max-width: 1040px;
+        }
+    }
+    @media (min-width: 1400px) {
+        .container,
+        .container-lg,
+        .container-md,
+        .container-sm,
+        .container-xl,
+        .container-xxl {
+            max-width: 1040px;
+        }
+    }
+    .row {
+        --bs-gutter-x: 1.5rem;
+        --bs-gutter-y: 0;
+        display: flex;
+        flex-wrap: wrap;
+        margin-top: calc(var(--bs-gutter-y) * -1);
+        margin-right: calc(var(--bs-gutter-x) / -2);
+        margin-left: calc(var(--bs-gutter-x) / -2);
+    }
+    .row > * {
+        flex-shrink: 0;
+        width: 100%;
+        max-width: 100%;
+        padding-right: calc(var(--bs-gutter-x) / 2);
+        padding-left: calc(var(--bs-gutter-x) / 2);
+        margin-top: var(--bs-gutter-y);
+    }
+    .col {
+        flex: 1 0 0%;
+    }
+    .col-auto {
+        flex: 0 0 auto;
+        max-width: 680px;
+        margin: auto;
+    }
+    .formSend {
+        text-align: center;
+        margin: 50px auto;
+
+        b {
+            font-size: 30px;
+        }
+    }
+    .d-flex-row {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+    }
+    .mat-form-field-flex {
+        width: 320px;
+    }
+    app-departments-autocomplete {
+        width: 320px;
+        nextalys-app-autocomplete {
+            width: 100%;
+        }
+    }
+
+    app-departments-autocomplete .mat-form-field-flex {
+        width: 100%;
+    }
+    #text-area .mat-form-field-flex {
+        width: 100% !important;
+    }
+    b {
+        font-weight: 500;
+    }
+    nxs-file-upload .file-upload-wrapper .flex-wrapper-center-horizontal {
+        justify-content: unset;
+    }
+    .mt-10 {
+        margin-top: 10px;
+    }
+    .mb-20 {
+        margin-bottom: 20px;
+    }
+    .max-width {
+        max-width: 680px;
+        margin: auto;
+    }
+    .mat-chip.mat-standard-chip.mat-chip-selected.mat-accent {
+        font-size: 13px;
+        margin: 10px 5px;
+    }
+    .mat-standard-chip {
+        min-height: 26px;
+    }
+
+    nxs-file-upload div.nxs-progress-bar-content {
+        background-color: $mmi-orange;
+    }
+}
+
+html,
+body {
+    background-color: transparent;
+}
+
+body {
+    height: auto;
+}
+
+*,
+span {
+    font-family: 'Playfair Display', serif;
+}
+
+div.grecaptcha-badge {
+    display: none !important;
+}

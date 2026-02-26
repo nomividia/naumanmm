@@ -1,0 +1,156 @@
+
+[2026-02-16T12:51:33] - [error] => 
+    loadTranslationFile ERROR
+    {
+  "stack": "Error: Unable to get translation file for lang fr - file : /Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/browser/assets/i18n/fr.json\n    at Function.<anonymous> (/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/services/translation.service.ts:56:23)\n    at Generator.next (<anonymous>)\n    at fulfilled (/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/services/translation.service.ts:5:58)",
+  "message": "Unable to get translation file for lang fr - file : /Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/browser/assets/i18n/fr.json"
+}
+[2026-02-16T12:51:34] - [error] => 
+    loadTranslationFile ERROR
+    {
+  "stack": "Error: Unable to get translation file for lang en - file : /Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/browser/assets/i18n/en.json\n    at Function.<anonymous> (/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/services/translation.service.ts:56:23)\n    at Generator.next (<anonymous>)\n    at fulfilled (/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/services/translation.service.ts:5:58)",
+  "message": "Unable to get translation file for lang en - file : /Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/browser/assets/i18n/en.json"
+}
+[2026-02-16T12:57:51] - [error] => 
+    loadTranslationFile ERROR
+    {
+  "stack": "Error: Unable to get translation file for lang fr - file : /Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/browser/assets/i18n/fr.json\n    at Function.<anonymous> (/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/services/translation.service.ts:56:23)\n    at Generator.next (<anonymous>)\n    at fulfilled (/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/services/translation.service.ts:5:58)",
+  "message": "Unable to get translation file for lang fr - file : /Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/browser/assets/i18n/fr.json"
+}
+[2026-02-16T12:57:51] - [error] => 
+    loadTranslationFile ERROR
+    {
+  "stack": "Error: Unable to get translation file for lang en - file : /Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/browser/assets/i18n/en.json\n    at Function.<anonymous> (/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/services/translation.service.ts:56:23)\n    at Generator.next (<anonymous>)\n    at fulfilled (/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/services/translation.service.ts:5:58)",
+  "message": "Unable to get translation file for lang en - file : /Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/browser/assets/i18n/en.json"
+}
+[2026-02-16T13:31:26] - [error] => 
+    loadTranslationFile ERROR
+    {
+  "stack": "Error: Unable to get translation file for lang fr - file : /Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/browser/assets/i18n/fr.json\n    at Function.<anonymous> (/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/services/translation.service.ts:56:23)\n    at Generator.next (<anonymous>)\n    at fulfilled (/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/services/translation.service.ts:5:58)",
+  "message": "Unable to get translation file for lang fr - file : /Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/browser/assets/i18n/fr.json"
+}
+[2026-02-16T13:31:26] - [error] => 
+    loadTranslationFile ERROR
+    {
+  "stack": "Error: Unable to get translation file for lang en - file : /Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/browser/assets/i18n/en.json\n    at Function.<anonymous> (/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/services/translation.service.ts:56:23)\n    at Generator.next (<anonymous>)\n    at fulfilled (/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/services/translation.service.ts:5:58)",
+  "message": "Unable to get translation file for lang en - file : /Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/browser/assets/i18n/en.json"
+}
+[2026-02-16T14:29:23] - [error] => 
+    Guid = 1287309e-9790-6720-9568-fd8de7fb6d86
+    Unknown column 'startDate' in 'field list'
+---Stack---
+QueryFailedError: Unknown column 'startDate' in 'field list'
+    at QueryFailedError.TypeORMError [as constructor] (/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/src/error/TypeORMError.ts:7:9)
+    at new QueryFailedError (/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/src/error/QueryFailedError.ts:9:9)
+    at Query.onResult (/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/src/driver/mysql/MysqlQueryRunner.ts:196:37)
+    at Query.execute (/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/node_modules/mysql2/lib/commands/command.js:36:14)
+    at PoolConnection.handlePacket (/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/node_modules/mysql2/lib/connection.js:456:32)
+    at PacketParser.onPacket (/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/node_modules/mysql2/lib/connection.js:85:12)
+    at PacketParser.executeStart (/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/node_modules/mysql2/lib/packet_parser.js:75:16)
+    at Socket.<anonymous> (/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/node_modules/mysql2/lib/connection.js:92:25)
+    at Socket.emit (node:events:513:28)
+    at addChunk (node:internal/streams/readable:324:12)
+    at readableAddChunk (node:internal/streams/readable:297:9)
+    at Socket.Readable.push (node:internal/streams/readable:234:10)
+    at TCP.onStreamRead (node:internal/stream_base_commons:190:23)
+---End of Stack---
+ - URL : /api/candidate-job-offer-history
+[2026-02-16T14:41:31] - [error] => 
+    Guid = e5fd36d0-f422-18e7-1122-901340b5dcfd
+    Unknown column 'startDate' in 'field list'
+---Stack---
+QueryFailedError: Unknown column 'startDate' in 'field list'
+    at QueryFailedError.TypeORMError [as constructor] (/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/src/error/TypeORMError.ts:7:9)
+    at new QueryFailedError (/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/src/error/QueryFailedError.ts:9:9)
+    at Query.onResult (/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/src/driver/mysql/MysqlQueryRunner.ts:196:37)
+    at Query.execute (/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/node_modules/mysql2/lib/commands/command.js:36:14)
+    at PoolConnection.handlePacket (/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/node_modules/mysql2/lib/connection.js:456:32)
+    at PacketParser.onPacket (/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/node_modules/mysql2/lib/connection.js:85:12)
+    at PacketParser.executeStart (/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/node_modules/mysql2/lib/packet_parser.js:75:16)
+    at Socket.<anonymous> (/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/node_modules/mysql2/lib/connection.js:92:25)
+    at Socket.emit (node:events:513:28)
+    at addChunk (node:internal/streams/readable:324:12)
+    at readableAddChunk (node:internal/streams/readable:297:9)
+    at Socket.Readable.push (node:internal/streams/readable:234:10)
+    at TCP.onStreamRead (node:internal/stream_base_commons:190:23)
+---End of Stack---
+ - URL : /api/candidate-job-offer-history
+[2026-02-16T14:41:32] - [error] => 
+    Unable to send mail
+    {
+  "to": [
+    "dkamanda55@gmail.com"
+  ],
+  "from": "contact@morganmallet.agency",
+  "subject": "Your opinion matters to us!",
+  "templateName": "mail_placed_candidate_review.mjml"
+}
+[2026-02-16T14:41:32] - [error] => 
+    Failed to send review request email to candidate cc6bed95-96cb-43d7-977a-f7839ea7afdf: Unknown mail sending error
+ - Technical message : Failed to send review request email to candidate cc6bed95-96cb-43d7-977a-f7839ea7afdf: Unknown mail sending error
+[2026-02-16T14:43:34] - [error] => 
+    Unable to send mail
+    {
+  "to": [
+    "dkamanda55@gmail.com"
+  ],
+  "from": "contact@morganmallet.agency",
+  "subject": "Morgan and Mallet - 🇫🇷 Création de votre compte utilisateur / 🇬🇧 Your account",
+  "templateName": "mail_auto"
+}
+[2026-02-16T14:43:34] - [error] => 
+    Une erreur s'est produite lors de l'envoi du mail
+ - Technical message : Une erreur s'est produite lors de l'envoi du mail
+[2026-02-16T14:43:45] - [error] => 
+    Guid = a54d07bc-a1c7-2070-b13a-5c5983fd8366
+    Unknown column 'startDate' in 'field list'
+---Stack---
+QueryFailedError: Unknown column 'startDate' in 'field list'
+    at QueryFailedError.TypeORMError [as constructor] (/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/src/error/TypeORMError.ts:7:9)
+    at new QueryFailedError (/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/src/error/QueryFailedError.ts:9:9)
+    at Query.onResult (/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/src/driver/mysql/MysqlQueryRunner.ts:196:37)
+    at Query.execute (/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/node_modules/mysql2/lib/commands/command.js:36:14)
+    at PoolConnection.handlePacket (/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/node_modules/mysql2/lib/connection.js:456:32)
+    at PacketParser.onPacket (/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/node_modules/mysql2/lib/connection.js:85:12)
+    at PacketParser.executeStart (/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/node_modules/mysql2/lib/packet_parser.js:75:16)
+    at Socket.<anonymous> (/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/node_modules/mysql2/lib/connection.js:92:25)
+    at Socket.emit (node:events:513:28)
+    at addChunk (node:internal/streams/readable:324:12)
+    at readableAddChunk (node:internal/streams/readable:297:9)
+    at Socket.Readable.push (node:internal/streams/readable:234:10)
+    at TCP.onStreamRead (node:internal/stream_base_commons:190:23)
+---End of Stack---
+ - URL : /api/candidate-job-offer-history
+[2026-02-16T14:44:02] - [error] => 
+    Guid = f42590ce-40ae-1eba-c630-d791e3f5e112
+    Unknown column 'startDate' in 'field list'
+---Stack---
+QueryFailedError: Unknown column 'startDate' in 'field list'
+    at QueryFailedError.TypeORMError [as constructor] (/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/src/error/TypeORMError.ts:7:9)
+    at new QueryFailedError (/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/src/error/QueryFailedError.ts:9:9)
+    at Query.onResult (/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/src/driver/mysql/MysqlQueryRunner.ts:196:37)
+    at Query.execute (/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/node_modules/mysql2/lib/commands/command.js:36:14)
+    at PoolConnection.handlePacket (/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/node_modules/mysql2/lib/connection.js:456:32)
+    at PacketParser.onPacket (/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/node_modules/mysql2/lib/connection.js:85:12)
+    at PacketParser.executeStart (/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/node_modules/mysql2/lib/packet_parser.js:75:16)
+    at Socket.<anonymous> (/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/node_modules/mysql2/lib/connection.js:92:25)
+    at Socket.emit (node:events:513:28)
+    at addChunk (node:internal/streams/readable:324:12)
+    at readableAddChunk (node:internal/streams/readable:297:9)
+    at Socket.Readable.push (node:internal/streams/readable:234:10)
+    at TCP.onStreamRead (node:internal/stream_base_commons:190:23)
+---End of Stack---
+ - URL : /api/candidate-job-offer-history
+[2026-02-16T14:46:48] - [error] => 
+    Unable to send mail
+    {
+  "to": [
+    "dkamanda55@gmail.com"
+  ],
+  "from": "contact@morganmallet.agency",
+  "subject": "Your opinion matters to us!",
+  "templateName": "mail_placed_candidate_review.mjml"
+}
+[2026-02-16T14:46:48] - [error] => 
+    Failed to send review request email to candidate cc6bed95-96cb-43d7-977a-f7839ea7afdf: Unknown mail sending error
+ - Technical message : Failed to send review request email to candidate cc6bed95-96cb-43d7-977a-f7839ea7afdf: Unknown mail sending error

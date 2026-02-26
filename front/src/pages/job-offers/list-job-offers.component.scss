@@ -1,0 +1,19 @@
+app-list-job-offers {
+    div.job-offer-wrapper-item {
+        min-width: 15%;
+        max-width: 15%;
+    }
+
+    .nxs-list-page-content {
+        .nxs-list-item-wrapper-container {
+            div:nth-child(5) {
+                min-width: 20%;
+                .splitText {
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,169 @@
+<app-drawer-main-container [headerTitle]="'Menu.References' | translate">
+    <div class="nxs-list-pag">
+        <div class="nxs-list-page-filters">
+            <div class="filters-wrapper">
+                <ng-container *ngIf="request">
+                    <mat-form-field
+                        appearance="outline"
+                        class="nxs-small-mat-input long-width"
+                        [appInputBg]="request.search"
+                    >
+                        <mat-label>{{
+                            'JobReference.SearchAboutEmployer' | translate
+                        }}</mat-label>
+                        <input
+                            matInput
+                            autocomplete="off"
+                            [(ngModel)]="request.search"
+                            (ngModelChange)="loadDataDelayed()"
+                            type="text"
+                            [placeholder]="
+                                'JobReference.SearchAboutEmployer' | translate
+                            "
+                        />
+                        <mat-icon
+                            matSuffix
+                            style="cursor: pointer"
+                            (click)="request.search = ''; loadData()"
+                        >
+                            close
+                        </mat-icon>
+                    </mat-form-field>
+                    <mat-form-field
+                        class="nxs-small-mat-input"
+                        appearance="outline"
+                        [appInputBg]="request.countriesCodes"
+                    >
+                        <mat-label>{{
+                            'Global.Country' | translate
+                        }}</mat-label>
+                        <mat-select
+                            [(ngModel)]="request.countriesCodes"
+                            multiple
+                            (ngModelChange)="loadData()"
+                        >
+                            <mat-option
+                                *ngFor="let country of countriesList"
+                                [value]="country.code"
+                            >
+                                {{ country.label }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field
+                        class="nxs-small-mat-input"
+                        appearance="outline"
+                        [appInputBg]="request.employerType"
+                    >
+                        <mat-label>{{
+                            'JobReference.EmployerType' | translate
+                        }}</mat-label>
+                        <mat-select
+                            [(ngModel)]="request.employerType"
+                            completedField
+                            (ngModelChange)="onEmployerTypeChange(); loadData()"
+                        >
+                            <mat-option [value]="null">{{
+                                'Global.NoMatter' | translate
+                            }}</mat-option>
+                            <mat-option value="privatePerson">{{
+                                'Customer.PrivatePerson' | translate
+                            }}</mat-option>
+                            <mat-option value="company">{{
+                                'Customer.Company' | translate
+                            }}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-checkbox
+                        [disabled]="loading"
+                        [(ngModel)]="request.includeDisabled"
+                        (ngModelChange)="loadData()"
+                    >
+                        {{ 'Global.IncludeArchived' | translate }}
+                    </mat-checkbox>
+                </ng-container>
+            </div>
+        </div>
+        <hr class="low-opacity" />
+        <div class="nxs-list-page-content">
+            <div
+                class="loading-wrapper"
+                [style.display]="loading ? '' : 'none'"
+            >
+                <mat-spinner diameter="50" strokeWidth="6"></mat-spinner>
+            </div>
+            <div
+                class="nxs-list-item-wrapper-container"
+                *ngFor="let jobReference of items"
+                (click)="redirectToJobReferencesDetails(jobReference)"
+            >
+                <ng-container *ngIf="jobReference">
+                    <div
+                        class="job-offer-wrapper-item d-flex align-items-center long-width"
+                    >
+                        <div class="avatar avatar-sm">
+                            <span class="avatar-content">{{
+                                displayInitial(jobReference) | uppercase
+                            }}</span>
+                        </div>
+                        <div class="ml-2 d-flex align-items-center">
+                            <ng-container
+                                *ngIf="jobReference?.privatePersonLastName"
+                            >
+                                <mat-icon
+                                    class="grey-icon"
+                                    [matTooltip]="
+                                        'Tooltip.PersonPrivate' | translate
+                                    "
+                                >
+                                    account_circle
+                                </mat-icon>
+                                {{
+                                    jobReference?.privatePersonLastName
+                                        | uppercase
+                                }}
+                                {{
+                                    jobReference?.privatePersonFirstName
+                                        | titlecase
+                                }}
+                            </ng-container>
+                            <ng-container *ngIf="jobReference?.companyName">
+                                <mat-icon
+                                    class="grey-icon"
+                                    [matTooltip]="'Tooltip.Company' | translate"
+                                    >business
+                                </mat-icon>
+                                {{ jobReference?.companyName | uppercase }}
+                            </ng-container>
+                        </div>
+                    </div>
+                    <div class="vertical-separator"></div>
+                    <div
+                        class="job-offer-wrapper-item d-flex align-items-center long-width"
+                    >
+                        <mat-icon
+                            class="grey-icon"
+                            [matTooltip]="'Tooltip.Location' | translate"
+                            >place</mat-icon
+                        >
+                        <ng-container
+                            *ngIf="jobReference.country; else noAddress"
+                        ></ng-container>
+                        {{ RefData.getCountryLabel(jobReference.country) }}
+                        <ng-template #noAddress>
+                            {{ 'Global.NotInformed' | translate }}
+                        </ng-template>
+                    </div>
+                </ng-container>
+            </div>
+        </div>
+        <div class="nxs-list-page-bottom">
+            <mat-paginator
+                class="mat-paginator-sticky"
+                [length]="filteredItemsCount"
+                [pageSize]="20"
+                [pageSizeOptions]="[20, 50, 100]"
+            ></mat-paginator>
+        </div>
+    </div>
+</app-drawer-main-container>

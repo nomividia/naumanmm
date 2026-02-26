@@ -1,0 +1,1253 @@
+<!-- Should take the whole height of the screen -->
+<div class="candidate-apply-container candidate-apply-form-page">
+    <!-- Left side - Only show on desktop -->
+    <div class="apply-form-left-panel">
+        <div class="apply-form-left-content">
+            <!-- Title for specific job application -->
+            <h1 *ngIf="step < 2 && currentJobOffer" class="apply-form-title">
+                {{ getApplyPositionText() }}
+                {{ this.currentJobOffer?.title }}
+                {{
+                    'CandidateApplication.CandidateForm.InLocation' | translate
+                }}
+                {{ this.currentJobOffer?.city }},
+                {{ this.currentJobOffer?.country }}
+            </h1>
+
+            <!-- Title for spontaneous application -->
+            <h1 *ngIf="step < 2 && !currentJobOffer && candidateApplication?.spontaneousApplication" class="apply-form-title">
+                {{
+                    'CandidateApplication.CandidateForm.SpontaneousApplicationTitle'
+                        | translate
+                }}
+            </h1>
+
+            <!-- Generic title if neither -->
+            <h1 *ngIf="step < 2 && !currentJobOffer && !candidateApplication?.spontaneousApplication" class="apply-form-title">
+                {{
+                    'CandidateApplication.CandidateForm.ApplicationTitle'
+                        | translate
+                }}
+            </h1>
+
+            <h1 *ngIf="step >= 2" class="apply-form-title">
+                {{
+                    'CandidateApplication.CandidateForm.ThankYouForApplication'
+                        | translate
+                }}<br />
+            </h1>
+
+            <!-- Display only if step is after select country -->
+            <p
+                class="apply-form-description"
+                *ngIf="step === 1 && countryFieldFilled && !formSent"
+            >
+                {{
+                    'CandidateApplication.CandidateForm.CompleteAllFields'
+                        | translate
+                }}
+                <br />
+                {{
+                    'CandidateApplication.CandidateForm.MandatoryFieldsNote'
+                        | translate
+                }}
+            </p>
+            <p *ngIf="step >= 2" class="apply-form-description">
+                {{
+                    'CandidateApplication.CandidateForm.SubmissionReceived'
+                        | translate
+                }}
+            </p>
+        </div>
+    </div>
+
+    <!-- Right side -->
+    <div class="apply-form-right-panel">
+        <!-- <svg
+            (click)="step = 0"
+            id="Layer_1"
+            data-name="Layer 1"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 504.24 504.25"
+            class="apply-form-close-button"
+            height="25"
+            width="25"
+        >
+            <polygon
+                style="fill: #00123b; stroke: #00123b; stroke-width: 0.3rem"
+                points="504.24 8.87 495.37 0 252.12 243.25 8.87 0 0 8.87 243.25 252.12 0 495.37 8.87 504.25 252.12 261 495.37 504.25 504.24 495.37 261 252.12 504.24 8.87"
+            />
+        </svg> -->
+
+        <!-- Mobile title header - only visible on mobile -->
+        <div class="apply-form-mobile-header" *ngIf="step < 2">
+            <!-- Mobile title for specific job application -->
+            <h1 class="apply-form-mobile-title" *ngIf="currentJobOffer">
+                {{ getApplyPositionText() }}
+                {{ this.currentJobOffer?.title }}
+            </h1>
+
+            <!-- Mobile title for spontaneous application -->
+            <h1 class="apply-form-mobile-title" *ngIf="!currentJobOffer && candidateApplication?.spontaneousApplication">
+                {{
+                    'CandidateApplication.CandidateForm.SpontaneousApplicationTitle'
+                        | translate
+                }}
+            </h1>
+
+            <!-- Generic mobile title if neither -->
+            <h1 class="apply-form-mobile-title" *ngIf="!currentJobOffer && !candidateApplication?.spontaneousApplication">
+                {{
+                    'CandidateApplication.CandidateForm.ApplicationTitle'
+                        | translate
+                }}
+            </h1>
+
+            <p
+                class="apply-form-mobile-subtitle"
+                *ngIf="step === 1 && countryFieldFilled && !formSent"
+            >
+                {{
+                    'CandidateApplication.CandidateForm.CompleteAllFields'
+                        | translate
+                }}
+            </p>
+        </div>
+
+        <div class="apply-form-content">
+            <!-- Step 0 : Login or register -->
+            <div
+                class="apply-form-step-zero"
+                *ngIf="step === 0 && allowedCountry && !formSent"
+            >
+                <!-- Normal mode: NOT showSingleButtonCandidatureSpontanee -->
+                <ng-container *ngIf="!showSingleButtonCandidatureSpontanee">
+                    <!-- Not registered -->
+                    <div>
+                        <p class="apply-form-step-title">
+                            {{
+                                'CandidateApplication.CandidateForm.NotRegisteredApply'
+                                    | translate
+                            }}
+                        </p>
+                        <button
+                            class="apply-form-primary-button"
+                            (click)="step = 1"
+                        >
+                            {{
+                                'CandidateApplication.CandidateForm.RegisterAndApply'
+                                    | translate
+                            }}
+                        </button>
+                    </div>
+
+                    <!-- Separator -->
+                    <div class="apply-form-separator">
+                        <div class="apply-form-separator-line"></div>
+                        <div class="apply-form-separator-icon">
+                            <span class="apply-form-separator-plus">+</span>
+                        </div>
+                        <div class="apply-form-separator-line"></div>
+                    </div>
+
+                    <!-- Already registered -->
+                    <div>
+                        <p class="apply-form-step-title">
+                            {{
+                                'CandidateApplication.CandidateForm.AlreadyRegisteredApply'
+                                    | translate
+                            }}
+                        </p>
+                        <button class="apply-form-primary-button">
+                            <a
+                                [href]="
+                                    '/mes-candidatures?open-apply-dialog=true' +
+                                    refFromUrlLink
+                                "
+                                target="_blank"
+                                class="apply-form-login-link"
+                            >
+                                {{
+                                    'CandidateApplication.CandidateForm.LoginAndApply'
+                                        | translate
+                                }}
+                            </a>
+                        </button>
+                    </div>
+                </ng-container>
+
+                <!-- Spontaneous mode: showSingleButtonCandidatureSpontanee (iframe-home=true) -->
+                <ng-container *ngIf="showSingleButtonCandidatureSpontanee">
+                    <!-- Not registered - Spontaneous -->
+                    <div>
+                        <p class="apply-form-step-title">
+                            {{
+                                'CandidateApplication.CandidateForm.NotRegisteredSpontaneous'
+                                    | translate
+                            }}
+                        </p>
+                        <button
+                            class="apply-form-primary-button"
+                            (click)="clickCandidatureSpontanee()"
+                        >
+                            {{
+                                'CandidateApplication.CandidateForm.SubmitSpontaneousApplication'
+                                    | translate
+                            }}
+                        </button>
+                    </div>
+
+                    <!-- Separator -->
+                    <div class="apply-form-separator">
+                        <div class="apply-form-separator-line"></div>
+                        <div class="apply-form-separator-icon">
+                            <span class="apply-form-separator-plus">+</span>
+                        </div>
+                        <div class="apply-form-separator-line"></div>
+                    </div>
+
+                    <!-- Already registered - View jobs -->
+                    <div>
+                        <p class="apply-form-step-title">
+                            {{
+                                'CandidateApplication.CandidateForm.AlreadyRegisteredViewJobs'
+                                    | translate
+                            }}
+                        </p>
+                        <button class="apply-form-primary-button">
+                            <a
+                                [href]="jobs_url"
+                                target="_blank"
+                                class="apply-form-login-link"
+                            >
+                                {{
+                                    'CandidateApplication.CandidateForm.AccessJobListings'
+                                        | translate
+                                }}
+                            </a>
+                        </button>
+                    </div>
+                </ng-container>
+            </div>
+
+            <!-- Step 1 : Country selection -->
+            <div
+                *ngIf="
+                    step === 1 &&
+                    allowedCountry &&
+                    !formSent &&
+                    !countryFieldFilled &&
+                    candidateApplication
+                "
+            >
+                <p class="apply-form-country-step">
+                    {{
+                        'CandidateApplication.CandidateForm.PleaseSelectCountry'
+                            | translate
+                    }}
+                </p>
+
+                <app-address
+                    class="apply-form-input apply-form-country-selector"
+                    [dFlexRow]="true"
+                    [address]="candidateApplication.address"
+                    mode="single"
+                    [showOnlyCountry]="true"
+                    [disabled]="loading"
+                    (addressChange)="onCountryChange()"
+                    style="width: 100%; display: block"
+                >
+                </app-address>
+            </div>
+
+            <!-- Step 2 : Main informations after country selection (but still step 1 somehow) -->
+            <div
+                *ngIf="
+                    step === 1 &&
+                    allowedCountry &&
+                    !formSent &&
+                    countryFieldFilled
+                "
+                class="apply-form-main-form"
+            >
+                <form #offerForm (ngSubmit)="submitForm()">
+                    <div class="row apply-form-form-row">
+                        <div class="col-auto">
+                            <!-- Personal information -->
+                            <p class="apply-form-section-title">
+                                {{
+                                    'CandidateApplication.CandidateForm.PersonalInformation'
+                                        | translate
+                                }}
+                            </p>
+
+                            <!-- Last name -->
+                            <div class="apply-form-row">
+                                <mat-form-field
+                                    class="apply-form-input"
+                                    appearance="outline"
+                                >
+                                    <mat-label>{{
+                                        'Global.LastName' | translate
+                                    }}</mat-label>
+                                    <input
+                                        [placeholder]="
+                                            'Global.LastName' | translate
+                                        "
+                                        matInput
+                                        type="text"
+                                        name="lastName"
+                                        [disabled]="loading"
+                                        [(ngModel)]="
+                                            candidateApplication.lastName
+                                        "
+                                        required
+                                        [ngModelOptions]="{ standalone: true }"
+                                        style="width: 100%"
+                                    />
+                                </mat-form-field>
+
+                                <!-- First name -->
+                                <mat-form-field
+                                    class="apply-form-input"
+                                    appearance="outline"
+                                >
+                                    <mat-label>{{
+                                        'Global.FirstName' | translate
+                                    }}</mat-label>
+                                    <input
+                                        [placeholder]="
+                                            'Global.FirstName' | translate
+                                        "
+                                        matInput
+                                        type="text"
+                                        name="firstName"
+                                        [disabled]="loading"
+                                        [(ngModel)]="
+                                            candidateApplication.firstName
+                                        "
+                                        required
+                                        [ngModelOptions]="{ standalone: true }"
+                                        style="width: 100%"
+                                    />
+                                </mat-form-field>
+                            </div>
+
+                            <!-- Gender and birth date -->
+
+                            <!--  *ngIf="
+                                    !modeWithoutGenderAndBirthDate &&
+                                    SharedCountryService.showCandidateDetailFields(
+                                        candidateApplication
+                                    )
+                                " -->
+
+                            <div
+                                class="apply-form-row"
+                                *ngIf="
+                                    !modeWithoutGenderAndBirthDate &&
+                                    SharedCountryService.showCandidateDetailFields(
+                                        candidateApplication
+                                    )
+                                "
+                            >
+                                <!-- Gender -->
+                                <mat-form-field
+                                    class="apply-form-input"
+                                    appearance="outline"
+                                >
+                                    <mat-label>{{
+                                        'CandidateApplication.CandidateForm.GenderOrTitle'
+                                            | translate
+                                    }}</mat-label>
+                                    <mat-select
+                                        [disabled]="loading"
+                                        [(ngModel)]="
+                                            candidateApplication.genderId
+                                        "
+                                        name="gender"
+                                        required
+                                        [ngModelOptions]="{ standalone: true }"
+                                        class="apply-form-select"
+                                    >
+                                        <mat-option
+                                            *ngFor="let item of genderList"
+                                            [value]="item.id"
+                                        >
+                                            {{ 'label' | dbTranslate : item }}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+
+                                <!-- Date of birth -->
+                                <mat-form-field
+                                    class="apply-form-input"
+                                    appearance="outline"
+                                >
+                                    <mat-label>{{
+                                        'CandidateApplication.CandidateForm.DateOfBirth'
+                                            | translate
+                                    }}</mat-label>
+                                    <input
+                                        matInput
+                                        [(ngModel)]="
+                                            candidateApplication.birthDate
+                                        "
+                                        name="birthDate"
+                                        [matDatepicker]="pickerSelected"
+                                        [disabled]="loading"
+                                        required
+                                        [ngModelOptions]="{ standalone: true }"
+                                    />
+                                    <mat-datepicker-toggle
+                                        matSuffix
+                                        [for]="pickerSelected"
+                                    ></mat-datepicker-toggle>
+                                    <mat-datepicker
+                                        #pickerSelected
+                                    ></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+
+                            <!-- Apply with partner -->
+
+                            <mat-checkbox
+                                [disabled]="loading"
+                                [(ngModel)]="applyForCouple"
+                                (ngModelChange)="applyForCoupleChange()"
+                                [ngModelOptions]="{ standalone: true }"
+                                class="apply-form-checkbox"
+                                >{{
+                                    'CandidateApplication.ImApplyingWithPartner'
+                                        | translate
+                                }}</mat-checkbox
+                            >
+
+                            <!-- Partner information -->
+                            <div
+                                class="apply-form-partner-section mb-20"
+                                *ngIf="applyForCouple"
+                            >
+                                <p class="apply-form-section-title">
+                                    {{
+                                        'CandidateApplication.PartnerInformation'
+                                            | translate
+                                    }}
+                                </p>
+                                <div class="apply-form-row">
+                                    <mat-form-field
+                                        class="apply-form-input"
+                                        appearance="outline"
+                                    >
+                                        <mat-label>{{
+                                            'Candidate.LastNamePartner'
+                                                | translate
+                                        }}</mat-label>
+                                        <input
+                                            [placeholder]="
+                                                'Candidate.LastNamePartner'
+                                                    | translate
+                                            "
+                                            name="partnerLastName"
+                                            matInput
+                                            type="text"
+                                            [disabled]="loading"
+                                            [(ngModel)]="
+                                                candidateApplication.partnerLastName
+                                            "
+                                            required
+                                            [ngModelOptions]="{
+                                                standalone: true
+                                            }"
+                                        />
+                                    </mat-form-field>
+                                    <mat-form-field
+                                        class="apply-form-input"
+                                        appearance="outline"
+                                    >
+                                        <mat-label>{{
+                                            'Candidate.FirstNamePartner'
+                                                | translate
+                                        }}</mat-label>
+                                        <input
+                                            [placeholder]="
+                                                'Candidate.FirstNamePartner'
+                                                    | translate
+                                            "
+                                            name="partnerFirstName"
+                                            matInput
+                                            type="text"
+                                            [disabled]="loading"
+                                            [(ngModel)]="
+                                                candidateApplication.partnerFirstName
+                                            "
+                                            required
+                                            [ngModelOptions]="{
+                                                standalone: true
+                                            }"
+                                        />
+                                    </mat-form-field>
+                                </div>
+                                <div class="apply-form-row">
+                                    <mat-form-field
+                                        class="apply-form-input"
+                                        appearance="outline"
+                                    >
+                                        <mat-label>{{
+                                            'Candidate.EmailPartner' | translate
+                                        }}</mat-label>
+                                        <input
+                                            [placeholder]="
+                                                'Candidate.EmailPartner'
+                                                    | translate
+                                            "
+                                            name="partnerEmail"
+                                            matInput
+                                            type="text"
+                                            [disabled]="loading"
+                                            [(ngModel)]="
+                                                candidateApplication.partnerEmail
+                                            "
+                                            required
+                                            [ngModelOptions]="{
+                                                standalone: true
+                                            }"
+                                        />
+                                    </mat-form-field>
+                                    <nxs-intl-tel-input
+                                        [matLabel]="
+                                            'Candidate.PhonePartner' | translate
+                                        "
+                                        class="apply-form-input"
+                                        name="partnerPhone"
+                                        [(ngModel)]="
+                                            candidateApplication.partnerPhone
+                                        "
+                                        [ngModelOptions]="{ standalone: true }"
+                                        [disabled]="loading"
+                                        [required]="true"
+                                    >
+                                    </nxs-intl-tel-input>
+                                </div>
+                            </div>
+
+                            <!-- <div class="apply-form-mobility-section mb-20">
+                                <p class="apply-form-section-title">
+                                    {{
+                                        'CandidateApplication.CandidateForm.LocationAndMobility'
+                                            | translate
+                                    }}
+                                </p>
+                                <div class="apply-form-row">
+                                    <mat-form-field
+                                        class="apply-form-input"
+                                        appearance="outline"
+                                    >
+                                        <mat-label>{{
+                                            'Global.Country' | translate
+                                        }}</mat-label>
+                                        <mat-select
+                                            [(ngModel)]="countriesSelectedCodes"
+                                            multiple
+                                            name="countriesSelected"
+                                        >
+                                            <mat-option
+                                                *ngFor="
+                                                    let item of RefData.countriesListForCurrentLanguage
+                                                "
+                                                [value]="item.code"
+                                            >
+                                                {{
+                                                    getCountryFromCode(
+                                                        item.code
+                                                    )
+                                                }}</mat-option
+                                            >
+                                        </mat-select>
+                                    </mat-form-field>
+
+                                    <app-departments-autocomplete
+                                        class="apply-form-input"
+                                        [label]="
+                                            'Address.Department' | translate
+                                        "
+                                        [showValidBtn]="true"
+                                        (validate)="
+                                            onDepartmentSelection($event)
+                                        "
+                                        [countryCodes]="countriesSelectedCodes"
+                                        [(ngModel)]="selectedDepartment"
+                                        (ngModelChange)="
+                                            onDepartmentSelection()
+                                        "
+                                        [disabled]="
+                                            !countriesSelectedCodes?.length
+                                        "
+                                        name="selectedDepartment"
+                                    >
+                                    </app-departments-autocomplete>
+                                </div>
+
+                                <div
+                                    *ngIf="
+                                        candidateApplication
+                                            .candidateDepartments?.length
+                                    "
+                                >
+                                    {{ 'Address.Department' | translate }}s :
+                                    <mat-chip-list>
+                                        <mat-chip
+                                            *ngFor="
+                                                let item of candidateApplication.candidateDepartments
+                                            "
+                                            color="primary"
+                                            selected
+                                        >
+                                            {{ item.department }}
+                                            <mat-icon
+                                                matChipRemove
+                                                (click)="
+                                                    removeCandidateDepartment(
+                                                        item
+                                                    )
+                                                "
+                                                >cancel
+                                            </mat-icon>
+                                        </mat-chip>
+                                    </mat-chip-list>
+                                </div>
+                            </div> -->
+
+                            <!-- Address -->
+                            <p class="apply-form-section-title">
+                                {{ 'Global.Address' | translate }}
+                            </p>
+                            <div class="apply-form-address-wrapper">
+                                <app-address
+                                    class="apply-form-address"
+                                    [address]="candidateApplication.address"
+                                    mode="single"
+                                    [disabled]="loading"
+                                ></app-address>
+                            </div>
+
+                            <ng-container
+                                *ngIf="
+                                    candidateApplication?.address?.country ===
+                                    'US'
+                                "
+                            >
+                                <div
+                                    class="max-width d-flex f-wrap apply-form-us-work-section"
+                                >
+                                    <div
+                                        class="d-flex apply-form-us-work-question apply-form-sub-text"
+                                    >
+                                        <span
+                                            class="apply-form-us-work-required"
+                                            >*</span
+                                        >{{
+                                            'Êtes-vous autorisé à travailler aux États-Unis ?'
+                                                | translate
+                                        }}
+                                    </div>
+                                    <mat-radio-group
+                                        class="d-flex apply-form-us-work-radio-group"
+                                        [(ngModel)]="
+                                            candidateApplication.allowed_to_work_us
+                                        "
+                                        [ngModelOptions]="{ standalone: true }"
+                                    >
+                                        <mat-radio-button [value]="true">{{
+                                            'Global.Yes' | translate
+                                        }}</mat-radio-button>
+                                        <mat-radio-button [value]="false">{{
+                                            'Global.No' | translate
+                                        }}</mat-radio-button>
+                                    </mat-radio-group>
+                                </div>
+
+                                <div
+                                    class="max-width d-flex f-wrap apply-form-us-work-sponsorship"
+                                >
+                                    <div
+                                        class="d-flex apply-form-us-work-question apply-form-sub-text"
+                                    >
+                                        <span
+                                            class="apply-form-us-work-required"
+                                            >*</span
+                                        >
+                                        {{
+                                            "Aurez-vous besoin, maintenant ou à l'avenir, d'un parrainage pour travailler" +
+                                                ' aux États-Unis ?' | translate
+                                        }}
+                                    </div>
+
+                                    <mat-radio-group
+                                        class="d-flex apply-form-us-work-radio-group"
+                                        [(ngModel)]="
+                                            candidateApplication.require_sponsorship_us
+                                        "
+                                        [ngModelOptions]="{ standalone: true }"
+                                    >
+                                        <mat-radio-button [value]="true">{{
+                                            'Global.Yes' | translate
+                                        }}</mat-radio-button>
+                                        <mat-radio-button [value]="false">{{
+                                            'Global.No' | translate
+                                        }}</mat-radio-button>
+                                    </mat-radio-group>
+                                </div>
+                            </ng-container>
+
+                            <!-- Contact details -->
+                            <p class="apply-form-section-title">
+                                {{
+                                    'CandidateApplication.CandidateForm.ContactDetails'
+                                        | translate
+                                }}
+                            </p>
+                            <div class="apply-form-contact-section">
+                                <!-- Phone -->
+                                <nxs-intl-tel-input
+                                    [matLabel]="'Global.Phone' | translate"
+                                    class="apply-form-input contact-section-input"
+                                    name="phone"
+                                    [(ngModel)]="candidateApplication.phone"
+                                    [ngModelOptions]="{ standalone: true }"
+                                    [disabled]="loading"
+                                    [required]="true"
+                                >
+                                </nxs-intl-tel-input>
+
+                                <!-- Phone fix -->
+                                <nxs-intl-tel-input
+                                    [matLabel]="'Global.PhoneFix' | translate"
+                                    [ngModelOptions]="{ standalone: true }"
+                                    class="apply-form-input contact-section-input"
+                                    name="phone secondary"
+                                    [(ngModel)]="
+                                        candidateApplication.phoneSecondary
+                                    "
+                                    [disabled]="loading"
+                                >
+                                </nxs-intl-tel-input>
+                                <!-- Email -->
+                                <mat-form-field
+                                    appearance="outline"
+                                    class="apply-form-input contact-section-input contact-section-email"
+                                >
+                                    <mat-label>E-mail</mat-label>
+                                    <input
+                                        placeholder="E-mail"
+                                        matInput
+                                        name="email"
+                                        type="email"
+                                        [(ngModel)]="candidateApplication.email"
+                                        [ngModelOptions]="{
+                                            standalone: true
+                                        }"
+                                        [disabled]="loading"
+                                        required
+                                    />
+                                </mat-form-field>
+                                <div class="contact-section-placeholder"></div>
+                            </div>
+
+                            <!-- Professional background -->
+                            <p class="apply-form-section-title">
+                                {{
+                                    'CandidateApplication.CandidateForm.ProfessionalBackground'
+                                        | translate
+                                }}
+                            </p>
+
+                            <!-- Current or Last Job Title -->
+                            <div class="d-flex-row mt-10">
+                                <app-jobs-selector
+                                    #jobSelector
+                                    fieldAppearance="outline"
+                                    [multipleSelection]="false"
+                                    [placeholder]="
+                                        'CandidateApplication.CandidateForm.CurrentOrLastJob'
+                                            | translate
+                                    "
+                                    [disabled]="loading"
+                                    class="apply-form-input"
+                                    [longInput]="true"
+                                    [(ngModel)]="
+                                        candidateApplication.professionId
+                                    "
+                                    [required]="true"
+                                    [ngModelOptions]="{ standalone: true }"
+                                >
+                                </app-jobs-selector>
+                            </div>
+
+                            <!-- Type of application -->
+                            <div class="d-flex-row" *ngIf="!hideAdRefForm">
+                                <mat-form-field
+                                    *ngIf="!hideApplicationType"
+                                    appearance="outline"
+                                    class="nxs-small-mat-input"
+                                >
+                                    <mat-label>{{
+                                        'Global.TypeOfApplication' | translate
+                                    }}</mat-label>
+                                    <mat-select
+                                        required
+                                        [disabled]="loading"
+                                        [(ngModel)]="
+                                            candidateApplication.spontaneousApplication
+                                        "
+                                        name="spontaneousApplication"
+                                        [ngModelOptions]="{ standalone: true }"
+                                    >
+                                        <mat-option [value]="false">{{
+                                            'Global.ApplicationLinked'
+                                                | translate
+                                        }}</mat-option>
+                                        <mat-option [value]="true">{{
+                                            'Global.SpontaneousApplication'
+                                                | translate
+                                        }}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                                <app-job-offers-autocomplete
+                                    [onlyActiveJobOffers]="true"
+                                    *ngIf="
+                                        !candidateApplication.spontaneousApplication
+                                    "
+                                    [(ngModel)]="currentJobOffer"
+                                    (ngModelChange)="
+                                        addJobOfferInSelectionList()
+                                    "
+                                    class="nxs-small-mat-input"
+                                    [ngModelOptions]="{ standalone: true }"
+                                    [disabled]="loading"
+                                    name="jobRef"
+                                >
+                                </app-job-offers-autocomplete>
+                            </div>
+
+                            <!-- Job selection -->
+                            <div
+                                class="d-flex-row"
+                                *ngIf="
+                                    candidateApplication.spontaneousApplication ===
+                                        false && !hideAdRefForm
+                                "
+                            >
+                                <mat-chip-list aria-label="Jobs selection">
+                                    <mat-chip
+                                        *ngFor="
+                                            let item of candidateApplication.candidateApplicationJobs
+                                        "
+                                        color="accent"
+                                        selected
+                                    >
+                                        {{ item.jobOffer?.ref }} -
+                                        {{
+                                            item.jobOffer?.title
+                                                | truncate : 45 : 1
+                                        }}
+                                        <mat-icon
+                                            matChipRemove
+                                            (click)="
+                                                removeJobFromSelection(
+                                                    item.jobOffer
+                                                )
+                                            "
+                                            >cancel
+                                        </mat-icon>
+                                    </mat-chip>
+                                </mat-chip-list>
+                            </div>
+
+                            <!-- Skills and value added -->
+                            <mat-form-field
+                                appearance="outline"
+                                id="text-area"
+                                style="width: 100%"
+                                class="apply-form-input"
+                            >
+                                <mat-label>{{
+                                    'Candidate.SkillsAndValueAdded' | translate
+                                }}</mat-label>
+                                <textarea
+                                    [disabled]="loading"
+                                    matInput
+                                    cols="5"
+                                    rows="5"
+                                    [(ngModel)]="candidateApplication.skills"
+                                    [ngModelOptions]="{ standalone: true }"
+                                    name="skills"
+                                    required
+                                ></textarea>
+                            </mat-form-field>
+                            <p class="apply-form-sub-text">
+                                {{
+                                    'CandidateApplication.CandidateForm.BrieflyDescribeStrengths'
+                                        | translate
+                                }}
+                            </p>
+                        </div>
+
+                        <!-- Upload CV -->
+                        <p class="apply-form-section-title">
+                            {{
+                                'CandidateApplication.CandidateForm.DocumentUploads'
+                                    | translate
+                            }}
+                        </p>
+                        <div class="apply-form-upload-section">
+                            <button
+                                [disabled]="loading"
+                                [matTooltip]="'Global.ImportFile' | translate"
+                                mat-button
+                                type="button"
+                                class="apply-form-upload-button"
+                                (click)="openFileSelectForCv()"
+                            >
+                                {{
+                                    'CandidateApplication.CandidateForm.UploadCV'
+                                        | translate
+                                }}&nbsp;*
+                                <svg
+                                    id="Layer_1"
+                                    data-name="Layer 1"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 0 502.83 431"
+                                    height="20"
+                                    width="20"
+                                >
+                                    <defs>
+                                        <style>
+                                            .cls-1 {
+                                                fill: #b28e3b;
+                                                stroke: #b28e3b;
+                                                stroke-width: 0.5rem;
+                                            }
+                                        </style>
+                                    </defs>
+                                    <polygon
+                                        class="cls-1"
+                                        points="181.04 220.89 168.02 207.87 251.64 124.47 335.26 207.87 322.13 220.89 260.85 159.61 260.85 431 242.33 431 242.32 159.61 181.04 220.89"
+                                    />
+                                    <path
+                                        class="cls-1"
+                                        d="M412.25,134.69c0-1.34.22-2.7.22-4.04C412.48,58.47,353.21,0,281.38,0c-51.74,0-96.3,30.42-117.18,74.42-9.09-4.6-19.19-7.18-30.08-7.18-33.22,0-60.72,26.49-66.11,58.36C28.51,139.18,0,178.01,0,222.46c0,55.78,45.01,101.24,100.56,101.24h102.59v-17.96h-101.69c-45.91,0-83.28-37.6-83.28-83.73,0-35.69,22.67-68.69,56.34-80.36l9.43-3.26,1.68-9.88c4.04-24.24,24.8-44.11,49.27-44.11,7.75,0,15.38,1.79,22.34,5.39l15.15,7.64,7.3-15.38c18.63-39.17,58.47-64.42,101.47-64.42,62.07,0,113.25,48.6,113.25,111,0,14.93-.22,22.79-.22,22.79l17.06.11c41.08.56,73.63,37.49,73.63,78.91s-33.45,75.09-74.64,75.31h-112.81s0,17.95,0,17.95h113.36c50.51,0,92.04-41.87,92.04-92.94s-39.84-95.96-90.57-96.07Z"
+                                    />
+                                </svg>
+                            </button>
+                            <nxs-file-upload
+                                #nxsFileUpload
+                                [hasDropZone]="false"
+                                [showUploadButton]="false"
+                                [showProgressBar]="false"
+                                [showFilesList]="false"
+                                (beforeUploadItem)="loading = true"
+                                [data]="cvUploadData"
+                                [options]="cvUploadOptions"
+                                [disabled]="loading"
+                                (onAddingFileFailed)="
+                                    onAddingFileFailed($event)
+                                "
+                                (onCompleteAllItems)="onCompleteItems()"
+                            >
+                            </nxs-file-upload>
+                            <p class="apply-form-sub-text">
+                                {{
+                                    'CandidateApplication.CandidateForm.UploadCVDescription'
+                                        | translate
+                                }}
+                            </p>
+
+                            <p
+                                *ngIf="cvUploadData.files.length === 0"
+                                class="apply-form-no-file-chosen-indicator"
+                            >
+                                {{
+                                    'CandidateApplication.CandidateForm.NoFileChosen'
+                                        | translate
+                                }}
+                            </p>
+                            <p
+                                *ngIf="cvUploadData.files.length > 0"
+                                class="apply-form-no-file-chosen-indicator"
+                            >
+                                {{ cvUploadData.fileItems[0]._file.name }}
+                            </p>
+                        </div>
+
+                        <!-- Upload CV Partner -->
+                        <div
+                            class="apply-form-upload-section"
+                            *ngIf="applyForCouple"
+                        >
+                            <button
+                                [disabled]="loading"
+                                [matTooltip]="'Global.ImportFile' | translate"
+                                mat-button
+                                type="button"
+                                class="apply-form-upload-button"
+                                (click)="openFileSelectForPartnerCv()"
+                            >
+                                {{
+                                    'CandidateApplication.CandidateForm.UploadPartnerCV'
+                                        | translate
+                                }}&nbsp;*
+                                <svg
+                                    id="Layer_1"
+                                    data-name="Layer 1"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 0 502.83 431"
+                                    height="20"
+                                    width="20"
+                                >
+                                    <defs>
+                                        <style>
+                                            .cls-1 {
+                                                fill: #b28e3b;
+                                                stroke: #b28e3b;
+                                                stroke-width: 0.5rem;
+                                            }
+                                        </style>
+                                    </defs>
+                                    <polygon
+                                        class="cls-1"
+                                        points="181.04 220.89 168.02 207.87 251.64 124.47 335.26 207.87 322.13 220.89 260.85 159.61 260.85 431 242.33 431 242.32 159.61 181.04 220.89"
+                                    />
+                                    <path
+                                        class="cls-1"
+                                        d="M412.25,134.69c0-1.34.22-2.7.22-4.04C412.48,58.47,353.21,0,281.38,0c-51.74,0-96.3,30.42-117.18,74.42-9.09-4.6-19.19-7.18-30.08-7.18-33.22,0-60.72,26.49-66.11,58.36C28.51,139.18,0,178.01,0,222.46c0,55.78,45.01,101.24,100.56,101.24h102.59v-17.96h-101.69c-45.91,0-83.28-37.6-83.28-83.73,0-35.69,22.67-68.69,56.34-80.36l9.43-3.26,1.68-9.88c4.04-24.24,24.8-44.11,49.27-44.11,7.75,0,15.38,1.79,22.34,5.39l15.15,7.64,7.3-15.38c18.63-39.17,58.47-64.42,101.47-64.42,62.07,0,113.25,48.6,113.25,111,0,14.93-.22,22.79-.22,22.79l17.06.11c41.08.56,73.63,37.49,73.63,78.91s-33.45,75.09-74.64,75.31h-112.81s0,17.95,0,17.95h113.36c50.51,0,92.04-41.87,92.04-92.94s-39.84-95.96-90.57-96.07Z"
+                                    />
+                                </svg>
+                            </button>
+                            <nxs-file-upload
+                                #nxsFileUpload
+                                [hasDropZone]="false"
+                                [showUploadButton]="false"
+                                [showProgressBar]="false"
+                                [showFilesList]="false"
+                                (beforeUploadItem)="loading = true"
+                                [data]="partnerCVUploadData"
+                                [options]="partnerCVUploadOptions"
+                                [disabled]="loading"
+                                (onAddingFileFailed)="
+                                    onAddingFileFailed($event)
+                                "
+                                (onCompleteAllItems)="onCompleteItems()"
+                            >
+                            </nxs-file-upload>
+                            <p class="apply-form-sub-text">
+                                {{
+                                    'CandidateApplication.CandidateForm.UploadCVDescription'
+                                        | translate
+                                }}
+                            </p>
+
+                            <p
+                                *ngIf="partnerCVUploadData.files.length === 0"
+                                class="apply-form-no-file-chosen-indicator"
+                            >
+                                {{
+                                    'CandidateApplication.CandidateForm.NoFileChosen'
+                                        | translate
+                                }}
+                            </p>
+                            <p
+                                *ngIf="partnerCVUploadData.files.length > 0"
+                                class="apply-form-no-file-chosen-indicator"
+                            >
+                                {{
+                                    partnerCVUploadData.fileItems[0]._file.name
+                                }}
+                            </p>
+                        </div>
+
+                        <!-- Upload Portrait Photo -->
+                        <div class="apply-form-upload-section">
+                            <button
+                                [disabled]="loading"
+                                [matTooltip]="'Global.ImportFile' | translate"
+                                mat-button
+                                type="button"
+                                class="apply-form-upload-button"
+                                (click)="openFileSelectForPortraitPhoto()"
+                            >
+                                {{
+                                    'CandidateApplication.CandidateForm.UploadPortraitPhoto'
+                                        | translate
+                                }}&nbsp;*
+                                <svg
+                                    id="Layer_1"
+                                    data-name="Layer 1"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 0 502.83 431"
+                                    height="20"
+                                    width="20"
+                                >
+                                    <defs>
+                                        <style>
+                                            .cls-1 {
+                                                fill: #b28e3b;
+                                            }
+                                        </style>
+                                    </defs>
+                                    <polygon
+                                        class="cls-1"
+                                        points="181.04 220.89 168.02 207.87 251.64 124.47 335.26 207.87 322.13 220.89 260.85 159.61 260.85 431 242.33 431 242.32 159.61 181.04 220.89"
+                                    />
+                                    <path
+                                        class="cls-1"
+                                        d="M412.25,134.69c0-1.34.22-2.7.22-4.04C412.48,58.47,353.21,0,281.38,0c-51.74,0-96.3,30.42-117.18,74.42-9.09-4.6-19.19-7.18-30.08-7.18-33.22,0-60.72,26.49-66.11,58.36C28.51,139.18,0,178.01,0,222.46c0,55.78,45.01,101.24,100.56,101.24h102.59v-17.96h-101.69c-45.91,0-83.28-37.6-83.28-83.73,0-35.69,22.67-68.69,56.34-80.36l9.43-3.26,1.68-9.88c4.04-24.24,24.8-44.11,49.27-44.11,7.75,0,15.38,1.79,22.34,5.39l15.15,7.64,7.3-15.38c18.63-39.17,58.47-64.42,101.47-64.42,62.07,0,113.25,48.6,113.25,111,0,14.93-.22,22.79-.22,22.79l17.06.11c41.08.56,73.63,37.49,73.63,78.91s-33.45,75.09-74.64,75.31h-112.81s0,17.95,0,17.95h113.36c50.51,0,92.04-41.87,92.04-92.94s-39.84-95.96-90.57-96.07Z"
+                                    />
+                                </svg>
+                            </button>
+                            <nxs-file-upload
+                                (beforeUploadItem)="loading = true"
+                                [hasDropZone]="false"
+                                [showProgressBar]="false"
+                                [showFilesList]="false"
+                                [showUploadButton]="false"
+                                [data]="imageUploadData"
+                                [options]="imageUploadOptions"
+                                [disabled]="loading"
+                                (onAddingFileFailed)="
+                                    onAddingFileFailed($event)
+                                "
+                                (onCompleteAllItems)="onCompleteItems()"
+                            >
+                            </nxs-file-upload>
+                            <p class="apply-form-sub-text">
+                                {{
+                                    'CandidateApplication.CandidateForm.UploadPortraitPhotoDescription'
+                                        | translate
+                                }}
+                            </p>
+
+                            <p
+                                *ngIf="imageUploadData.files.length === 0"
+                                class="apply-form-no-file-chosen-indicator"
+                            >
+                                {{
+                                    'CandidateApplication.CandidateForm.NoFileChosen'
+                                        | translate
+                                }}
+                            </p>
+                            <p
+                                *ngIf="imageUploadData.files.length > 0"
+                                class="apply-form-no-file-chosen-indicator"
+                            >
+                                {{ imageUploadData.fileItems[0]._file.name }}
+                            </p>
+                        </div>
+
+                        <!-- Consent and submission -->
+                        <p class="apply-form-section-title">
+                            {{
+                                'CandidateApplication.CandidateForm.ConsentAndSubmission'
+                                    | translate
+                            }}
+                        </p>
+
+                        <!-- For US candidates who already accepted US-specific terms -->
+                        <div class="row" *ngIf="candidateApplication?.address?.country === 'US' && usTermsAccepted">
+                            <div class="col">
+                                <p class="apply-form-sub-text">
+                                    {{
+                                        'CandidateApplication.CandidateForm.USTermsAlreadyAccepted'
+                                            | translate
+                                    }}
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- For non-US candidates, show standard terms acceptance -->
+                        <div class="row" *ngIf="candidateApplication?.address?.country !== 'US' || !usTermsAccepted">
+                            <div class="col">
+                                <p class="apply-form-sub-text">
+                                    {{
+                                        'CandidateApplication.CandidateForm.AcceptTermsAndConditions'
+                                            | translate
+                                    }}
+                                    <a
+                                        href="https://www.personneldemaison.agency/termes--conditions---conditions-de-confidentialiteacute--engagements-du-candidat.html"
+                                        target="_blank"
+                                        >{{
+                                            'CandidateApplication.CandidateForm.TermsAndConditionsLink'
+                                                | translate
+                                        }}</a
+                                    >
+                                </p>
+                                <mat-checkbox
+                                    [disabled]="loading"
+                                    [(ngModel)]="acceptCG"
+                                    [ngModelOptions]="{ standalone: true }"
+                                    name="acceptCG"
+                                    class="apply-form-checkbox"
+                                >
+                                    {{
+                                        'CandidateApplication.CandidateForm.AcceptGeneralTerms'
+                                            | translate
+                                    }}
+                                </mat-checkbox>
+                            </div>
+                        </div>
+                        <div class="row apply-form-terms-section">
+                            <button
+                                class="btn-send-form apply-form-send-button"
+                                [disabled]="(candidateApplication?.address?.country !== 'US' && !acceptCG) || loading"
+                                type="submit"
+                            >
+                                {{
+                                    'CandidateApplication.CandidateForm.SubmitApplication'
+                                        | translate
+                                }}
+                            </button>
+                            <div
+                                class="apply-form-loading-wrapper"
+                                [class.show]="loading"
+                            >
+                                <mat-spinner
+                                    diameter="50"
+                                    strokeWidth="6"
+                                ></mat-spinner>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Step 2 : Thank you -->
+            <div *ngIf="step === 2" class="apply-form-thank-you-section">
+                <div style="height: 100vh; display: flex; align-items: center">
+                    <svg
+                        id="Layer_1"
+                        data-name="Layer 1"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 502.83 502.83"
+                        style="height: 20%"
+                    >
+                        <defs>
+                            <style>
+                                .cls-1 {
+                                    fill: #b28e3b;
+                                }
+                            </style>
+                        </defs>
+                        <path
+                            class="cls-1"
+                            d="M251.41,482.72c-127.53,0-231.3-103.77-231.3-231.3S123.88,20.11,251.41,20.11s231.3,103.77,231.3,231.3-103.77,231.3-231.3,231.3ZM251.41,0C112.55,0,0,112.55,0,251.42s112.55,251.41,251.41,251.41,251.41-112.55,251.41-251.41S390.28,0,251.41,0Z"
+                        />
+                        <polygon
+                            class="cls-1"
+                            points="380.89 152.66 211.95 321.61 122.03 231.71 107.75 245.98 211.95 350.16 395.07 166.94 380.89 152.66"
+                        />
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

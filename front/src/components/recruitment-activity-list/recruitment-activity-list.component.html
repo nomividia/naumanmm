@@ -1,0 +1,129 @@
+<div
+    class="nxs-list-page-content"
+    style="padding-left: 25%; padding-right: 25%"
+>
+    <div class="loading-wrapper" [style.display]="loading ? '' : 'none'">
+        <mat-spinner diameter="50" strokeWidth="6"></mat-spinner>
+    </div>
+
+    <ng-container *ngIf="items?.length && !loading">
+        <ng-container *ngFor="let jobOffer of items">
+            <a
+                *ngIf="
+                    !GlobalAppService.userHasRole(
+                        AuthDataService.currentUser,
+                        RolesList.Candidate
+                    )
+                "
+                class="nxs-list-item-wrapper-container"
+                [routerLink]="'/' + RoutesList.JobOffers + '/' + jobOffer.id"
+            >
+                <ng-container
+                    *ngTemplateOutlet="
+                        jobOfferTemplate;
+                        context: { jobOffer: jobOffer }
+                    "
+                ></ng-container>
+            </a>
+
+            <a
+                *ngIf="
+                    GlobalAppService.userHasRole(
+                        AuthDataService.currentUser,
+                        RolesList.Candidate
+                    )
+                "
+                class="nxs-list-item-wrapper-container"
+                [attr.href]="jobOffer.publicLink"
+            >
+                <ng-container
+                    *ngTemplateOutlet="
+                        jobOfferTemplate;
+                        context: { jobOffer: jobOffer }
+                    "
+                ></ng-container>
+            </a>
+        </ng-container>
+    </ng-container>
+    <ng-container *ngIf="!items?.length && !loading">
+        <h1 class="white-title">
+            {{ 'JobOffer.NoApplicationsMatching' | translate }}
+        </h1>
+    </ng-container>
+</div>
+
+<ng-template #jobOfferTemplate let-jobOffer="jobOffer">
+    <div
+        class="job-offer-wrapper-item d-flex align-items-center"
+        style="min-width: 20%; max-width: 20%"
+    >
+        <mat-icon
+            class="grey-icon material-icons-outlined"
+            [matTooltip]="'Tooltip.Ref' | translate"
+            >local_offer
+        </mat-icon>
+        {{ jobOffer.ref }}
+    </div>
+    <div class="vertical-separator"></div>
+    <div
+        class="job-offer-wrapper-item d-flex align-items-center"
+        style="min-width: 20%; max-width: 20%"
+    >
+        <mat-icon
+            class="grey-icon"
+            [matTooltip]="'Tooltip.Title' | translate"
+            fontSet="material-icons-outlined"
+        >
+            assignment
+        </mat-icon>
+        <div class="splitText" [matTooltip]="jobOffer.title">
+            {{ jobOffer.title }}
+        </div>
+    </div>
+    <div class="vertical-separator"></div>
+    <div
+        class="job-offer-wrapper-item d-flex align-items-center"
+        style="min-width: 20%; max-width: 20%"
+    >
+        <mat-icon
+            class="grey-icon"
+            matTooltip="CV Submitted"
+            fontSet="material-icons-outlined"
+        >
+            attach_file
+        </mat-icon>
+        <div class="splitText">
+            {{ jobOffer.candidateApplications?.length }}
+        </div>
+    </div>
+    <div class="vertical-separator"></div>
+    <div
+        class="job-offer-wrapper-item d-flex align-items-center"
+        style="min-width: 20%; max-width: 20%"
+    >
+        <mat-icon
+            class="grey-icon material-icons-outlined"
+            matTooltip="Candidates Interviewed"
+            >person_outline
+        </mat-icon>
+        {{ interviewedCount(jobOffer) }}
+    </div>
+    <div class="vertical-separator"></div>
+    <div
+        class="job-offer-wrapper-item d-flex align-items-center"
+        style="min-width: 20%; max-width: 20%"
+    >
+        <mat-icon class="grey-icon" matTooltip="Candidates Placed"
+            >how_to_reg</mat-icon
+        >
+        {{ placedCount(jobOffer) }}
+    </div>
+</ng-template>
+<div class="nxs-list-page-bottom">
+    <mat-paginator
+        class="mat-paginator-sticky"
+        [length]="filteredItemsCount"
+        [pageSizeOptions]="[20, 50, 100]"
+    >
+    </mat-paginator>
+</div>

@@ -1,0 +1,75 @@
+app-candidate-application-informations {
+    .second-block {
+        width: 70%;
+        table .left-cell {
+            min-width: 80px;
+        }
+    }
+    .custom-picture {
+        max-width: 50%;
+    }
+    table {
+        font-size: 13px;
+    }
+
+    .pdf-viewer {
+        min-height: 110vh;
+    }
+
+    .action {
+        padding-bottom: 20px;
+    }
+
+    h1 {
+        font-size: 20px;
+    }
+
+    .consultant-picture {
+        background-color: #dcdcdc;
+        border-radius: 50%;
+        min-height: 50px;
+        min-width: 50px;
+        background-position: center;
+        background-size: cover;
+        margin-right: 20px;
+    }
+
+    .table-w-45 {
+        width: 45%;
+    }
+
+    .candidate {
+        table {
+            td {
+                vertical-align: top;
+                padding: 5px 0;
+                font-size: 13px;
+            }
+
+            .left-cell {
+                font-weight: 500;
+            }
+
+            .right-cell {
+                width: 100%;
+            }
+        }
+    }
+
+    .first-block {
+        width: 150%;
+    }
+
+    .second-block {
+        width: 100%;
+
+        .linked-announcement {
+            p {
+                margin: 0 0 8px 0;
+            }
+        }
+    }
+    .bordered-icon {
+        line-height: 0;
+    }
+}

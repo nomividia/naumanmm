@@ -1,0 +1,27 @@
+<h2 mat-dialog-title>Transfer Candidate</h2>
+<div style="margin: 20px auto">
+    <app-job-offers-autocomplete
+        [onlyActiveJobOffers]="true"
+        [(ngModel)]="currentJobOffer"
+        (ngModelChange)="addJobOfferInSelectionList()"
+        class="nxs-small-mat-input"
+        [ngModelOptions]="{ standalone: true }"
+        [disabled]="loading"
+        name="jobRef"
+    >
+    </app-job-offers-autocomplete>
+</div>
+
+<div mat-dialog-actions>
+    <button
+        color="primary"
+        mat-button
+        [disabled]="loading"
+        (click)="validate()"
+    >
+        {{ 'Global.Validate' | translate }}
+    </button>
+    <button color="warn" mat-button [disabled]="loading" (click)="cancel()">
+        {{ 'Global.Cancel' | translate }}
+    </button>
+</div>

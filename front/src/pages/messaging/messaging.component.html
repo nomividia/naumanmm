@@ -1,0 +1,57 @@
+<app-drawer-main-container [headerTitle]="'Menu.Messaging' | translate">
+    <div class="messaging-container">
+        <div class="left-side">
+            <h2>Conversations</h2>
+            <hr />
+            <div class="conversations-list">
+                <div *ngIf="isLoadingCandidates" class="loading-container">
+                    <mat-spinner diameter="50"></mat-spinner>
+                </div>
+                <div
+                    class="candidate-item"
+                    [class.active]="selectedCandidat?.id === item.id"
+                    *ngFor="let item of candidates"
+                    (click)="selectCandidate(item)"
+                    [matTooltip]="'Global.DisplayConversation' | translate"
+                >
+                    <div
+                        class="unseen-icon"
+                        *ngIf="item.candidateMessagesUnseen"
+                    ></div>
+                    <div
+                        class="picture"
+                        [style.backgroundImage]="
+                            'url(' +
+                            ImagesHelper.getCandidatePicture(item) +
+                            ')'
+                        "
+                    ></div>
+                    <div class="candidate-info">
+                        <div class="name">
+                            {{ item.lastName | uppercase }} {{ item.firstName }}
+                        </div>
+                        <div class="job">
+                            {{ getJobLabels(item.candidateCurrentJobs) }}
+                        </div>
+                        <div class="date">
+                            {{
+                                item.lastCandidateMessageSendedDate
+                                    | date : 'dd/MM/YYY - HH:mm'
+                            }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="right-side" *ngIf="selectedCandidat">
+            <app-exchanges
+                [selectCandidateName]="selectedCandidat?.lastName"
+                [selectCandidateFirstName]="selectedCandidat?.firstName"
+                [candidateId]="selectedCandidat?.id"
+                [senderType]="CandidateMessageSenderType.Consultant"
+                (onCandidateMessageSended)="loadCandidate()"
+            >
+            </app-exchanges>
+        </div>
+    </div>
+</app-drawer-main-container>

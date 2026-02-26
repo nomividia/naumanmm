@@ -1,0 +1,25 @@
+@import '../../variables';
+app-users-list {
+    span {
+        font-size: 13px;
+    }
+
+    .userMail {
+        text-overflow: ellipsis;
+        overflow: hidden;
+        width: 100%;
+    }
+
+    .mat-tab-body-content {
+        padding: 30px 20px;
+    }
+
+    .statut-btn-red {
+        background-color: #862f09 !important;
+        color: white;
+    }
+    .statut-btn-green {
+        background-color: $mmi-green !important;
+        color: white;
+    }
+}

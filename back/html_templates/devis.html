@@ -1,0 +1,29 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="css/default.css" />
+    </head>
+
+    <body>
+        <div class="container">
+            <div>{{firstName}} {{lastName}}</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Service</th>
+                        <th>Quantité</th>
+                        <th>Prix</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each services}}
+                    <tr>
+                        <td>{{name}}</td>
+                        <td>{{qty}}</td>
+                        <td>{{price}}</td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+    </body>
+</html>

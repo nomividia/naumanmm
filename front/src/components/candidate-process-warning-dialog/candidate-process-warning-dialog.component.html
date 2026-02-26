@@ -1,0 +1,30 @@
+<div class="candidate-process-warning-dialog">
+    <div class="warning-header">
+        <mat-icon class="warning-icon">warning</mat-icon>
+        <h2 mat-dialog-title>
+            {{ getWarningTitle() }}
+        </h2>
+    </div>
+
+    <mat-dialog-content>
+        <div class="warning-message">
+            <p>
+                {{ getWarningMessage() }}
+            </p>
+            <p class="warning-details">
+                {{ getWarningDetails() }}
+            </p>
+        </div>
+    </mat-dialog-content>
+
+    <mat-dialog-actions align="center">
+        <button
+            mat-raised-button
+            color="primary"
+            (click)="onUnderstand()"
+            class="understand-button"
+        >
+            {{ 'Candidate.ProcessWarningUnderstand' | translate }}
+        </button>
+    </mat-dialog-actions>
+</div>

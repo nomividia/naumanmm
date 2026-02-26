@@ -1,0 +1,98 @@
+<mjml>
+    <mj-head>
+        <mj-attributes>
+            <mj-text
+                padding="0"
+                color="#707070"
+                font-size="16px"
+                line-height="1.5"
+            />
+            <mj-all font-family="Open Sans, Calibri, Arial, sans-serif" />
+            <mj-class name="header" font-size="24px" font-weight="bold" color="#333333" />
+            <mj-class name="highlight" font-size="20px" font-weight="bold" color="#555555" />
+        </mj-attributes>
+    </mj-head>
+    <mj-body width="700px" background-color="#F3F3F3">
+        <mj-wrapper>
+            <mj-section>
+                <mj-column>
+                    <mj-image
+                        width="150px"
+                        src="{{{SITE_BASE_URL}}}/assets/logos/logo-new.png"
+                    />
+                </mj-column>
+            </mj-section>
+        </mj-wrapper>
+        <mj-wrapper padding="0px 20px">
+            <mj-section padding="0">
+                <mj-column
+                    border-radius="10px"
+                    background-color="#FFFFFF"
+                    padding="20px"
+                >
+                    <!-- French version -->
+                    <mj-text mj-class="header" padding="10px 0 20px 0">
+                        Rappel : saisie des entretiens dans l'ATS
+                    </mj-text>
+
+                    <mj-text padding="10px 0">
+                        Semaine du <strong>{{weekStartDate}}</strong> au <strong>{{weekEndDate}}</strong>
+                    </mj-text>
+
+                    <mj-text padding="10px 0 5px 0">
+                        Bonjour {{consultantName}},
+                    </mj-text>
+
+                    <mj-text padding="5px 0 10px 0">
+                        Nous avons constat&eacute; que seulement <strong>{{consultantInterviewCount}}</strong> entretien(s) sur les <strong>{{weeklyGoal}}</strong> attendus ont &eacute;t&eacute; saisis dans l'ATS la semaine derni&egrave;re.
+                    </mj-text>
+
+                    <mj-text padding="10px 0" mj-class="highlight">
+                        Entretiens saisis : <strong>{{consultantInterviewCount}}</strong> / {{weeklyGoal}}
+                    </mj-text>
+
+                    <mj-text padding="10px 0 20px 0">
+                        Pensez &agrave; bien enregistrer tous vos entretiens dans l'ATS au fur et &agrave; mesure. L'objectif est de <strong>{{weeklyGoal}} entretiens saisis par semaine</strong> ({{dailyGoal}} par jour ouvrable). Il en manque <strong>{{deficit}}</strong> pour cette semaine. Un suivi rigoureux nous permet d'avoir une vision claire de l'activit&eacute; et d'assurer un meilleur accompagnement des candidats.
+                    </mj-text>
+
+                    <!-- English version -->
+                    <mj-divider border-color="#999999" border-width="2px" padding="20px 0 20px 0" />
+
+                    <mj-text mj-class="header" padding="10px 0 20px 0">
+                        Reminder: Log Your Interviews in the ATS
+                    </mj-text>
+
+                    <mj-text padding="10px 0">
+                        Week of <strong>{{weekStartDate}}</strong> to <strong>{{weekEndDate}}</strong>
+                    </mj-text>
+
+                    <mj-text padding="10px 0 5px 0">
+                        Hello {{consultantName}},
+                    </mj-text>
+
+                    <mj-text padding="5px 0 10px 0">
+                        We noticed that only <strong>{{consultantInterviewCount}}</strong> out of <strong>{{weeklyGoal}}</strong> expected interviews were logged in the ATS last week.
+                    </mj-text>
+
+                    <mj-text padding="10px 0" mj-class="highlight">
+                        Interviews logged: <strong>{{consultantInterviewCount}}</strong> / {{weeklyGoal}}
+                    </mj-text>
+
+                    <mj-text padding="10px 0 20px 0">
+                        Please make sure to log all your interviews in the ATS as you go. The target is <strong>{{weeklyGoal}} interviews logged per week</strong> ({{dailyGoal}} per working day). You are <strong>{{deficit}}</strong> short this week. Keeping the ATS up to date gives us clear visibility on activity and ensures better candidate follow-up.
+                    </mj-text>
+
+                </mj-column>
+            </mj-section>
+        </mj-wrapper>
+        <mj-section padding="30px 0 0 0">
+            <mj-column padding="0">
+                <mj-text align="center" padding="0" font-size="14px">
+                    Ceci est un rapport automatique du CRM Morgan & Mallet
+                    <br/>This is an automated report from the Morgan & Mallet CRM
+                    <br/><br/>
+                </mj-text>
+            </mj-column>
+        </mj-section>
+    </mj-body>
+</mjml>

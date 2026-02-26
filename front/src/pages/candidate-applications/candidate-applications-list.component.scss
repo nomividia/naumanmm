@@ -1,0 +1,132 @@
+@import '../../variables';
+
+app-candidate-applications {
+    .nxs-list-item-wrapper-container {
+        &.unseenCandidateApplication {
+            font-weight: bold;
+        }
+
+        // mat-icon.mat-icon{
+        //     color: grey;
+        // }
+    }
+
+    .filters-wrapper {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+
+        &.disabled-filters {
+            opacity: 0.5;
+            pointer-events: none;
+            user-select: none;
+        }
+    }
+
+    .search-section {
+        width: 100%;
+        margin-bottom: 15px;
+        padding-bottom: 15px;
+
+        .search-input-container {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+
+            .search-field {
+                flex: 1;
+                max-width: 400px;
+            }
+
+            .search-button {
+                height: 33px;
+                font-size: 13px;
+            }
+        }
+    }
+
+    .search-divider {
+        width: 100%;
+        margin: 0 0 15px 0;
+    }
+
+    h2 {
+        color: $mmi-orange;
+        font-size: 16px;
+        margin: 0 0 5px 0;
+        font-weight: 500;
+    }
+
+    .checkBoxFilteredCandid {
+        margin-left: 1%;
+    }
+
+    .xl-long-width {
+        width: 370px;
+    }
+
+    span {
+        font-size: 13px;
+    }
+
+    .applications-list-and-loading-wrapper {
+        position: relative;
+        .applications-list-wrapper {
+            overflow: auto;
+            max-height: calc(100vh - 380px);
+            min-height: 300px;
+            position: relative;
+
+            .no-filters-message,
+            .no-applications-found-message {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100%;
+                min-height: 300px;
+
+                .message-container {
+                    text-align: center;
+                    padding: 40px;
+                    background-color: #f8f9fa;
+                    border-radius: 12px;
+                    border: 2px dashed #dee2e6;
+                    flex-grow: 1;
+                    margin: 20px;
+
+                    .info-icon,
+                    .search-icon {
+                        font-size: 1.5rem;
+                        color: #6c757d;
+                        margin-bottom: 16px;
+                    }
+
+                    .search-icon {
+                        color: #dc3545;
+                    }
+
+                    h3 {
+                        color: #495057;
+                        margin: 0 0 12px 0;
+                        font-size: 20px;
+                        font-weight: 500;
+                    }
+
+                    p {
+                        color: #6c757d;
+                        margin: 8px 0;
+                        font-size: 16px;
+                        line-height: 1.5;
+                    }
+
+                    .help-text {
+                        font-size: 14px;
+                        color: #868e96;
+                        font-style: italic;
+                        margin-top: 16px;
+                    }
+                }
+            }
+        }
+    }
+}

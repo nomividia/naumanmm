@@ -1,0 +1,265 @@
+<html>
+    <head> </head>
+
+    <body style="width: 1000px">
+        <div style="text-align: center">
+            <div style="text-align: center">
+                <img
+                    style="height: 188px; margin: auto"
+                    src="{{siteUrl}}/assets/logos/logo-new.png"
+                    alt="logo MMI"
+                />
+            </div>
+        </div>
+        <div style="text-align: center; margin-top: 20px">
+            {{{mailContent}}}
+        </div>
+        <div>
+            <h1 style="text-align: center">{{jobOffersTitle}}</h1>
+        </div>
+
+        <table style="width: 80%; margin: 0 auto; border-collapse: collapse">
+            {{#each jobOffersList}}
+            <tr style="border-top: 1px solid; border-bottom: 1px solid">
+                <td style="width: 50%; text-align: left; padding: 10px 0">
+                    {{../jobOfferContentTitle}} : {{title}}
+                </td>
+                <td style="width: 20%; text-align: center; padding: 10px 0">
+                    {{ref}}
+                </td>
+                <td style="width: 30%; text-align: right; padding: 10px 0">
+                    <a
+                        style="
+                            margin-left: auto;
+                            text-decoration: none;
+                            color: #d76004;
+                            border: 2px solid #d76004;
+                            height: 30px;
+                            display: block;
+                            line-height: 2.1;
+                            width: 100%;
+                            text-align: center;
+                            border-radius: 20px;
+                        "
+                        href="{{publicLink}}"
+                    >
+                        {{#if ../isFrench}} Voir {{else}} Open {{/if}}
+                    </a>
+                </td>
+            </tr>
+            {{/each}}
+            <tr></tr>
+        </table>
+
+        <div style="text-align: center">
+            {{#if isFrench}}
+            <a
+                style="
+                    text-decoration: none;
+                    border: 2px solid #d76004;
+                    height: 30px;
+                    display: block;
+                    line-height: 2.1;
+                    width: 273px;
+                    text-align: center;
+                    border-radius: 20px;
+                    background-color: #d76004;
+                    color: #fff !important;
+                    width: 260px;
+                    margin: 20px auto;
+                "
+                href="https://www.personneldemaison.agency/jobs--emplois-personnel-de-maison.html"
+            >
+                Plus d'offres d'emploi
+            </a>
+            {{else}}
+            <a
+                style="
+                    text-decoration: none;
+                    border: 2px solid #d76004;
+                    height: 30px;
+                    display: block;
+                    line-height: 2.1;
+                    width: 273px;
+                    text-align: center;
+                    border-radius: 20px;
+                    background-color: #d76004;
+                    color: #fff !important;
+                    width: 260px;
+                    margin: 20px auto;
+                "
+                href="https://www.personneldemaison.agency/jobs--emplois-personnel-de-maison.html"
+                href="https://www.householdstaff.agency/household-staff-job-board.html"
+            >
+                More jobs available here
+            </a>
+            {{/if}}
+        </div>
+        <div style="text-align: center">
+            <p style="color: #d76004; font-weight: bold">
+                {{#if isFrench}} SUIVEZ NOUS {{else}} Follow us {{/if}}
+            </p>
+            <br />
+            <table style="margin: 0 auto">
+                <tr>
+                    <td>
+                        <a
+                            href="https://www.facebook.com/Householdstaffagency/"
+                            style="
+                                height: 30px;
+                                width: 30px;
+                                border-radius: 50%;
+                                display: inline-block;
+                                border: 1px solid grey;
+                                line-height: 2;
+                                text-align: center;
+                            "
+                        >
+                            <img
+                                style="
+                                    height: 20px;
+                                    width: 20px;
+                                    margin-top: 6px;
+                                "
+                                src="{{ siteUrl }}/assets/facebook.png"
+                                height="20"
+                                width="20"
+                                alt="icon"
+                            />
+                        </a>
+                    </td>
+                    <td>
+                        <a
+                            href="https://twitter.com/UkMallet?lang=fr"
+                            style="
+                                height: 30px;
+                                width: 30px;
+                                border-radius: 50%;
+                                display: inline-block;
+                                border: 1px solid grey;
+                                line-height: 2;
+                                text-align: center;
+                            "
+                        >
+                            <img
+                                style="
+                                    height: 20px;
+                                    width: 20px;
+                                    margin-top: 6px;
+                                "
+                                src="{{ siteUrl }}/assets/twitter.png"
+                                height="20"
+                                width="20"
+                                alt="icon"
+                            />
+                        </a>
+                    </td>
+                    <td>
+                        <a
+                            href="https://www.linkedin.com/in/household-staff-domestic-recruitment-agency-273a329a/"
+                            style="
+                                height: 30px;
+                                width: 30px;
+                                border-radius: 50%;
+                                display: inline-block;
+                                border: 1px solid grey;
+                                line-height: 2;
+                                text-align: center;
+                            "
+                        >
+                            <img
+                                style="
+                                    height: 20px;
+                                    width: 20px;
+                                    margin-top: 5px;
+                                "
+                                src="{{ siteUrl }}/assets/linkedin.png"
+                                height="20"
+                                width="20"
+                                alt="icon"
+                            />
+                        </a>
+                    </td>
+                    <td>
+                        <a
+                            href="https://www.instagram.com/morgan_mallet/"
+                            style="
+                                height: 30px;
+                                width: 30px;
+                                border-radius: 50%;
+                                display: inline-block;
+                                border: 1px solid grey;
+                                line-height: 2;
+                                text-align: center;
+                            "
+                        >
+                            <img
+                                style="
+                                    height: 20px;
+                                    width: 20px;
+                                    margin-top: 6px;
+                                "
+                                src="{{ siteUrl }}/assets/instagram.png"
+                                height="20"
+                                width="20"
+                                alt="icon"
+                            />
+                        </a>
+                    </td>
+                    <td>
+                        <a
+                            href="https://www.youtube.com/channel/UCdSCHH1GQhxmOXPYA-9ZJ3g"
+                            style="
+                                height: 30px;
+                                width: 30px;
+                                border-radius: 50%;
+                                display: inline-block;
+                                border: 1px solid grey;
+                                line-height: 2;
+                                text-align: center;
+                            "
+                        >
+                            <img
+                                style="
+                                    height: 20px;
+                                    width: 20px;
+                                    margin-top: 8px;
+                                "
+                                src="{{ siteUrl }}/assets/youtube.png"
+                                height="20"
+                                width="20"
+                                alt="icon"
+                            />
+                        </a>
+                    </td>
+                </tr>
+            </table>
+            <div style="width: 50%; margin: 0 auto">
+                <hr />
+            </div>
+
+            <div style="text-align: center">
+                <p style="text-align: center">
+                    {{#if isFrench}} Cet email vous a été envoyé par Morgan &
+                    Mallet International {{else}} This email was sent to you by
+                    Morgan & Mallet International {{/if}}
+                    <br />
+                    <br />
+                    25 North Row <br />
+                    London, United Kingdom, W1K6DJ <br />
+                    United Kingdom <br />
+                </p>
+                <br />
+
+                <!-- TODO Lien unsubscribe -->
+                <!-- <a style="text-align: center;" href="#">
+                {{#if isFrench}}
+                Se désinscrire
+                {{else}}
+                Unsubscribe
+                {{/if}}
+            </a> -->
+            </div>
+        </div>
+    </body>
+</html>

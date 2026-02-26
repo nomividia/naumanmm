@@ -1,0 +1,16 @@
+app-edit-role {
+    table.roles-rights-list {
+        border-collapse: collapse;
+        min-width: 30%;
+        tr {
+            border-bottom: 1px solid gray;
+            background-color: lightgreen;
+            &.disabled-right {
+                background-color: lightgray;
+            }
+        }
+        td label {
+            cursor: pointer;
+        }
+    }
+}

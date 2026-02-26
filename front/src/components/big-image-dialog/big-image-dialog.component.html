@@ -1,0 +1,75 @@
+<div mat-dialog-title style="display: flex; justify-content: space-between">
+    <div>
+        <button
+            *ngIf="isDocumentPrintable()"
+            mat-icon-button
+            class="close-btn"
+            (click)="printFile()"
+        >
+            <mat-icon fontSet="material-icons-outlined">print</mat-icon>
+        </button>
+        <button
+            matTooltip="{{ 'Tooltip.DowloadFile' | translate }}"
+            mat-icon-button
+            class="close-btn"
+            (click)="downloadFile()"
+        >
+            <mat-icon fontSet="material-icons-outlined">file_download</mat-icon>
+        </button>
+        <button
+            mat-icon-button
+            color="primary"
+            matTooltip="{{ 'Tooltip.SendFolder' | translate }}"
+            class="close-btn"
+            style="margin-left: 5px"
+            (click)="openSendToCustomerDialog()"
+            [disabled]="loading"
+        >
+            <mat-icon class="material-icons-outlined">
+                forward_to_inbox
+            </mat-icon>
+        </button>
+    </div>
+    <div>
+        <button mat-icon-button class="close-btn" (click)="dialogRef.close()">
+            <mat-icon fontSet="material-icons-outlined">close</mat-icon>
+        </button>
+    </div>
+</div>
+<mat-dialog-content style="min-width: 70vw; min-height: 70vh">
+    <ng-container *ngIf="isDocumentPdfOrImage(); else downloadOnly">
+        <div *ngIf="dataUri" style="text-align: center; margin: auto">
+            <div
+                [style.backgroundImage]="'url(' + dataUri + ')'"
+                class="picture"
+                *ngIf="!data.useOriginalSize"
+            ></div>
+            <img *ngIf="data.useOriginalSize" [src]="dataUri" />
+        </div>
+        <div *ngIf="base64" style="text-align: center; margin: auto">
+            <!-- Simple PDF viewer with iframe -->
+            <iframe
+                [src]="pdfDataUrl"
+                style="width: 100%; height: 70vh; border: none"
+                title="PDF Viewer"
+            >
+            </iframe>
+        </div>
+    </ng-container>
+    <ng-template #downloadOnly>
+        <!-- TODO : traduire -->
+        <p style="text-align: center" *ngIf="!loading">
+            Ce document ne peut être affiché. Vous pouvez le télécharger en
+            cliquant
+            <button
+                (click)="downloadFile()"
+                mat-button
+                matTooltip="{{ 'ToolTip.DowloadFile' | translate }}"
+            >
+                <mat-icon fontSet="material-icons-outlined"
+                    >file_download</mat-icon
+                >ici
+            </button>
+        </p>
+    </ng-template>
+</mat-dialog-content>

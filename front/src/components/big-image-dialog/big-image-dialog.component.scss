@@ -1,0 +1,16 @@
+@import '../../variables.scss';
+
+app-big-image-dialog {
+    .picture {
+        height: 300px;
+        width: 300px;
+        background-position: center;
+        background-size: cover;
+    }
+    div div:first-child .mat-icon {
+        color: $mmi-orange;
+    }
+    @media print {
+        background-color: transparent !important;
+    }
+}

@@ -1,0 +1,1141 @@
+<app-drawer-main-container
+    [headerTitle]="
+        entity?.id
+            ? ('Menu.Candidates' | translate) +
+              ' | ' +
+              entity?.firstName +
+              ' ' +
+              entity?.lastName
+            : ('Candidate.NewCandidate' | translate)
+    "
+    [headerSmallText]="
+        entity?.id
+            ? ('Global.LastUpdate' | translate) +
+              (entity?.modifDate | date : 'dd/MM/yyyy HH:mm') +
+              ' | ' +
+              ('User.CreationDate' | translate) +
+              ' ' +
+              (entity?.creationDate | date : 'dd/MM/yyyy')
+            : undefined
+    "
+    padding="0"
+    [headerSubTitle]="entity?.inCouple ? 'Couple' : ''"
+    [headerEndIcon]="entity?.inCouple ? 'favorite' : ''"
+    [showPendingModifications]="hasPendingModifications"
+>
+    <div class="edit-page-header" style="justify-content: flex-start">
+        <div class="candidat-header-container" *ngIf="entity">
+            <div
+                class="d-flex align-items-center color-primary"
+                style="
+                    flex-wrap: wrap;
+                    row-gap: 6px;
+                    column-gap: 8px;
+                    justify-content: flex-start;
+                "
+            >
+                <div
+                    class="d-flex align-items-center"
+                    style="flex-wrap: wrap; row-gap: 6px; column-gap: 8px"
+                >
+                    <div class="d-flex" style="gap: 2px; align-items: center">
+                        <div
+                            [ngClass]="{
+                                dispo: entity.isAvailable,
+                                indispo: !entity.isAvailable
+                            }"
+                        >
+                            <mat-slide-toggle
+                                color="primary"
+                                [matTooltip]="
+                                    entity.isAvailable
+                                        ? ('Candidate.ToggleDisableBeingCall'
+                                          | translate)
+                                        : ('Candidate.ToggleEnableBeingCall'
+                                          | translate)
+                                "
+                                [disabled]="loading"
+                                [(ngModel)]="entity.isAvailable"
+                                (ngModelChange)="saveToggle()"
+                            >
+                            </mat-slide-toggle>
+                        </div>
+
+                        <span
+                            [ngClass]="{
+                                't-red': !entity.isAvailable,
+                                't-green': entity.isAvailable
+                            }"
+                            style="font-size: 13px"
+                        >
+                            {{
+                                entity.isAvailable
+                                    ? ('Candidate.WishToBeCalledBack'
+                                      | translate)
+                                    : ('Candidate.WishToNotBeCalledBack'
+                                      | translate)
+                            }}
+                        </span>
+                    </div>
+
+                    <div class="d-flex" style="gap: 2px; align-items: center">
+                        <mat-slide-toggle
+                            [matTooltip]="
+                                entity.isOnPost
+                                    ? ('Candidate.ToggleDisablIfNotOnPost'
+                                      | translate)
+                                    : ('Candidate.ToggleEnableIfOnPost'
+                                      | translate)
+                            "
+                            color="primary"
+                            [disabled]="loading"
+                            [(ngModel)]="entity.isOnPost"
+                            (ngModelChange)="saveToggle()"
+                        ></mat-slide-toggle>
+
+                        <span
+                            [ngClass]="{ 't-grey': !entity.isOnPost }"
+                            style="font-size: 13px"
+                        >
+                            {{ 'Candidate.OnPost' | translate }}
+                        </span>
+                    </div>
+
+                    <div
+                        class="d-flex"
+                        style="gap: 2px; align-items: center"
+                        *ngIf="!isNew"
+                    >
+                        <div
+                            [ngClass]="{
+                                dispo: !entity.newsletterUnsubscribed,
+                                indispo: entity.newsletterUnsubscribed
+                            }"
+                        >
+                            <mat-slide-toggle
+                                color="primary"
+                                [matTooltip]="
+                                    entity.newsletterUnsubscribed
+                                        ? ('Candidate.ToggleDisableSubscribedToNewsletter'
+                                          | translate)
+                                        : ('Candidate.ToggleEnableSubscribedToNewsletter'
+                                          | translate)
+                                "
+                                [disabled]="loading"
+                                [(ngModel)]="isSubscribedToNewsletter"
+                                (ngModelChange)="onNewsletterToggleChange()"
+                            >
+                            </mat-slide-toggle>
+                        </div>
+
+                        <span
+                            [ngClass]="{
+                                't-grey': !entity.newsletterUnsubscribed
+                            }"
+                            style="font-size: 13px"
+                        >
+                            {{ 'Candidate.SubscribedToNewsletter' | translate }}
+                        </span>
+                    </div>
+                </div>
+
+                <!-- <ng-container *ngIf="!isNew">
+                    <div
+                        *ngIf="
+                            !entity.manuallyCompleted;
+                            else manuallyCompleted
+                        "
+                    >
+                        <div
+                            *ngIf="
+                                candidateAdvancementPercent >= 100;
+                                else notCompleted
+                            "
+                            class="d-flex align-items-center"
+                        >
+                            <div class="completion-dot complete"></div>
+                            {{ 'Global.Complete' | translate }}
+                            <button
+                                mat-icon-button
+                                class="bordered-icon"
+                                style="margin-left: 5px"
+                            >
+                                <mat-icon fontSet="material-icons-outlined"
+                                    >folder_shared</mat-icon
+                                >
+                            </button>
+                        </div>
+
+                        <ng-template #notCompleted>
+                            <div class="d-flex align-items-center">
+                                <div class="completion-dot incomplete"></div>
+                                <span>{{
+                                    'Global.Incomplete' | translate
+                                }}</span>
+                                <button
+                                    mat-icon-button
+                                    [matTooltip]="
+                                        'Candidate.TooltipPercentageEnd'
+                                            | translate
+                                    "
+                                    (click)="setAdvancementPercentManually()"
+                                    class="bordered-icon"
+                                    style="margin-left: 5px"
+                                >
+                                    <mat-icon fontSet="material-icons-outlined"
+                                        >folder_shared</mat-icon
+                                    >
+                                </button>
+
+                                <mat-icon
+                                    [matTooltip]="
+                                        ('Candidate.TooltipFillsMissed'
+                                            | translate) +
+                                        ' ' +
+                                        entity.candidateFieldsMiss?.join(' / ')
+                                    "
+                                    *ngIf="candidateAdvancementPercent >= 90"
+                                    class="ml-2"
+                                    fontSet="material-icons-outlined"
+                                >
+                                    help_outline</mat-icon
+                                >
+                            </div>
+                        </ng-template>
+                    </div>
+                    <ng-template #manuallyCompleted>
+                        <div class="ml-1 d-flex align-items-center">
+                            <div class="completion-dot complete"></div>
+                            {{ 'Global.Complete' | translate }}
+                            <button
+                                mat-icon-button
+                                (click)="setAdvancementPercentAuto()"
+                                class="bordered-icon"
+                                style="margin-left: 5px"
+                                [matTooltip]="
+                                    'Candidate.TooltipPercentageManual'
+                                        | translate
+                                "
+                            >
+                                <mat-icon fontSet="material-icons-outlined"
+                                    >folder_shared</mat-icon
+                                >
+                            </button>
+                        </div>
+                    </ng-template>
+
+                    <button
+                        mat-icon-button
+                        [matTooltip]="
+                            'Tooltip.FollowUpAvailability' | translate
+                        "
+                        class="bordered-icon"
+                        (click)="openSendAvailabilityDialog()"
+                        [disabled]="loading"
+                    >
+                        <mat-icon class="material-icons-outlined">
+                            forward_to_inbox
+                        </mat-icon>
+                    </button>
+                </ng-container> -->
+            </div>
+
+            <div
+                class="d-flex align-items-center"
+                style="flex-wrap: wrap; row-gap: 6px; justify-content: flex-end"
+            >
+                <ng-container *ngIf="!isNew">
+                    <!-- <button *ngIf="!entity.manuallyCompleted" mat-raised-button class="btn-normal app-orange-button"
+                        (click)="setAdvancementPercentManually()"
+                        [matTooltip]="'Candidate.TooltipPercentage' | translate">
+                        <mat-icon>sync_disabled</mat-icon>
+                        {{'Candidate.PercentageManuallyComplete' | translate}}
+                    </button>
+                    <button *ngIf="entity.manuallyCompleted" mat-raised-button class="btn-normal app-orange-button"
+                        (click)="setAdvancementPercentAuto()" [matTooltip]="'Candidate.TooltipPercentage' | translate">
+                        <mat-icon>sync</mat-icon>
+                        {{'Candidate.PercentageAutoComplete' | translate}}
+                    </button> -->
+
+                    <!-- <div
+                        class="pastille"
+                        [matTooltip]="getReferenceValidatedLabel()"
+                        [ngClass]="{
+                            'p-green': entity.referencesValidated,
+                            'p-grey': entity.referencesValidated == null,
+                            'p-red': !entity.referencesValidated
+                        }"
+                    ></div>
+                    <button
+                        mat-icon-button
+                        class="small-btn"
+                        (click)="setReferenceValidated(true)"
+                        [matTooltip]="
+                            'Experience.TooltipValidateRef' | translate
+                        "
+                    >
+                        <mat-icon class="material-icons-outlined"
+                            >check</mat-icon
+                        >
+                    </button>
+                    <button
+                        mat-icon-button
+                        class="small-btn"
+                        (click)="setReferenceValidated(false)"
+                        [matTooltip]="
+                            'Experience.TooltipRefNotValidated' | translate
+                        "
+                    >
+                        <mat-icon class="material-icons-outlined"
+                            >close</mat-icon
+                        >
+                    </button> -->
+
+                    <button
+                        mat-raised-button
+                        class="ml-1 btn-normal app-green-button"
+                        [disabled]="loading"
+                        (click)="createUser()"
+                        *ngIf="
+                            GlobalAppService.userHasOneOfRoles(
+                                AuthDataService.currentUser,
+                                [RolesList.AdminTech, RolesList.Admin, RolesList.RH, RolesList.Consultant]
+                            )
+                        "
+                        [matTooltip]="
+                            'Candidate.ReSendCredentialsByMail' | translate
+                        "
+                    >
+                        <mat-icon fontSet="material-icons-outlined"
+                            >lock_open</mat-icon
+                        >
+                        {{
+                            'Candidate.ReSendCredentialsByMail' | translate
+                        }}
+                    </button>
+                </ng-container>
+
+                <ng-container *ngIf="modifyStatus">
+                    <mat-form-field
+                        class="nxs-small-mat-input ml-1"
+                        appearance="outline"
+                    >
+                        <mat-label>Statut</mat-label>
+                        <mat-select
+                            [(ngModel)]="entity.candidateStatusId"
+                            (ngModelChange)="onStatusChange()"
+                            #fieldStatus
+                        >
+                            <mat-option
+                                *ngFor="let status of candidateStatusList"
+                                [value]="status.id"
+                            >
+                                {{ 'label' | dbTranslate : status }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </ng-container>
+
+                <ng-container *ngIf="!modifyStatus && !isNew">
+                    <button
+                        mat-raised-button
+                        color="primary"
+                        class="ml-1 btn-normal edit-btn"
+                        [class]="getStatusColor()"
+                        [disabled]="loading"
+                        #toggleStatus
+                        [matTooltip]="'Candidate.EditStatus' | translate"
+                    >
+                        <ng-container
+                            *ngIf="
+                                entity?.candidateStatus?.label;
+                                else noStatus
+                            "
+                        >
+                            {{ 'label' | dbTranslate : entity.candidateStatus }}
+                        </ng-container>
+                        <ng-template #noStatus>
+                            {{ 'Candidate.EditStatus' | translate }}
+                        </ng-template>
+                        <mat-icon fontSet="material-icons-outlined"
+                            >edit</mat-icon
+                        >
+                    </button>
+                </ng-container>
+
+                <div
+                    style="
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        gap: 5px;
+                        margin-left: 6px;
+                    "
+                >
+                    <ng-container
+                        *ngIf="
+                            GlobalAppService.userHasOneOfRoles(
+                                AuthDataService.currentUser,
+                                [
+                                    RolesList.AdminTech,
+                                    RolesList.Admin,
+                                    RolesList.RH,
+                                    RolesList.Consultant
+                                ]
+                            )
+                        "
+                    >
+                        <button
+                            mat-icon-button
+                            color="primary"
+                            [matTooltip]="
+                                'Candidate.ModificationStatusHistory'
+                                    | translate
+                            "
+                            *ngIf="entity?.id"
+                            [disabled]="loading || entity.disabled || !entity"
+                            (click)="showCandidateStatusHistory()"
+                            class="bordered-icon"
+                        >
+                            <mat-icon class="material-icons-outlined">
+                                history
+                            </mat-icon>
+                        </button>
+                    </ng-container>
+                    <ng-container
+                        *ngIf="
+                            GlobalAppService.userHasOneOfRoles(
+                                AuthDataService.currentUser,
+                                [
+                                    RolesList.AdminTech,
+                                    RolesList.Admin,
+                                    RolesList.RH,
+                                    RolesList.Consultant
+                                ]
+                            )
+                        "
+                    >
+                        <!-- <button
+                            mat-icon-button
+                            color="primary"
+                            [matTooltip]="
+                                'Candidate.archiveCandidate' | translate
+                            "
+                            *ngIf="entity?.id"
+                            [disabled]="loading || entity.disabled || !entity"
+                            (click)="onArchive()"
+                            class="bordered-icon"
+                        >
+                            <mat-icon class="material-icons-outlined">
+                                inventory_2
+                            </mat-icon>
+                        </button> -->
+                        <button
+                            mat-icon-button
+                            color="primary"
+                            [matTooltip]="
+                                'Candidate.DeleteCandidate' | translate
+                            "
+                            *ngIf="
+                                !isNew &&
+                                entity &&
+                                GlobalAppService.userHasOneOfRoles(
+                                    AuthDataService.currentUser,
+                                    [RolesList.Admin, RolesList.AdminTech]
+                                )
+                            "
+                            [disabled]="loading || !entity"
+                            (click)="removeCandidate()"
+                            class="bordered-icon"
+                        >
+                            <mat-icon class="material-icons-outlined"
+                                >delete
+                            </mat-icon>
+                        </button>
+                        <button
+                            *ngIf="!isNew"
+                            mat-icon-button
+                            color="primary"
+                            [matTooltip]="'Tooltip.SendFolder' | translate"
+                            class="bordered-icon"
+                            (click)="openSendToCustomerDialog()"
+                            [disabled]="loading"
+                        >
+                            <mat-icon class="material-icons-outlined">
+                                forward_to_inbox
+                            </mat-icon>
+                        </button>
+                    </ng-container>
+                </div>
+            </div>
+        </div>
+
+        <!-- <div class="left">
+            <div *ngIf="hasPendingModifications">
+                {{'Global.UnsavedChanges' | translate}}
+            </div>
+        </div> -->
+        <!-- <div class="buttons-wrapper">
+            <button mat-raised-button color="primary" [disabled]="loading" [matTooltip]="'Global.Back' | translate"
+                (click)="goBack()">
+                <mat-icon>keyboard_arrow_left</mat-icon>{{'Global.Back' | translate}}
+            </button>
+            <ng-container>
+                <button [disabled]="loading" mat-raised-button color="primary" (click)="save()">
+                    <mat-icon>save</mat-icon>{{'Global.Save' | translate}}
+                </button>
+                <button [disabled]="loading" mat-raised-button color="primary" (click)="save(true)">
+                    <mat-icon>exit_to_app</mat-icon>{{'Global.SaveQuit' | translate}}
+                </button>
+                <ng-container *ngIf="entity?.id">
+                    <a [disabled]="loading" mat-raised-button color="primary">
+                        {{'Global.New' | translate}}
+                    </a>
+                </ng-container>
+            </ng-container>
+        </div> -->
+        <!-- <div class="right" *ngIf="loading">
+            <mat-spinner diameter="30" strokeWidth="3"></mat-spinner>
+        </div> -->
+        <div class="mainLoadingOverlay" *ngIf="loading">
+            <div style="position: relative; margin-top: 10vh">
+                <mat-spinner diameter="80" strokeWidth="7"></mat-spinner>
+            </div>
+            <!-- <div class="mainLoadingOverlayMessage"></div> -->
+        </div>
+    </div>
+
+    <mat-tab-group
+        *ngIf="entity"
+        class="container"
+        [(selectedIndex)]="tabIndex"
+        (selectedIndexChange)="onTabChange()"
+    >
+        <!-- Global informations -->
+        <mat-tab [label]="'Menu.GlobalInformations' | translate">
+            <candidate-informations-component
+                (onSave)="save()"
+                [entity]="entity"
+                [showNotes]="true"
+                [showConditions]="true"
+                [showConsultant]="true"
+                [isNew]="isNew"
+                (onModification)="onModification($event)"
+                #candidateInformation
+            >
+            </candidate-informations-component>
+        </mat-tab>
+        <!-- End Global informations -->
+
+        <!-- Skills and value added -->
+        <mat-tab [label]="'Candidate.Skills' | translate" *ngIf="!isNew">
+            <div class="d-flex row-container mt-1">
+                <div class="column-container">
+                    <div
+                        class="edit-page-block"
+                        style="
+                            height: calc(100vh - 280px);
+                            width: 100%;
+                            overflow: auto;
+                        "
+                        [class.selected]="editModes.jobs"
+                    >
+                        <ng-container
+                            *ngTemplateOutlet="
+                                editBtn;
+                                context: { editModeKey: 'jobs', lockIcon: true }
+                            "
+                        >
+                        </ng-container>
+                        <h2>{{ 'Candidate.Skills' | translate }}</h2>
+                        <hr class="mb-1" />
+                        <ng-container *ngIf="editModes.jobs">
+                            <experiences-component
+                                [jobList]="jobList"
+                                [candidateExperiences]="entity.candidateJobs"
+                                [candidateId]="entity.id"
+                                (onModification)="onModification($event)"
+                                (onStatusChange)="onJobStatusChange()"
+                            >
+                            </experiences-component>
+                        </ng-container>
+                        <ng-container *ngIf="!editModes.jobs">
+                            <!-- Empty State -->
+                            <div
+                                class="experiences-empty-state"
+                                *ngIf="!entity.candidateJobs?.length"
+                            >
+                                <mat-icon>work_off</mat-icon>
+                                <p>{{ 'Global.NotInformed' | translate }}</p>
+                            </div>
+
+                            <!-- Experience Cards -->
+                            <div
+                                *ngFor="let item of entity.candidateJobs"
+                                class="experience-readonly-card"
+                                [ngClass]="{
+                                    'card-validated':
+                                        item.status ===
+                                        CandidateJobStatus.VALIDATED,
+                                    'card-refused':
+                                        item.status ===
+                                        CandidateJobStatus.REFUSED,
+                                    'card-pending':
+                                        item.status ===
+                                        CandidateJobStatus.PENDING
+                                }"
+                            >
+                                <!-- Main Content -->
+                                <div class="card-main-content">
+                                    <!-- Job Info -->
+                                    <div class="job-info">
+                                        <p class="job-title">
+                                            <mat-icon>{{
+                                                item.type === 'EDUCATION'
+                                                    ? 'school'
+                                                    : 'work_outline'
+                                            }}</mat-icon>
+                                            <ng-container *ngIf="item.job">
+                                                {{
+                                                    'label'
+                                                        | dbTranslate : item.job
+                                                }}
+                                            </ng-container>
+                                            <ng-container *ngIf="!item.job">
+                                                {{
+                                                    'Experience.jobNotCompleted'
+                                                        | translate
+                                                }}
+                                            </ng-container>
+                                        </p>
+                                        <p
+                                            class="job-period"
+                                            *ngIf="item.experienceStartDate"
+                                        >
+                                            <mat-icon>date_range</mat-icon>
+                                            {{
+                                                item.experienceStartDate
+                                                    | date : 'MM/yyyy'
+                                            }}
+                                            <ng-container
+                                                *ngIf="item.inActivity"
+                                            >
+                                                -
+                                                {{
+                                                    'Global.Present' | translate
+                                                }}
+                                            </ng-container>
+                                            <ng-container
+                                                *ngIf="
+                                                    !item.inActivity &&
+                                                    item.experienceEndDate
+                                                "
+                                            >
+                                                -
+                                                {{
+                                                    item.experienceEndDate
+                                                        | date : 'MM/yyyy'
+                                                }}
+                                            </ng-container>
+                                        </p>
+                                        <div
+                                            class="job-description"
+                                            *ngIf="item.jobDescription"
+                                            [innerHTML]="item.jobDescription"
+                                        ></div>
+                                        <p
+                                            class="leaving-reason"
+                                            *ngIf="item.leavingReason"
+                                        >
+                                            {{
+                                                'Candidate.LeavingReason'
+                                                    | translate
+                                            }}:
+                                            {{ item.leavingReason }}
+                                        </p>
+                                    </div>
+
+                                    <!-- Employer Info -->
+                                    <div
+                                        class="employer-info"
+                                        *ngIf="item.jobReference"
+                                    >
+                                        <div class="employer-header">
+                                            <mat-icon>{{
+                                                item.jobReference.isCompany
+                                                    ? 'business'
+                                                    : 'person'
+                                            }}</mat-icon>
+                                            <p class="employer-name">
+                                                <ng-container
+                                                    *ngIf="
+                                                        item.jobReference
+                                                            .isCompany
+                                                    "
+                                                >
+                                                    {{
+                                                        item.jobReference
+                                                            .companyName
+                                                            | titlecase
+                                                    }}
+                                                </ng-container>
+                                                <ng-container
+                                                    *ngIf="
+                                                        item.jobReference
+                                                            .isPrivatePerson
+                                                    "
+                                                >
+                                                    {{
+                                                        item.jobReference
+                                                            .privatePersonFirstName
+                                                            | titlecase
+                                                    }}
+                                                    {{
+                                                        item.jobReference
+                                                            .privatePersonLastName
+                                                            | titlecase
+                                                    }}
+                                                </ng-container>
+                                                <ng-container
+                                                    *ngIf="
+                                                        !item.jobReference
+                                                            .isCompany &&
+                                                        !item.jobReference
+                                                            .isPrivatePerson
+                                                    "
+                                                >
+                                                    {{
+                                                        'Experience.notCompleted'
+                                                            | translate
+                                                    }}
+                                                </ng-container>
+                                            </p>
+                                        </div>
+                                        <p
+                                            class="contact-name"
+                                            *ngIf="
+                                                item.jobReference
+                                                    .contactFullName
+                                            "
+                                        >
+                                            {{
+                                                'Experience.ContactFullName'
+                                                    | translate
+                                            }}:
+                                            {{
+                                                item.jobReference
+                                                    .contactFullName
+                                            }}
+                                        </p>
+                                        <p
+                                            class="contact-location"
+                                            *ngIf="
+                                                item.jobReference.addresses?.[0]
+                                                    ?.city
+                                            "
+                                        >
+                                            {{
+                                                item.jobReference.addresses[0]
+                                                    .city | titlecase
+                                            }}<ng-container
+                                                *ngIf="
+                                                    item.jobReference
+                                                        .addresses[0]?.country
+                                                "
+                                                >,
+                                                {{
+                                                    RefData.getCountryLabel(
+                                                        item.jobReference
+                                                            .addresses[0]
+                                                            .country
+                                                    ) | titlecase
+                                                }}</ng-container
+                                            >
+                                        </p>
+                                    </div>
+
+                                    <!-- Status Indicator -->
+                                    <div
+                                        class="status-indicator"
+                                        *ngIf="isConsultant"
+                                    >
+                                        <span
+                                            class="status-badge-readonly"
+                                            [ngClass]="{
+                                                validated:
+                                                    item.status ===
+                                                    CandidateJobStatus.VALIDATED,
+                                                refused:
+                                                    item.status ===
+                                                    CandidateJobStatus.REFUSED,
+                                                pending:
+                                                    item.status ===
+                                                    CandidateJobStatus.PENDING
+                                            }"
+                                        >
+                                            <mat-icon>{{
+                                                item.status ===
+                                                CandidateJobStatus.VALIDATED
+                                                    ? 'check_circle'
+                                                    : item.status ===
+                                                      CandidateJobStatus.REFUSED
+                                                    ? 'cancel'
+                                                    : 'pending'
+                                            }}</mat-icon>
+                                            {{
+                                                'Candidate.JobStatus.' +
+                                                    item.status | translate
+                                            }}
+                                        </span>
+                                        <span
+                                            *ngIf="item.jobReference"
+                                            class="contact-availability"
+                                            [ngClass]="{
+                                                'can-contact':
+                                                    item.jobReference
+                                                        .candidateAcceptContact,
+                                                'cannot-contact':
+                                                    !item.jobReference
+                                                        .candidateAcceptContact
+                                            }"
+                                        >
+                                            <mat-icon>{{
+                                                item.jobReference
+                                                    .candidateAcceptContact
+                                                    ? 'phone_enabled'
+                                                    : 'phone_disabled'
+                                            }}</mat-icon>
+                                            {{
+                                                item.jobReference
+                                                    .candidateAcceptContact
+                                                    ? ('MyFolder.CanContact'
+                                                      | translate)
+                                                    : ('MyFolder.CannotContact'
+                                                      | translate)
+                                            }}
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <!-- Card Footer (Notes) -->
+                                <div
+                                    class="card-footer"
+                                    *ngIf="
+                                        item.jobReference?.note ||
+                                        (isConsultant && item.jobReference)
+                                    "
+                                >
+                                    <!-- Existing note display -->
+                                    <div
+                                        class="note-preview has-note"
+                                        *ngIf="item.jobReference?.note"
+                                    >
+                                        <mat-icon>notes</mat-icon>
+                                        <span>{{
+                                            item.jobReference.note
+                                                | shortenString : 100
+                                        }}</span>
+                                    </div>
+                                    <!-- Empty note - clickable area -->
+                                    <div
+                                        class="note-empty-clickable"
+                                        *ngIf="
+                                            !item.jobReference?.note &&
+                                            isConsultant &&
+                                            item.jobReference
+                                        "
+                                        (click)="
+                                            openNoteDialog(item.jobReference)
+                                        "
+                                        [matTooltip]="
+                                            'Tooltip.AddNoteToReference'
+                                                | translate
+                                        "
+                                    >
+                                        <mat-icon>add_comment</mat-icon>
+                                        <span>{{
+                                            'Experience.ClickToAddNote'
+                                                | translate
+                                        }}</span>
+                                    </div>
+                                    <!-- Edit button (only when note exists) -->
+                                    <div
+                                        class="note-action"
+                                        *ngIf="
+                                            isConsultant &&
+                                            item.jobReference &&
+                                            item.jobReference.note
+                                        "
+                                    >
+                                        <button
+                                            mat-icon-button
+                                            [matTooltip]="
+                                                'Tooltip.EditNote' | translate
+                                            "
+                                            (click)="
+                                                openNoteDialog(
+                                                    item.jobReference
+                                                )
+                                            "
+                                        >
+                                            <mat-icon>edit_note</mat-icon>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-container>
+                    </div>
+                </div>
+            </div>
+        </mat-tab>
+        <!-- End Skills and value added -->
+
+        <!-- Files -->
+        <mat-tab [label]="'Global.Files' | translate" *ngIf="!isNew">
+            <ng-template matTabContent>
+                <app-candidate-files
+                    *ngIf="entity"
+                    [loading]="loading"
+                    (onLoading)="onLoading($event)"
+                    [candidate]="entity"
+                    (filesChanged)="onFilesChanged()"
+                >
+                </app-candidate-files>
+            </ng-template>
+        </mat-tab>
+        <!-- End Files -->
+
+        <!-- Presentations -->
+        <mat-tab [label]="'Candidate.Presentations' | translate" *ngIf="!isNew">
+            <ng-template matTabContent>
+                <app-candidate-presentations [candidateId]="entity.id">
+                </app-candidate-presentations>
+            </ng-template>
+        </mat-tab>
+        <!-- End Presentations -->
+
+        <!-- Resume MMI -->
+        <mat-tab [label]="'Global.ResumeMMI' | translate" *ngIf="!isNew">
+            <ng-template matTabContent>
+                <app-candidate-resume-component
+                    [candidateId]="entity.id"
+                    [candidate]="entity"
+                    [selectedJobId]="
+                        entity.candidateCurrentJobs[0].currentJobId || null
+                    "
+                >
+                </app-candidate-resume-component>
+            </ng-template>
+        </mat-tab>
+        <!-- End Resume MMI -->
+
+        <!-- Candidate applications -->
+        <mat-tab
+            [label]="'Global.CandidateApplications' | translate"
+            *ngIf="!isNew && getCandidateApplicationsRequest.candidateId"
+        >
+            <div class="edit-page-block">
+                <app-candidate-applications-list-minified
+                    [displayApplicationStatus]="true"
+                    [displayCandidateStatus]="false"
+                    [requestComponent]="getCandidateApplicationsRequest"
+                >
+                </app-candidate-applications-list-minified>
+            </div>
+        </mat-tab>
+        <!-- End Candidate applications -->
+
+        <!-- Interviews -->
+        <mat-tab [label]="'Global.Interviews' | translate" *ngIf="!isNew">
+            <div class="nxs-list-page-filters">
+                <div class="filters-wrapper mt-2">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <ng-container
+                                *ngIf="
+                                    requestInterview &&
+                                    candidateInterviewsList.length
+                                "
+                            >
+                                <mat-form-field
+                                    class="nxs-small-mat-input long-width"
+                                    appearance="outline"
+                                >
+                                    <mat-label>{{
+                                        'Global.Status' | translate
+                                    }}</mat-label>
+                                    <mat-select
+                                        [(ngModel)]="
+                                            requestInterview.interviewCurrentDate
+                                        "
+                                        (ngModelChange)="loadInterviewData()"
+                                    >
+                                        <mat-option [value]="null">{{
+                                            'Global.NoMatter' | translate
+                                        }}</mat-option>
+                                        <mat-option value="past">{{
+                                            'Candidate.FilterPast' | translate
+                                        }}</mat-option>
+                                        <mat-option value="coming">{{
+                                            'Candidate.FilterComing' | translate
+                                        }}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                                <mat-form-field
+                                    class="nxs-small-mat-input long-width"
+                                    appearance="outline"
+                                >
+                                    <mat-label>{{
+                                        'Global.Year' | translate
+                                    }}</mat-label>
+                                    <mat-select
+                                        [(ngModel)]="
+                                            requestInterview.interviewFilterYear
+                                        "
+                                        (ngModelChange)="loadInterviewData()"
+                                    >
+                                        <mat-option [value]="null">{{
+                                            'Global.NoMatter' | translate
+                                        }}</mat-option>
+                                        <mat-option
+                                            *ngFor="let date of yearList"
+                                            [value]="date"
+                                            >{{ date }}</mat-option
+                                        >
+                                    </mat-select>
+                                </mat-form-field>
+                                <mat-form-field
+                                    class="nxs-small-mat-input long-width"
+                                    appearance="outline"
+                                >
+                                    <mat-label>{{
+                                        'Global.Month' | translate
+                                    }}</mat-label>
+                                    <mat-select
+                                        [(ngModel)]="
+                                            requestInterview.interviewFilterMonth
+                                        "
+                                        (ngModelChange)="loadInterviewData()"
+                                    >
+                                        <mat-option [value]="null">{{
+                                            'Global.NoMatter' | translate
+                                        }}</mat-option>
+                                        <mat-option
+                                            *ngFor="let month of monthList"
+                                            [value]="month.code"
+                                            >{{ month.label }}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </ng-container>
+                        </div>
+                        <button
+                            mat-raised-button
+                            color="primary"
+                            (click)="onAddInterview()"
+                            [matTooltip]="
+                                'Interview.AddInterviewForCandidate' | translate
+                            "
+                        >
+                            <mat-icon style="color: white">add</mat-icon>
+                            {{ 'Interview.AddInterview' | translate }}
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <!-- LIST INTERVIEW -->
+            <app-interview-list
+                mode="editCandidate"
+                [loading]="loading"
+                [candidateInterviewsList]="candidateInterviewsList"
+                (onInterviewClick)="openDetailInterviewDialog($event)"
+            >
+            </app-interview-list>
+        </mat-tab>
+        <!-- End Interviews -->
+
+        <!-- Job Placement History -->
+        <mat-tab [label]="'Candidate.JobPlacement' | translate" *ngIf="!isNew">
+            <div class="edit-page-block">
+                <app-candidate-placement-history
+                    #placementHistory
+                    [candidateId]="entity.id"
+                ></app-candidate-placement-history>
+            </div>
+        </mat-tab>
+        <!-- End Job Placement History -->
+
+        <!-- {{'Global.Missions' | translate}} -->
+        <!-- <mat-tab [label]="'Global.Missions' | translate" *ngIf="!isNew">
+
+            <div style="text-align:center;padding-top:220px;">
+                <p style="font-size: 40px;color: lightgrey;font-weight: bold;">Développement à définir</p>
+            </div>
+        </mat-tab> -->
+
+        <!-- Discussions -->
+        <!-- <mat-tab [label]="'Global.Discussions' | translate" *ngIf="!isNew">
+            <app-exchanges
+                *ngIf="entity"
+                [candidateId]="entity.id"
+                [senderType]="CandidateMessageSenderType.Consultant"
+            ></app-exchanges>
+        </mat-tab> -->
+        <!-- End Discussions -->
+    </mat-tab-group>
+</app-drawer-main-container>
+
+<ng-template
+    #editBtn
+    let-editModeKey="editModeKey"
+    let-addIcon="addIcon"
+    let-lockIcon="lockIcon"
+>
+    <button
+        class="edit-btn"
+        [style]="addIcon ? 'position:absolute;bottom:10px;right:10px;' : ''"
+        mat-raised-button
+        mat-icon-button
+        color="primary"
+        (click)="onEditClick(editModeKey)"
+        [matTooltip]="
+            $any(editModes)[editModeKey]
+                ? ('Global.Save' | translate)
+                : ('Candidate.EditInformations' | translate)
+        "
+        [disabled]="loading"
+    >
+        <mat-icon *ngIf="!$any(editModes)[editModeKey] && addIcon"
+            >add</mat-icon
+        >
+        <mat-icon *ngIf="!$any(editModes)[editModeKey] && !addIcon"
+            >edit</mat-icon
+        >
+
+        <mat-icon *ngIf="$any(editModes)[editModeKey]">done</mat-icon>
+    </button>
+
+    <button
+        (click)="onLockPageBlock(editModeKey)"
+        *ngIf="!$any(editModes)[editModeKey] && lockIcon"
+        class="edit-btn"
+        [ngClass]="{ 'edit-lock': !isPageLock(editModeKey) }"
+        [disabled]="loading"
+        style="position: absolute; right: 60px"
+        mat-raised-button
+        mat-icon-button
+        color="primary"
+        [matTooltip]="
+            isPageLock(editModeKey)
+                ? ('Block.LockedForCandidate' | translate)
+                : ('Block.LockBlock' | translate)
+        "
+    >
+        <mat-icon fontSet="material-icons-outlined">
+            <ng-container *ngIf="isPageLock(editModeKey); else unLock"
+                >lock</ng-container
+            >
+            <ng-template #unLock> lock_open </ng-template>
+        </mat-icon>
+    </button>
+</ng-template>

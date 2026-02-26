@@ -1,0 +1,7 @@
+node_modules
+src/environment/environment.json
+src/environment/env.json
+src/logs
+dist
+pdf_output
+uploaded-files-temp

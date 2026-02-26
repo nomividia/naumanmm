@@ -1,0 +1,97 @@
+<ng-container *ngIf="ready">
+    <div style="display: flex">
+        <div class="translation-input-wrapper" style="flex: 1">
+            <ng-container
+                *ngIf="
+                    TranslationShow &&
+                    TranslationShow.language == languageToShow
+                "
+            >
+                <mat-form-field
+                    appearance="outline"
+                    *ngIf="TranslationShow.language"
+                >
+                    <mat-label
+                        >{{ placeholder }} -
+                        {{ TranslationShow.language.label }}</mat-label
+                    >
+                    <input
+                        *ngIf="!textarea"
+                        [placeholder]="
+                            placeholder +
+                                ' - ' +
+                                TranslationShow.language.label +
+                                ' ' +
+                                TranslationShow.language.icon | decode_uri
+                        "
+                        matInput
+                        type="text"
+                        [(ngModel)]="TranslationShow.value"
+                        (ngModelChange)="changeTransation(TranslationShow)"
+                    />
+                    <textarea
+                        *ngIf="textarea"
+                        [placeholder]="
+                            placeholder +
+                                ' - ' +
+                                TranslationShow.language.label +
+                                ' ' +
+                                TranslationShow.language.icon | decode_uri
+                        "
+                        matInput
+                        [(ngModel)]="TranslationShow.value"
+                    ></textarea>
+                </mat-form-field>
+                <button
+                    *ngIf="languageToShow !== languageDefault"
+                    mat-icon-button
+                    (click)="removeTranslation(TranslationShow)"
+                >
+                    <mat-icon fontSet="material-icons-outlined"
+                        >delete</mat-icon
+                    >
+                </button>
+            </ng-container>
+            <ng-container *ngIf="!languageToShow">
+                <mat-form-field appearance="outline">
+                    <mat-label>{{ placeholder }}</mat-label>
+                    <input
+                        *ngIf="!textarea"
+                        [placeholder]="placeholder"
+                        matInput
+                        type="text"
+                        [(ngModel)]="$any(entity)[field]"
+                    />
+                    <textarea
+                        cdkTextareaAutosize
+                        *ngIf="textarea"
+                        [placeholder]="placeholder"
+                        matInput
+                        [(ngModel)]="$any(entity)[field]"
+                    ></textarea>
+                </mat-form-field>
+            </ng-container>
+        </div>
+
+        <div
+            *ngIf="languageToShow && languages && languages.length > 0"
+            class="translation-input-wrapper"
+            style="justify-content: flex-end"
+        >
+            <mat-form-field appearance="outline">
+                <mat-label>Langue</mat-label>
+                <mat-select
+                    [(ngModel)]="languageToShow"
+                    (ngModelChange)="addTranslation()"
+                >
+                    <mat-option
+                        *ngFor="let language of languages"
+                        [value]="language"
+                    >
+                        {{ language.label }} - {{ language.icon | decode_uri }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+    </div>
+</ng-container>

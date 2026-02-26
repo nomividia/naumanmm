@@ -1,0 +1,24 @@
+app-edit-job {
+    .job-wrapper {
+        .mat-form-field {
+            display: block;
+            margin: 10px 8px;
+            max-width: 280px;
+        }
+    }
+    table {
+        border: 1px solid transparent;
+        border-collapse: collapse;
+    }
+    td,
+    th {
+        padding: 8px;
+    }
+    td {
+        border: 1px solid black;
+    }
+
+    h3 {
+        text-decoration: underline;
+    }
+}

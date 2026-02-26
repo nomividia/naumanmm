@@ -1,0 +1,68 @@
+@import '../../variables.scss';
+
+app-edit-customer {
+    div.edit-header-container {
+        padding: 10px 50px;
+        height: 75px;
+        .cancel-btn {
+            mat-icon {
+                margin-right: 10px;
+            }
+        }
+
+        .bordered-icon {
+            height: 40px !important;
+            line-height: 0;
+        }
+    }
+    .mat-form-field-wrapper {
+        padding-bottom: unset !important;
+    }
+    .removeAddress {
+        display: flex;
+        justify-content: flex-end;
+        .mat-flat-button {
+            line-height: 30px;
+            padding: 0 8px;
+            border-radius: 10px;
+        }
+    }
+
+    .job-offers-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        align-items: center;
+        background-color: #f3f3f3;
+        padding: 10px;
+        border-radius: 5px;
+        margin-bottom: 5px;
+    }
+
+    .mainLoadingOverlay {
+        background-color: rgba(0, 0, 0, 0.241);
+        .mat-spinner circle {
+            stroke: $mmi-orange;
+        }
+    }
+
+    .mb-2 {
+        margin-bottom: 20px;
+    }
+    
+    @media (max-width: 599px) {
+        .row-container {
+            flex-direction: column !important;
+            
+            .column-container {
+                width: 100% !important;
+                max-width: 100% !important;
+                margin: 0 0 20px 0 !important;
+            }
+        }
+        
+        .edit-page-block {
+            padding: 5px 5px !important;
+        }
+    }
+}

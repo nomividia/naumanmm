@@ -1,0 +1,18 @@
+@import '../../variables';
+
+app-list-newsletters {
+    //
+    .statut-btn-border {
+        background-color: white !important;
+        border: 1px solid grey;
+        color: grey;
+    }
+    .statut-btn-red {
+        background-color: #862f09 !important;
+        color: white;
+    }
+    .statut-btn-green {
+        background-color: $mmi-green !important;
+        color: white;
+    }
+}

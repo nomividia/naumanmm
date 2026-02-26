@@ -1,0 +1,534 @@
+<app-drawer-main-container
+    [headerTitle]="setHeaderTitle()"
+    [headerSmallText]="
+        entity?.id
+            ? ('Global.LastUpdate' | translate) + (entity?.modifDate | date)
+            : undefined
+    "
+    padding="0"
+    [showPendingModifications]="hasPendingModifications"
+>
+    <div class="edit-page-header edit-header-container">
+        <div class="d-flex align-items-center color-primary">
+            <button
+                [disabled]="loading"
+                mat-raised-button
+                color="primary"
+                class="cancel-btn"
+                (click)="goBack()"
+            >
+                <mat-icon fontSet="material-icons-outlined">arrow_back</mat-icon
+                >{{ 'Global.Back' | translate }}
+            </button>
+        </div>
+        <!-- <div class="d-flex align-items-center color-primary">
+            <div *ngIf="hasPendingModifications">
+                {{'Global.UnsavedChanges' | translate}}
+            </div>
+        </div> -->
+        <div
+            class="d-flex align-items-center color-primary"
+            style="padding-right: 15px"
+        >
+            <button
+                [disabled]="loading"
+                mat-raised-button
+                class="btn-normal app-green-button bordered-icon"
+                (click)="save()"
+                *ngIf="isNewCustomer"
+            >
+                <mat-icon fontSet="material-icons-outlined"
+                    >person_add</mat-icon
+                >
+                {{ 'Customer.CreateCustomer' | translate }}
+            </button>
+            <button
+                mat-icon-button
+                class="d-flex bordered-icon"
+                [matTooltip]="'Customer.DeleteCustomer' | translate"
+                (click)="deleteCustomer()"
+                *ngIf="
+                    entity?.id &&
+                    GlobalAppService.userHasRole(
+                        AuthDataService.currentUser,
+                        RolesList.AdminTech
+                    )
+                "
+                [disabled]="loading"
+            >
+                <mat-icon fontSet="material-icons-outlined">delete</mat-icon>
+            </button>
+            <button
+                mat-icon-button
+                color="primary"
+                matTooltip="{{ 'Tooltip.SendFolder' | translate }}"
+                class="bordered-icon"
+                style="margin-left: 5px"
+                (click)="openSendToCustomerDialog()"
+                [disabled]="loading"
+            >
+                <mat-icon class="material-icons-outlined">
+                    forward_to_inbox
+                </mat-icon>
+            </button>
+        </div>
+        <!-- <div class="right" *ngIf="loading">
+            <mat-spinner diameter="30" strokeWidth="3"></mat-spinner>
+        </div> -->
+        <div class="mainLoadingOverlay" *ngIf="loading">
+            <div style="position: relative; margin-top: 10vh">
+                <mat-spinner diameter="80" strokeWidth="7"></mat-spinner>
+            </div>
+            <!-- <div class="mainLoadingOverlayMessage"></div> -->
+        </div>
+    </div>
+    <div *ngIf="entity" style="padding: 20px 50px">
+        <div class="d-flex row-container mt-1">
+            <div class="column-container">
+                <div
+                    class="edit-page-block"
+                    [class.selected]="editModes.informations"
+                >
+                    <ng-container *ngIf="!isNewCustomer">
+                        <ng-container
+                            *ngTemplateOutlet="
+                                editBtn;
+                                context: { editModeKey: 'informations' }
+                            "
+                        ></ng-container>
+                    </ng-container>
+                    <h2>Informations</h2>
+                    <hr />
+                    <ng-container *ngIf="editModes.informations">
+                        <mat-radio-group
+                            [(ngModel)]="entity.isCompany"
+                            (ngModelChange)="
+                                hasPendingModifications = true;
+                                setCustomerCompanyOrPerson()
+                            "
+                            aria-label="Select an option"
+                            class="nxs-small-mat-input"
+                        >
+                            <mat-radio-button [value]="true" class="mr-2">
+                                {{ 'Customer.Une' | translate }}
+                                {{
+                                    'Customer.Company' | translate
+                                }}</mat-radio-button
+                            >
+                            <mat-radio-button [value]="false"
+                                >{{ 'Customer.Un' | translate }}
+                                {{
+                                    'Customer.PrivatePerson' | translate
+                                }}</mat-radio-button
+                            >
+                        </mat-radio-group>
+
+                        <ng-container *ngIf="entity.isPrivatePerson">
+                            <mat-form-field
+                                class="nxs-small-mat-input mt-2"
+                                appearance="outline"
+                            >
+                                <mat-label>{{
+                                    'Global.LastName' | translate
+                                }}</mat-label>
+                                <input
+                                    required
+                                    [placeholder]="
+                                        'Global.LastName' | translate
+                                    "
+                                    matInput
+                                    type="text"
+                                    [disabled]="loading"
+                                    [(ngModel)]="entity.lastName"
+                                    (ngModelChange)="
+                                        hasPendingModifications = true
+                                    "
+                                />
+                            </mat-form-field>
+
+                            <mat-form-field
+                                class="nxs-small-mat-input"
+                                appearance="outline"
+                            >
+                                <mat-label>{{
+                                    'Global.FirstName' | translate
+                                }}</mat-label>
+                                <input
+                                    required
+                                    [placeholder]="
+                                        'Global.FirstName' | translate
+                                    "
+                                    matInput
+                                    type="text"
+                                    [disabled]="loading"
+                                    [(ngModel)]="entity.firstName"
+                                    (ngModelChange)="
+                                        hasPendingModifications = true
+                                    "
+                                />
+                            </mat-form-field>
+                        </ng-container>
+
+                        <ng-container *ngIf="entity.isCompany">
+                            <mat-form-field
+                                class="nxs-small-mat-input mt-2"
+                                appearance="outline"
+                            >
+                                <mat-label>{{
+                                    'Customer.CompanyName' | translate
+                                }}</mat-label>
+                                <input
+                                    required
+                                    [placeholder]="
+                                        'Customer.CompanyName' | translate
+                                    "
+                                    matInput
+                                    type="text"
+                                    [disabled]="loading"
+                                    [(ngModel)]="entity.companyName"
+                                    (ngModelChange)="
+                                        hasPendingModifications = true
+                                    "
+                                />
+                            </mat-form-field>
+                        </ng-container>
+
+                        <div *ngIf="entity.addresses">
+                            <div
+                                *ngFor="let address of entity.addresses"
+                                class="nxs-small-mat-input mt-2"
+                            >
+                                <app-address
+                                    [address]="address"
+                                    (onDelete)="removeAddress($event)"
+                                    (onModification)="
+                                        hasPendingModifications = $event
+                                    "
+                                ></app-address>
+                                <div class="removeAddress">
+                                    <button
+                                        mat-flat-button
+                                        color="warn"
+                                        [disabled]="loading"
+                                        (click)="removeAddress(address)"
+                                    >
+                                        <mat-icon
+                                            fontSet="material-icons-outlined"
+                                            >delete_forever</mat-icon
+                                        >
+                                        {{ 'Global.RemoveAddress' | translate }}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex-wrapper-horizontal">
+                            <button
+                                mat-flat-button
+                                color="primary"
+                                [disabled]="loading"
+                                (click)="addAddress()"
+                            >
+                                <mat-icon fontSet="material-icons-outlined"
+                                    >add_location_alt</mat-icon
+                                >
+                                {{ 'Global.AddAddress' | translate }}
+                            </button>
+                        </div>
+                    </ng-container>
+                    <ng-container *ngIf="!editModes.informations">
+                        <div
+                            class="edit-page-block-item"
+                            *ngIf="entity.isCompany"
+                        >
+                            <p class="title">
+                                {{ 'Customer.CompanyName' | translate }}
+                            </p>
+                            <p>
+                                {{
+                                    (entity.companyName | uppercase) ||
+                                        'Global.NotInformed' | translate
+                                }}
+                            </p>
+                        </div>
+                        <ng-container *ngIf="entity.isPrivatePerson">
+                            <div class="edit-page-block-item">
+                                <p class="title">
+                                    {{ 'Global.LastName' | translate }}
+                                </p>
+                                <p>
+                                    {{
+                                        (entity.lastName | uppercase) ||
+                                            'Global.NotInformed' | translate
+                                    }}
+                                </p>
+                            </div>
+                            <div class="edit-page-block-item">
+                                <p class="title">
+                                    {{ 'Global.FirstName' | translate }}
+                                </p>
+                                <p>
+                                    {{
+                                        entity.firstName || 'Global.NotInformed'
+                                            | translate
+                                    }}
+                                </p>
+                            </div>
+                        </ng-container>
+                        <ng-container *ngFor="let address of entity.addresses">
+                            <div class="edit-page-block-item">
+                                <p class="title">
+                                    {{ 'Global.Address' | translate }}
+                                </p>
+                                <p>{{ address.lineOne }}</p>
+                                <p>{{ address.lineTwo }}</p>
+                                <p>
+                                    {{ address.postalCode }},
+                                    {{ address.city | titlecase }},
+                                    {{
+                                        RefData.getCountryLabel(address.country)
+                                            | titlecase
+                                    }}
+                                </p>
+                            </div>
+                        </ng-container>
+                    </ng-container>
+                </div>
+                <div class="edit-page-block mt-3">
+                    <!-- <ng-container *ngIf="!isNewCustomer">
+                        <ng-container *ngTemplateOutlet="editBtn;context:{editModeKey: 'contact'}"></ng-container>
+                    </ng-container> -->
+                    <h2>{{ 'Customer.JobOfferlink' | translate }}</h2>
+                    <hr />
+                    <div *ngIf="jobOffersLinked?.length">
+                        <div
+                            *ngFor="let jobOffer of jobOffersLinked"
+                            class="job-offers-item"
+                        >
+                            <div class="d-flex flex-direction-column">
+                                <p class="title">{{ jobOffer.title }}</p>
+                                <div class="mt-1">
+                                    <p class="low-opacity">
+                                        {{ 'Global.Consultant' | translate }}
+                                    </p>
+                                    <p>
+                                        {{
+                                            jobOffer.consultant?.lastName
+                                                | uppercase
+                                        }}
+                                        {{
+                                            jobOffer.consultant?.firstName
+                                                | titlecase
+                                        }}
+                                    </p>
+                                </div>
+                            </div>
+                            <a
+                                [routerLink]="
+                                    '/' +
+                                    RoutesList.JobOffers +
+                                    '/' +
+                                    jobOffer.id
+                                "
+                                [disabled]="loading"
+                                mat-raised-button
+                                color="primary"
+                                class="cancel-btn"
+                            >
+                                <mat-icon fontSet="material-icons-outlined"
+                                    >open_in_new</mat-icon
+                                >{{ 'JobOffer.SeeAd' | translate }}
+                            </a>
+                        </div>
+                    </div>
+                    <div *ngIf="!jobOffersLinked?.length">
+                        <p>{{ 'Customer.NoJobOffers' | translate }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="column-container">
+                <div
+                    class="edit-page-block"
+                    [class.selected]="editModes.contact"
+                >
+                    <ng-container *ngIf="!isNewCustomer">
+                        <ng-container
+                            *ngTemplateOutlet="
+                                editBtn;
+                                context: { editModeKey: 'contact' }
+                            "
+                        ></ng-container>
+                    </ng-container>
+                    <h2>Contact</h2>
+                    <hr />
+                    <ng-container *ngIf="editModes.contact">
+                        <mat-form-field
+                            class="nxs-small-mat-input"
+                            appearance="outline"
+                        >
+                            <mat-label>{{
+                                'Experience.ContactFullName' | translate
+                            }}</mat-label>
+                            <input
+                                [placeholder]="
+                                    'Experience.ContactFullName' | translate
+                                "
+                                matInput
+                                type="text"
+                                [disabled]="loading"
+                                [(ngModel)]="entity.contactFullName"
+                                (ngModelChange)="hasPendingModifications = true"
+                            />
+                        </mat-form-field>
+
+                        <mat-form-field
+                            appearance="outline"
+                            class="nxs-small-mat-input small-input"
+                        >
+                            <mat-label>{{
+                                'Experience.EmployerFunction' | translate
+                            }}</mat-label>
+                            <mat-select
+                                [disabled]="loading"
+                                [(ngModel)]="entity.customerFunctionId"
+                                (ngModelChange)="hasPendingModifications = true"
+                            >
+                                <mat-option
+                                    *ngFor="let elem of jobReferenceFunctions"
+                                    [value]="elem.id"
+                                >
+                                    {{ 'label' | dbTranslate : elem }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field
+                            class="nxs-small-mat-input"
+                            appearance="outline"
+                        >
+                            <mat-label>{{
+                                'Candidate.Email' | translate
+                            }}</mat-label>
+                            <input
+                                [placeholder]="'Customer.Email' | translate"
+                                matInput
+                                type="text"
+                                [disabled]="loading"
+                                [(ngModel)]="entity.email"
+                                (ngModelChange)="hasPendingModifications = true"
+                            />
+                        </mat-form-field>
+
+                        <!-- <mat-form-field class="nxs-small-mat-input" appearance="outline">
+                            <mat-label>{{'Customer.JobContact' | translate}}</mat-label>
+                            <input required [placeholder]="'Customer.FirstName' | translate" matInput type="text"
+                                [disabled]="loading" [(ngModel)]="entity.firstNameContact"
+                                (ngModelChange)="hasPendingModifications=true;" />
+                        </mat-form-field>
+                    -->
+
+                        <nxs-intl-tel-input
+                            class="nxs-small-mat-input"
+                            [matLabel]="'Global.Phone' | translate"
+                            [(ngModel)]="entity.phone"
+                            name="phone"
+                            [required]="false"
+                            (ngModelChange)="hasPendingModifications = true"
+                        >
+                        </nxs-intl-tel-input>
+                        <mat-form-field
+                            class="nxs-small-mat-input"
+                            appearance="outline"
+                        >
+                            <mat-label>{{
+                                'Customer.DateOfContact' | translate
+                            }}</mat-label>
+                            <input
+                                matInput
+                                [(ngModel)]="entity.dateOfContact"
+                                [matDatepicker]="pickerSelected"
+                                [disabled]="loading"
+                                [max]="today"
+                                (ngModelChange)="hasPendingModifications = true"
+                            />
+                            <mat-datepicker-toggle
+                                matSuffix
+                                [for]="pickerSelected"
+                            ></mat-datepicker-toggle>
+                            <mat-datepicker #pickerSelected></mat-datepicker>
+                        </mat-form-field>
+                    </ng-container>
+                    <ng-container *ngIf="!editModes.contact">
+                        <div class="edit-page-block-item">
+                            <p class="title">
+                                {{ 'Customer.FullName' | translate }}
+                            </p>
+                            <p>{{ entity.contactFullName }}</p>
+                        </div>
+
+                        <div class="edit-page-block-item">
+                            <p class="title">
+                                {{ 'Customer.JobFunction' | translate }}
+                            </p>
+                            <p>{{ entity.customerFunction?.label }}</p>
+                        </div>
+
+                        <div class="edit-page-block-item">
+                            <p class="title">
+                                {{ 'Candidate.Email' | translate }}
+                            </p>
+                            <p>
+                                {{
+                                    entity.email || 'Global.NotInformed'
+                                        | translate
+                                }}
+                            </p>
+                        </div>
+
+                        <div class="edit-page-block-item">
+                            <p class="title">
+                                {{ 'Global.Phone' | translate }}
+                            </p>
+                            <p>
+                                {{
+                                    entity.phone || 'Global.NotInformed'
+                                        | translate
+                                }}
+                            </p>
+                        </div>
+                        <div class="edit-page-block-item">
+                            <p class="title">
+                                {{ 'Customer.DateOfContact' | translate }}
+                            </p>
+                            <p>
+                                {{
+                                    (entity.dateOfContact
+                                        | date : 'dd/MM/yyyy') ||
+                                        ('Global.NotInformed' | translate)
+                                }}
+                            </p>
+                        </div>
+                    </ng-container>
+                </div>
+            </div>
+        </div>
+    </div>
+</app-drawer-main-container>
+
+<ng-template #editBtn let-editModeKey="editModeKey">
+    <button
+        class="edit-btn"
+        mat-raised-button
+        mat-icon-button
+        color="primary"
+        (click)="onEditClick(editModeKey)"
+        [matTooltip]="
+            $any(editModes)[editModeKey]
+                ? 'Global.Save'
+                : ('Candidate.EditInformations' | translate)
+        "
+        [disabled]="loading"
+    >
+        <mat-icon *ngIf="!$any(editModes)[editModeKey]">edit</mat-icon>
+        <mat-icon *ngIf="$any(editModes)[editModeKey]">done</mat-icon>
+    </button>
+</ng-template>

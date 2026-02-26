@@ -1,0 +1,241 @@
+<div
+    *ngIf="interviewClone && consultantList && isInterviewEditable"
+    class="dialog-main-container"
+>
+    <div class="loading-wrapper" [style.display]="loading ? '' : 'none'">
+        <mat-spinner diameter="50" strokeWidth="6"></mat-spinner>
+    </div>
+
+    <button mat-icon-button class="close-btn" (click)="closeDialog()">
+        <mat-icon fontSet="material-icons-outlined">close</mat-icon>
+    </button>
+
+    <div
+        class="d-flex"
+        style="align-items: center; justify-content: space-between"
+    >
+        <h1 *ngIf="!interviewClone.id" style="margin-bottom: 10px">
+            {{ 'Interview.AddInterview' | translate }}
+        </h1>
+        <h1 *ngIf="interviewClone.id" style="margin-bottom: 10px">
+            {{ 'Interview.EditInterview' | translate }} "{{
+                interviewClone.title
+            }}"
+        </h1>
+
+        <div class="status-indicators">
+            <i *ngIf="interviewClone.id && interviewClone.candidateResponse"
+                [ngClass]="{
+                    'status-red':
+                        interviewClone.candidateResponse ==
+                        InterviewConfirmationStatus.REFUSED,
+                    'status-green':
+                        interviewClone.candidateResponse ==
+                        InterviewConfirmationStatus.ACCEPTED
+                }"
+            >
+                <ng-container
+                    *ngIf="
+                        interviewClone.candidateResponse ==
+                            InterviewConfirmationStatus.ACCEPTED;
+                        else isRefused
+                    "
+                >
+                    {{ 'Interview.Accepted' | translate }}
+                </ng-container>
+
+                <ng-template #isRefused>
+                    {{ 'Interview.Refused' | translate }}
+                </ng-template>
+            </i>
+            <span *ngIf="interviewClone.id && interviewClone.noShow" class="status-no-show">
+                {{ 'Interview.NoShow' | translate }}
+            </span>
+        </div>
+    </div>
+
+    <p class="mb-2" *ngIf="candidateLanguage">
+        <ng-container *ngIf="isDefaultLanguage"
+            >{{ 'Candidate.NoSpokenLanguageDefined' | translate }}
+        </ng-container>
+        {{ 'Candidate.TheMailWillBeSentIn' | translate }}
+        {{ candidateLanguage.label }}
+    </p>
+
+    <div class="input-container">
+        <mat-form-field class="nxs-small-mat-input w-100" appearance="outline">
+            <mat-label>{{ 'Interview.Title' | translate }}</mat-label>
+            <input
+                [placeholder]="'Interview.Title' | translate"
+                matInput
+                type="text"
+                [disabled]="loading"
+                [(ngModel)]="interviewClone.title"
+                (input)="onTitleInputChange($event)"
+                [matAutocomplete]="jobOfferAutocomplete"
+                required
+            />
+            <mat-autocomplete #jobOfferAutocomplete="matAutocomplete">
+                <mat-option
+                    *ngFor="let jobOffer of jobOfferSuggestions"
+                    [value]="formatJobOfferForDisplay(jobOffer)"
+                    (onSelectionChange)="onJobOfferSelected(jobOffer)"
+                >
+                    {{ formatJobOfferForDisplay(jobOffer) }}
+                </mat-option>
+            </mat-autocomplete>
+        </mat-form-field>
+
+        <div class="d-flex justify-content-beetwen">
+            <!-- <mat-form-field class="nxs-small-mat-input w-100 mr-2" appearance="outline" (click)="picker.open()">
+            <mat-label>{{'Interview.Date' | translate}}</mat-label>
+            <input matInput [placeholder]="'Interview.Date' | translate" [matDatepicker]="picker" [disabled]="loading" [(ngModel)]="interviewClone.date" (ngModelChange)="hasPendingModifications=true;">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field> -->
+
+            <nxs-datetime-picker
+                [disabled]="loading"
+                [timePlaceholder]="'Interview.Hour' | translate"
+                [datePlaceholder]="'Interview.Date' | translate"
+                [label]="'Interview.Date' | translate"
+                [(ngModel)]="interviewClone.date"
+                (ngModelChange)="hasPendingModifications = true"
+                class="nxs-small-mat-input w-100"
+                [required]="true"
+            >
+            </nxs-datetime-picker>
+            <!-- <mat-form-field class="nxs-small-mat-input w-100" appearance="outline">
+            <mat-label>{{'Interview.Hour' | translate}}</mat-label>
+            <input [placeholder]="'Interview.Hour' | translate" matInput type="time" [disabled]="loading" [(ngModel)]="interviewTime" (ngModelChange)="hasPendingModifications=true;" />
+        </mat-form-field> -->
+        </div>
+
+        <mat-form-field appearance="outline" class="nxs-small-mat-input w-100">
+            <mat-label>{{ 'Interview.Comment' | translate }}</mat-label>
+            <textarea
+                [placeholder]="'Interview.Comment' | translate"
+                [disabled]="loading"
+                matInput
+                rows="7"
+                [(ngModel)]="interviewClone.comment"
+                (ngModelChange)="hasPendingModifications = true"
+            ></textarea>
+        </mat-form-field>
+
+        <p
+            *ngIf="showOriginalComment"
+            style="color: gray; cursor: pointer; margin-top: 0px"
+            (click)="translateText(interviewClone.comment, false)"
+        >
+            See translation
+        </p>
+        <p
+            *ngIf="!showOriginalComment"
+            style="color: gray; cursor: pointer; margin-top: 0px"
+            (click)="translateText(interviewClone.comment, true)"
+        >
+            See original
+        </p>
+
+        <mat-form-field class="nxs-small-mat-input w-100" appearance="outline">
+            <mat-label>{{ 'JobOffer.Consultant' | translate }}</mat-label>
+            <mat-select required [(ngModel)]="interviewClone.consultantId">
+                <mat-option
+                    *ngFor="let consultant of consultantList"
+                    [value]="consultant.id"
+                >
+                    {{ consultant.firstName }} {{ consultant.lastName }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <!-- No-show checkbox for past interviews -->
+        <div *ngIf="interviewClone.id && isPastInterview" class="no-show-container">
+            <mat-checkbox
+                [(ngModel)]="interviewClone.noShow"
+                (ngModelChange)="hasPendingModifications = true"
+                color="warn"
+            >
+                {{ 'Interview.NoShowLabel' | translate }}
+            </mat-checkbox>
+        </div>
+    </div>
+
+    <div class="btns-container">
+        <button
+            class="validate-btn"
+            mat-flat-button
+            (click)="addOrEditInterview()"
+            [disabled]="loading"
+        >
+            <ng-container *ngIf="interviewClone.id; else isNewInterview"
+                >{{ 'Global.Validate' | translate }}
+            </ng-container>
+            <ng-template #isNewInterview>
+                {{ 'Interview.AddInterview' | translate }}
+            </ng-template>
+        </button>
+
+        <button
+            *ngIf="interviewClone.id"
+            class="delete-btn"
+            mat-button
+            color="warn"
+            (click)="deleteInterview()"
+            [disabled]="loading"
+        >
+            {{ 'Tooltip.Delete' | translate }}
+        </button>
+    </div>
+</div>
+
+<div
+    *ngIf="!isInterviewEditable"
+    class="dialog-main-container"
+    style="min-width: 500px"
+>
+    <button mat-icon-button class="close-btn" (click)="dialogRef.close()">
+        <mat-icon fontSet="material-icons-outlined">close</mat-icon>
+    </button>
+    <h2 mat-dialog-title>{{ interviewClone.title }}</h2>
+    <hr />
+    <div mat-dialog-content>
+        <div class="loading-wrapper" [style.display]="loading ? '' : 'none'">
+            <mat-spinner diameter="50" strokeWidth="6"></mat-spinner>
+        </div>
+        <div class="edit-page-block-item">
+            <p class="title">{{ 'Global.Title' | translate }}</p>
+            <p>
+                {{ interviewClone.title || ('Global.NotInformed' | translate) }}
+            </p>
+        </div>
+        <div class="edit-page-block-item">
+            <p class="title">{{ 'Interview.Date' | translate }}</p>
+            <p>
+                {{
+                    interviewClone.date
+                        ? (interviewClone.date | date : 'dd/MM/yyyy')
+                        : ('Global.NotInformed' | translate)
+                }}
+            </p>
+        </div>
+        <div class="edit-page-block-item">
+            <p class="title">{{ 'Interview.Hour' | translate }}</p>
+            <p>{{ interviewTime || ('Global.NotInformed' | translate) }}</p>
+        </div>
+        <!-- <div class="edit-page-block-item"
+            *ngIf="GlobalAppService.userHasRole(AuthDataService.currentUser,RolesList.Consultant) || GlobalAppService.userHasRole(AuthDataService.currentUser,RolesList.Admin) || GlobalAppService.userHasRole(AuthDataService.currentUser,RolesList.AdminTech)">
+            <p class="title">{{"Interview.Comment" | translate}}</p>
+            <p [innerHTML]="replaceLineBreakWithBr(interviewClone.comment)"></p>
+            <p *ngIf="!interviewClone.comment">{{'Global.NotInformed' | translate}}</p>
+        </div> -->
+        <div class="edit-page-block-item">
+            <p class="title">{{ 'Interview.Consultant' | translate }}</p>
+            <p *ngIf="consultant">
+                {{ consultant.firstName }} {{ consultant.lastName | uppercase }}
+            </p>
+            <p *ngIf="!consultant">{{ 'Global.NotInformed' | translate }}</p>
+        </div>
+    </div>
+</div>

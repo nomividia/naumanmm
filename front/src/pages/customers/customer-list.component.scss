@@ -1,0 +1,12 @@
+app-customer {
+    div.job-offer-wrapper-item {
+        min-width: 17%;
+        max-width: 17%;
+    }
+
+    .customerMail {
+        width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+}

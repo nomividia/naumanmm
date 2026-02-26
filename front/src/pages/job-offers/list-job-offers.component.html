@@ -1,0 +1,184 @@
+<app-drawer-main-container
+    [headerTitle]="'Menu.JobOffers' | translate"
+    [headerLink]="'/' + RoutesList.JobOffers + '/new'"
+    [headerLinkText]="'Menu.CreateJobOffer' | translate"
+>
+    <div class="nxs-list-pag">
+        <div class="nxs-list-page-filters">
+            <div class="filters-wrapper">
+                <ng-container *ngIf="request">
+                    <mat-form-field
+                        appearance="outline"
+                        class="nxs-small-mat-input"
+                    >
+                        <mat-label>{{ 'Global.Ref' | translate }}</mat-label>
+                        <input
+                            matInput
+                            autocomplete="off"
+                            [(ngModel)]="request.search"
+                            (ngModelChange)="loadDataDelayedComponent()"
+                            completedField
+                            type="text"
+                            [placeholder]="'Global.Search' | translate"
+                        />
+                        <mat-icon
+                            matSuffix
+                            style="cursor: pointer"
+                            (click)="request.search = ''; loadDataComponent()"
+                        >
+                            close
+                        </mat-icon>
+                    </mat-form-field>
+                    <!-- <mat-form-field class="nxs-small-mat-input long-width" appearance="outline">
+                        <mat-label>{{'Candidate.Jobs' | translate}}</mat-label>
+                        <mat-select [(ngModel)]="request.jobIds" completedField multiple
+                            (ngModelChange)="loadDataComponent()">
+                            <mat-option *ngFor="let item of jobsList" [value]="item.id">{{'label' | dbTranslate:item}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field> -->
+
+                    <app-jobs-selector
+                        fieldAppearance="outline"
+                        [multipleSelection]="true"
+                        [placeholder]="'Candidate.Jobs' | translate"
+                        [disabled]="loading"
+                        class="nxs-small-mat-input"
+                        [longInput]="true"
+                        [(ngModel)]="request.jobIds"
+                        (ngModelChange)="loadDataComponent()"
+                    >
+                    </app-jobs-selector>
+
+                    <nxs-multiple-select
+                        [label]="'Global.ContractType' | translate"
+                        class="nxs-small-mat-input long-width"
+                        appearance="outline"
+                        [(ngModel)]="request.contractTypeIds"
+                        [source]="contractTypeList"
+                        (ngModelChange)="loadDataComponent()"
+                        [showUnselectAllButton]="true"
+                        [getLabelFunction]="
+                            GlobalAppService.dbTranslateAppValue.bind(this)
+                        "
+                        [showSelectAllButton]="false"
+                        valueFieldName="id"
+                        [unselectAllLabel]="'Global.UnselectAll' | translate"
+                    >
+                    </nxs-multiple-select>
+
+                    <!-- CONTRACT -->
+                    <!-- <mat-form-field class="nxs-small-mat-input long-width" appearance="outline">
+                        <mat-label>{{'Global.ContractType' | translate}}</mat-label>
+                        <mat-select multiple [(ngModel)]="request.contractTypeIds" completedField
+                            (ngModelChange)="loadDataComponent()">
+                            <mat-option *ngFor="let item of contractTypeList" [value]="item.id">
+                                {{ 'label' | dbTranslate:item}}
+                            </mat-option>
+
+                            <mat-option [value]="null"> {{ 'Global.NoMatter' | translate}} </mat-option>
+                        </mat-select>
+                    </mat-form-field> -->
+
+                    <nxs-multiple-select
+                        [label]="'Candidate.Location' | translate"
+                        class="nxs-small-mat-input long-width"
+                        appearance="outline"
+                        [(ngModel)]="request.countryCode"
+                        [source]="countriesList"
+                        (ngModelChange)="loadDataComponent()"
+                        [showUnselectAllButton]="true"
+                        labelField="label"
+                        [showSelectAllButton]="false"
+                        valueFieldName="code"
+                        [unselectAllLabel]="'Global.UnselectAll' | translate"
+                    >
+                    </nxs-multiple-select>
+
+                    <!-- <mat-form-field class="nxs-small-mat-input long-width" appearance="outline">
+                        <mat-label>{{'Candidate.Location' | translate}}</mat-label>
+                        <mat-select [(ngModel)]="request.countryCode" completedField multiple
+                            (ngModelChange)="loadDataComponent()">
+                            <mat-option *ngFor="let item of countriesList" [value]="item.code">
+                                {{ item.label}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field> -->
+
+                    <nxs-multiple-select
+                        [label]="'JobOffer.Consultant' | translate"
+                        class="nxs-small-mat-input long-width"
+                        appearance="outline"
+                        [(ngModel)]="request.consultantIds"
+                        [source]="consultantsList"
+                        (ngModelChange)="loadDataComponent()"
+                        [showUnselectAllButton]="true"
+                        [getLabelFunction]="
+                            GlobalAppService.getConsultantDisplay.bind(this)
+                        "
+                        [showSelectAllButton]="false"
+                        valueFieldName="id"
+                        [unselectAllLabel]="'Global.UnselectAll' | translate"
+                    >
+                    </nxs-multiple-select>
+
+                    <!-- <mat-form-field class="nxs-small-mat-input long-width" appearance="outline">
+                        <mat-label>{{'JobOffer.Consultant' | translate}}</mat-label>
+                        <mat-select [(ngModel)]="request.consultantIds" completedField multiple
+                            (ngModelChange)="loadDataComponent()">
+                            <mat-option *ngFor="let item of consultantsList" [value]="item.id">
+                                {{ item.lastName |uppercase}} {{item.firstName}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field> -->
+
+                    <!-- <mat-form-field class="nxs-small-mat-input" appearance="outline">
+                        <mat-label>{{'Global.Status' | translate}}</mat-label>
+                        <mat-select [(ngModel)]="request.status" completedField (ngModelChange)="loadDataComponent()">
+                            <mat-option *ngFor="let item of statusList" [value]="item.key">
+                                {{ item.valueToDisplay | translate}}
+                            </mat-option>
+
+                            <mat-option value="all"> {{ 'Global.NoMatter' | translate}} </mat-option>
+                        </mat-select>
+                    </mat-form-field> -->
+
+                    <mat-form-field
+                        class="nxs-small-mat-input"
+                        appearance="outline"
+                    >
+                        <mat-label>{{
+                            'JobOffer.Status' | translate
+                        }}</mat-label>
+                        <mat-select
+                            [(ngModel)]="request.stateId"
+                            (ngModelChange)="loadDataComponent()"
+                        >
+                            <mat-option
+                                *ngFor="let item of statesList"
+                                [value]="item.id"
+                            >
+                                {{ 'label' | dbTranslate : item }}
+                            </mat-option>
+                            <mat-option value="archive">
+                                {{ 'Global.Archive' | translate }}
+                            </mat-option>
+                            <mat-option value="all">
+                                {{ 'Global.NoMatter' | translate }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </ng-container>
+            </div>
+        </div>
+
+        <hr class="low-opacity" />
+
+        <app-job-offer-list-minified
+            [request]="request"
+            *ngIf="typesLoaded"
+            #jobOfferListComponent
+        >
+        </app-job-offer-list-minified>
+    </div>
+</app-drawer-main-container>

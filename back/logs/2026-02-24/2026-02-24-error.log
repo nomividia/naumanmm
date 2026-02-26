@@ -1,0 +1,59 @@
+
+[2026-02-24T06:04:30] - [error] => 
+    Unable to run job  "Nettoyage des contacts pour la newsletter" (id=nxsCleanNewsletterRecipients)
+[2026-02-24T06:04:30] - [error] => 
+    Guid = 06577698-14bb-7c21-7ab0-507a71fccdc0
+    connect ECONNRESET ::1:3306
+---Stack---
+Error: connect ECONNRESET ::1:3306
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1300:16)
+---End of Stack---
+[2026-02-24T06:04:30] - [error] => 
+    Unable to run job  "Nettoyage des contacts pour la newsletter" (id=nxsCleanNewsletterRecipients)
+[2026-02-24T06:04:30] - [error] => 
+    Unable to run job  "Nettoyage des contacts pour la newsletter" (id=nxsCleanNewsletterRecipients)
+[2026-02-24T06:04:30] - [error] => 
+    Guid = e01da08b-0a0e-8122-4dd9-33acb6a04720
+    connect ETIMEDOUT
+---Stack---
+Error: connect ETIMEDOUT
+    at PoolConnection._handleTimeoutError (/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/node_modules/mysql2/lib/connection.js:189:17)
+    at listOnTimeout (node:internal/timers:564:17)
+    at processTimers (node:internal/timers:507:7)
+---End of Stack---
+[2026-02-24T06:06:30] - [error] => 
+    Guid = 759b9aea-5e25-021d-c457-500b938c7f00
+    connect ETIMEDOUT
+---Stack---
+Error: connect ETIMEDOUT
+    at PoolConnection._handleTimeoutError (/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/node_modules/mysql2/lib/connection.js:189:17)
+    at listOnTimeout (node:internal/timers:564:17)
+    at processTimers (node:internal/timers:507:7)
+---End of Stack---
+[2026-02-24T06:06:30] - [error] => 
+    Unable to run job  "Nettoyage des contacts pour la newsletter" (id=nxsCleanNewsletterRecipients)
+[2026-02-24T06:06:31] - [error] => 
+    Guid = 9a5e0971-6c95-c875-f60d-a74f68d5b3c3
+    connect ETIMEDOUT
+---Stack---
+Error: connect ETIMEDOUT
+    at PoolConnection._handleTimeoutError (/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/node_modules/mysql2/lib/connection.js:189:17)
+    at listOnTimeout (node:internal/timers:564:17)
+    at processTimers (node:internal/timers:507:7)
+---End of Stack---
+[2026-02-24T06:08:33] - [error] => 
+    Guid = 29cf8f06-a774-b191-3dd2-b4f591181a73
+    read ECONNRESET
+---Stack---
+QueryFailedError: read ECONNRESET
+    at QueryFailedError.TypeORMError [as constructor] (/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/src/error/TypeORMError.ts:7:9)
+    at new QueryFailedError (/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/src/error/QueryFailedError.ts:9:9)
+    at Query.onResult (/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/src/driver/mysql/MysqlQueryRunner.ts:196:37)
+    at PoolConnection._notifyError (/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/node_modules/mysql2/lib/connection.js:212:21)
+    at PoolConnection._handleFatalError (/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/node_modules/mysql2/lib/connection.js:167:10)
+    at PoolConnection._handleNetworkError (/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/node_modules/mysql2/lib/connection.js:180:10)
+    at Socket.emit (node:events:513:28)
+    at emitErrorNT (node:internal/streams/destroy:151:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:116:3)
+    at processTicksAndRejections (node:internal/process/task_queues:82:21)
+---End of Stack---

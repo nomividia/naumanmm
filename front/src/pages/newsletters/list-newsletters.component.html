@@ -1,0 +1,211 @@
+<app-drawer-main-container
+    [headerTitle]="'Menu.Newsletters' | translate"
+    [headerLink]="'/' + RoutesList.Newsletters + '/new'"
+    [headerLinkText]="'Menu.CreateNewsLetter' | translate"
+>
+    <div class="nxs-list-pag">
+        <div class="nxs-list-page-filters">
+            <div class="filters-wrapper">
+                <ng-container *ngIf="request">
+                    <mat-form-field
+                        appearance="outline"
+                        class="nxs-small-mat-input long-width"
+                        [appInputBg]="request.search"
+                    >
+                        <mat-label>{{
+                            'Newsletter.SearchByTitle' | translate
+                        }}</mat-label>
+                        <input
+                            matInput
+                            autocomplete="off"
+                            [(ngModel)]="request.search"
+                            (ngModelChange)="loadDataDelayed()"
+                            type="text"
+                            [placeholder]="
+                                'Newsletter.SearchByTitle' | translate
+                            "
+                        />
+                        <mat-icon
+                            matSuffix
+                            style="cursor: pointer"
+                            (click)="request.search = ''; loadData()"
+                        >
+                            close
+                        </mat-icon>
+                    </mat-form-field>
+
+                    <mat-form-field
+                        class="nxs-small-mat-input"
+                        appearance="outline"
+                    >
+                        <mat-label>{{ 'Global.Status' | translate }}</mat-label>
+                        <mat-select
+                            [(ngModel)]="request.statusIds"
+                            (ngModelChange)="loadData()"
+                            multiple
+                        >
+                            <mat-option
+                                *ngFor="let item of statesList"
+                                [value]="item.id"
+                            >
+                                {{ 'label' | dbTranslate : item }}
+                            </mat-option>
+                            <!-- <mat-option value="all"> {{ 'Global.NoMatter' | translate}} </mat-option> -->
+                        </mat-select>
+                    </mat-form-field>
+
+                    <mat-form-field
+                        *ngIf="request && yearList"
+                        appearance="outline"
+                        class="nxs-small-mat-input"
+                    >
+                        <mat-label>{{ 'Global.Year' | translate }}</mat-label>
+                        <mat-select
+                            [disabled]="loading"
+                            [(ngModel)]="request.year"
+                            (ngModelChange)="
+                                resetMonthFilter(); loadMonthList(); loadData()
+                            "
+                        >
+                            <mat-option
+                                *ngFor="let year of yearList"
+                                [value]="year"
+                            >
+                                {{ year }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                    <mat-form-field
+                        *ngIf="request.year && monthList"
+                        appearance="outline"
+                        class="nxs-small-mat-input"
+                    >
+                        <mat-label>{{ 'Global.Month' | translate }}</mat-label>
+                        <mat-select
+                            [disabled]="loading"
+                            [(ngModel)]="request.month"
+                            (ngModelChange)="loadData()"
+                        >
+                            <mat-option
+                                *ngFor="let month of monthList"
+                                [value]="month.value"
+                            >
+                                {{ month.label }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </ng-container>
+            </div>
+        </div>
+        <hr class="low-opacity" />
+        <div class="nxs-list-page-content">
+            <div
+                class="loading-wrapper"
+                [style.display]="loading ? '' : 'none'"
+            >
+                <mat-spinner diameter="50" strokeWidth="6"></mat-spinner>
+            </div>
+            <div
+                class="nxs-list-item-wrapper-container"
+                *ngFor="let newsletter of items"
+            >
+                <a
+                    [routerLink]="
+                        '/' + RoutesList.Newsletters + '/' + newsletter.id
+                    "
+                >
+                    <div
+                        class="candidate-wrapper-item d-flex align-items-center"
+                    >
+                        <mat-icon
+                            class="grey-icon"
+                            [matTooltip]="'Newsletter.Title' | translate"
+                            >assignment
+                        </mat-icon>
+                        <div>
+                            {{ newsletter.title }}
+                        </div>
+                    </div>
+                    <div class="vertical-separator"></div>
+
+                    <div
+                        class="candidate-wrapper-item d-flex align-items-center"
+                    >
+                        <mat-icon
+                            class="grey-icon"
+                            [matTooltip]="'Newsletter.CreationDate' | translate"
+                            >schedule
+                        </mat-icon>
+                        <div>
+                            {{ newsletter.creationDate | date }}
+                        </div>
+                    </div>
+                    <div class="vertical-separator"></div>
+                    <div
+                        class="candidate-wrapper-item d-flex align-items-center"
+                    >
+                        <mat-icon
+                            class="grey-icon"
+                            [matTooltip]="'Newsletter.Subject' | translate"
+                            >subject</mat-icon
+                        >
+                        <div>
+                            {{ newsletter.subject }}
+                        </div>
+                    </div>
+                    <div class="vertical-separator"></div>
+                    <div
+                        class="candidate-wrapper-item d-flex align-items-center"
+                    >
+                        <mat-icon
+                            class="grey-icon"
+                            matTooltip="Type de newsletter"
+                            >contact_mail
+                        </mat-icon>
+                        {{ newsletter.type }}
+                    </div>
+                    <div class="actions">
+                        <button
+                            mat-flat-button
+                            class="statut-btn"
+                            [ngClass]="{
+                                'statut-btn-green':
+                                    newsletter.newsletterStatus?.code ===
+                                    NewsletterState.Sent,
+                                'statut-btn-border':
+                                    newsletter.newsletterStatus?.code ===
+                                    NewsletterState.Draft,
+                                'statut-btn-red':
+                                    newsletter.newsletterStatus?.code ===
+                                    NewsletterState.Archived
+                            }"
+                            [matTooltip]="'Newsletter.Statut' | translate"
+                        >
+                            {{ newsletter.newsletterStatus?.label }}
+                        </button>
+                    </div>
+                </a>
+                <div>
+                    <a
+                        mat-icon-button
+                        [matTooltip]="'Newsletter.Duplicate' | translate"
+                        (click)="duplicateNewsletter(newsletter)"
+                    >
+                        <mat-icon fontSet="material-icons-outlined"
+                            >content_copy</mat-icon
+                        >
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="nxs-list-page-bottom">
+            <mat-paginator
+                class="mat-paginator-sticky"
+                [length]="filteredItemsCount"
+                [pageSize]="20"
+                [pageSizeOptions]="[20, 50, 100]"
+            ></mat-paginator>
+        </div>
+    </div>
+</app-drawer-main-container>

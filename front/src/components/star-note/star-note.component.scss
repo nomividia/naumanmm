@@ -1,0 +1,11 @@
+app-star-note {
+    mat-icon.editMode {
+        cursor: pointer;
+    }
+
+    .star-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+}

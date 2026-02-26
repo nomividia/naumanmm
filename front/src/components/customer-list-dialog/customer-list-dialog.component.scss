@@ -1,0 +1,26 @@
+customer-list-dialog {
+    .customer-list {
+        max-height: 300px;
+        overflow-y: scroll;
+    }
+
+    .customer-item {
+        border: 1px solid transparent;
+        border-radius: 15px;
+        padding: 10px 20px 0 20px;
+        background-color: white;
+        box-shadow: 0 0rem 0.5rem rgb(0 0 0 / 20%);
+        transition: transform 0.25s, visibility 0.25s ease-in-out;
+        color: #081f2f;
+        margin: 20px;
+    }
+    .customer-item:hover {
+        border: 1px solid #d76004;
+        transform: scale(1.01);
+        cursor: pointer;
+    }
+
+    .selected {
+        border: 1px solid #d76004;
+    }
+}

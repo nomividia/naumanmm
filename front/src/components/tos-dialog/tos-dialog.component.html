@@ -1,0 +1,32 @@
+<h2 mat-dialog-title>{{ 'TOS.TOSTitle' | translate }}</h2>
+<br />
+<mat-dialog-content>
+    <p>
+        {{ 'TOS.Subtitle' | translate }} <br /><br />
+        1) {{ 'TOS.Act1' | translate }} <br /><br />
+        2) {{ 'TOS.Act2' | translate }} <br /><br />
+        3) {{ 'TOS.Act3' | translate }} <br /><br />
+        4) {{ 'TOS.Act4' | translate }} <br /><br />
+        5) {{ 'TOS.Act5' | translate }} <br /><br />
+        6) {{ 'TOS.Act6' | translate }} <br /><br />
+        7) {{ 'TOS.Act7' | translate }} <br /><br />
+        8) {{ 'TOS.Act8' | translate }} <br /><br />
+        9) {{ 'TOS.Act9' | translate }} <br /><br />
+        10) {{ 'TOS.Act10' | translate }} <br /><br />{{
+            'TOS.Paraph1' | translate
+        }}
+        <br /><br />
+        {{ 'TOS.Paraph2' | translate }} <br /><br />
+        {{ 'TOS.Paraph3' | translate }}
+    </p>
+    <div class="d-flex justify-content-center" *ngIf="displayAcceptBtn">
+        <button
+            mat-button
+            [mat-dialog-close]="true"
+            color="primary"
+            cdkFocusInitial
+        >
+            {{ 'TOS.Accept' | translate }}
+        </button>
+    </div>
+</mat-dialog-content>

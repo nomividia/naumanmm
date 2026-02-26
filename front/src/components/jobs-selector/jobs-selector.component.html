@@ -1,0 +1,64 @@
+<mat-form-field
+    [appearance]="fieldAppearance ?? 'outline'"
+    [class]="longInput ? 'long-width' : 'small-width'"
+>
+    <mat-label>{{ placeholder ?? ('Métiers' | translate) }}</mat-label>
+    <mat-select
+        (closed)="matSelectClosed()"
+        [(ngModel)]="value"
+        [multiple]="multipleSelection ?? false"
+        [disabled]="disabled"
+        [required]="required"
+    >
+        <mat-option>
+            <ngx-mat-select-search
+                noEntriesFoundLabel="Aucun résultat"
+                placeholderLabel="Recherche/Search"
+                [formControl]="jobsSearchFilter"
+            >
+            </ngx-mat-select-search>
+        </mat-option>
+        <mat-option
+            *ngIf="multipleSelection"
+            [disabled]="!getSelectedItemsCount()"
+            class="nxs-mat-option-unselect-all"
+            (click)="unselectAll()"
+        >
+            {{ 'Global.UnselectAll' | translate }} ({{
+                getSelectedItemsCount()
+            }})
+        </mat-option>
+        <hr *ngIf="multipleSelection" />
+        <mat-optgroup
+            class="orange-optgroup-label jobs-selector-opt-group"
+            *ngFor="let group of filteredJobsCategoriesMulti | async"
+        >
+            <button
+                (click)="groupClicked(group)"
+                class="d-flex"
+                style="
+                    background-color: transparent;
+                    border: none;
+                    align-items: center;
+                "
+            >
+                <mat-icon>{{
+                    group.expanded ? 'expand_less' : 'expand_more'
+                }}</mat-icon>
+                {{ 'label' | dbTranslate : group
+                }}<span
+                    style="color: black"
+                    [innerHTML]="jobTypeSuffix(group)"
+                ></span>
+            </button>
+            <ng-container *ngFor="let job of group.appValues">
+                <mat-option
+                    [style.display]="group.expanded ? '' : 'none'"
+                    [value]="job.id"
+                >
+                    {{ 'label' | dbTranslate : job }}
+                </mat-option>
+            </ng-container>
+        </mat-optgroup>
+    </mat-select>
+</mat-form-field>

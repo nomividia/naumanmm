@@ -1,0 +1,70 @@
+@import '../../variables.scss';
+
+app-edit-user {
+    div.edit-header-container {
+        padding: 10px 50px;
+        height: 75px;
+        mat-icon {
+            margin-right: 10px;
+        }
+        .bordered-icon {
+            height: 40px !important;
+            line-height: 0;
+            mat-icon {
+                margin-right: unset !important;
+            }
+        }
+    }
+    .mat-form-field-wrapper {
+        padding-bottom: unset !important;
+    }
+    .mat-tab-labels {
+        justify-content: center;
+    }
+    .mat-tab-label-content {
+        font-size: 18px;
+    }
+    .mat-tab-label-active .mat-tab-label-content {
+        color: $mmi-orange;
+    }
+    .mat-ink-bar {
+        height: 5px;
+    }
+    .user-picture {
+        height: 200px;
+        width: 200px;
+        border-radius: 50%;
+        background-position: center;
+        background-size: cover;
+        margin: auto;
+    }
+    .t-grey {
+        color: grey;
+    }
+
+    .mainLoadingOverlay {
+        background-color: rgba(0, 0, 0, 0.241);
+        .mat-spinner circle {
+            stroke: $mmi-orange;
+        }
+    }
+
+    .stat-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background-color: #ffffff;
+        height: 115px;
+        justify-content: center;
+        width: 115px;
+        border-radius: 90%;
+        box-shadow: 0px 0px 14px 2px rgb(0 0 0 / 26%);
+        span {
+            font-size: 26px;
+            color: $mmi-orange;
+        }
+        p {
+            font-size: 18px;
+        }
+    }
+}

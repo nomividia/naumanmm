@@ -1,0 +1,99 @@
+<div *ngIf="loading">
+    <mat-spinner diameter="30" strokeWidth="3"></mat-spinner>
+</div>
+<div class="edit-page-block-item">
+    <p class="title">{{ 'Candidate.SpokeLanguage' | translate }}</p>
+    <ng-container *ngIf="!isEditMode">
+        <ng-container *ngIf="!!candidateLanguages?.length; else noLanguage">
+            <div
+                class="d-flex align-items-center justify-content-between mb-1"
+                *ngFor="let item of candidateLanguages"
+            >
+                <div>
+                    <p>{{ RefData.getLanguageName(item.languageCode) }}</p>
+                </div>
+                <div>
+                    <p>{{ 'label' | dbTranslate : item.levelLanguage }}</p>
+                </div>
+            </div>
+        </ng-container>
+        <ng-template #noLanguage>
+            <p>{{ 'Candidate.AnyLanguageAdded' | translate }}</p>
+        </ng-template>
+    </ng-container>
+    <ng-container *ngIf="isEditMode">
+        <div
+            class="d-flex inline-input"
+            *ngFor="let language of candidateLanguages"
+        >
+            <button
+                *ngIf="isEditMode"
+                mat-icon-button
+                matTooltip="{{ 'Tooltip.RemoveLanguage' | translate }}"
+                color="primary"
+                (click)="removeLanguage(language)"
+            >
+                <mat-icon>remove_circle_outline</mat-icon>
+            </button>
+            <mat-form-field
+                class="nxs-small-mat-input small-width"
+                appearance="outline"
+            >
+                <mat-label>{{
+                    'Candidate.SpokeLanguage' | translate
+                }}</mat-label>
+                <mat-select
+                    [(ngModel)]="language.languageCode"
+                    (ngModelChange)="checkLanguageBeforeAdd(language)"
+                >
+                    <mat-option
+                        *ngFor="let item of tempLanguagesList"
+                        [value]="item.code"
+                    >
+                        {{ item.label }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field
+                class="nxs-small-mat-input small-width"
+                appearance="outline"
+            >
+                <mat-label>{{ 'Candidate.Level' | translate }}</mat-label>
+                <mat-select
+                    [disabled]="!language.languageCode"
+                    [(ngModel)]="language.levelLanguageId"
+                    (ngModelChange)="checkLanguageBeforeAdd(language)"
+                >
+                    <mat-option
+                        *ngFor="let item of levelLanguageList"
+                        [value]="item.id"
+                    >
+                        {{ 'label' | dbTranslate : item }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <!-- <div class="d-flex align-items-center add-data">
+            <button mat-button [disabled]="loading" (click)="addCandidateLanguage()">
+                <mat-icon color="primary">add_circle_outline</mat-icon>&nbsp;{{'Global.AddLanguage' | translate}}
+            </button>
+        </div> -->
+        <div class="d-flex align-items-center" style="flex-wrap: wrap">
+            <button
+                mat-icon-button
+                [disabled]="loading"
+                color="primary"
+                [matTooltip]="'Global.AddLanguage' | translate"
+                (click)="addCandidateLanguage()"
+            >
+                <mat-icon>add_circle_outline</mat-icon>
+            </button>
+            <p class="primary">
+                <a (click)="addCandidateLanguage()">{{
+                    'Global.AddLanguage' | translate
+                }}</a>
+            </p>
+        </div>
+    </ng-container>
+</div>

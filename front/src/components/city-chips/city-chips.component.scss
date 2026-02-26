@@ -1,0 +1,160 @@
+// Remove ALL custom styling - let it use default Material form field styling
+// Only keep basic width and chip text styling
+
+.mat-mdc-form-field {
+    width: 100%;
+}
+
+.city-chip {
+    text-transform: capitalize;
+    font-weight: 500;
+}
+
+// Override default Material Design chip height
+.mat-standard-chip,
+.mat-mdc-chip {
+    height: auto !important;
+    min-height: auto !important;
+    max-height: 16px !important;
+    font-size: 10px !important;
+    margin: 1px !important;
+    line-height: 14px !important;
+    padding: 1px 4px !important;
+    border-radius: 8px !important;
+    display: flex;
+    gap: 2px;
+}
+
+// Force single line height - same as other form fields
+.mat-mdc-chip-list {
+    min-height: auto !important;
+    max-height: 16px !important;
+    overflow: hidden !important;
+    display: flex !important;
+    align-items: center !important;
+    flex-wrap: nowrap !important;
+    gap: 1px !important;
+    padding: 0 !important;
+}
+
+// Match exact height of other form fields
+.mat-mdc-form-field-infix {
+    min-height: auto !important;
+    padding-top: 1px !important;
+    padding-bottom: 1px !important;
+    display: flex !important;
+    align-items: center !important;
+}
+
+// Hide the subscript wrapper to reduce extra height
+.mat-mdc-form-field-subscript-wrapper {
+    display: none !important;
+}
+
+// Make chip remove icon much smaller
+.mat-mdc-chip .mat-icon {
+    font-size: 8px !important;
+    width: 8px !important;
+    height: 8px !important;
+    margin-left: 1px !important;
+    line-height: 8px !important;
+}
+
+// Override any Material Design chip container styles
+.mat-mdc-chip-set,
+.mat-mdc-chip-listbox {
+    min-height: auto !important;
+    max-height: 16px !important;
+    padding: 0 !important;
+}
+
+// Override Angular Material's base input styles
+input.mat-chip-input {
+    max-width: 55px !important;
+    margin: 2px !important;
+    margin-top: 5px !important;
+    margin-bottom: 4px !important;
+    flex: 0 0 55px !important;
+}
+
+// Ensure chips don't wrap to new line immediately
+.mat-mdc-chip-list {
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+}
+
+.mat-standard-chip .mat-chip-remove.mat-icon,
+.mat-standard-chip .mat-chip-remove .mat-icon {
+    font-size: 12px !important;
+    width: 12px !important;
+    height: 12px !important;
+    margin-left: 2px !important;
+    line-height: 12px !important;
+}
+
+// Disabled state styling
+.mat-mdc-form-field.mat-form-field-disabled {
+    opacity: 0.6;
+
+    .mat-mdc-form-field-outline {
+        color: rgba(0, 0, 0, 0.12) !important;
+    }
+
+    .mat-mdc-form-field-label {
+        color: rgba(0, 0, 0, 0.38) !important;
+    }
+
+    .mat-mdc-chip {
+        opacity: 0.6;
+        background-color: rgba(0, 0, 0, 0.12) !important;
+        color: rgba(0, 0, 0, 0.38) !important;
+
+        &:hover {
+            background-color: rgba(0, 0, 0, 0.12) !important;
+            cursor: not-allowed !important;
+        }
+
+        .mat-icon {
+            opacity: 0.6;
+            cursor: not-allowed !important;
+        }
+    }
+
+    input.mat-chip-input {
+        color: rgba(0, 0, 0, 0.38) !important;
+        cursor: not-allowed !important;
+
+        &::placeholder {
+            color: rgba(0, 0, 0, 0.38) !important;
+        }
+    }
+
+    // Prevent hover effects on disabled state
+    .mat-mdc-chip-list {
+        pointer-events: none;
+    }
+
+    .mat-mdc-form-field-outline-thick {
+        color: rgba(0, 0, 0, 0.12) !important;
+    }
+}
+
+// Prevent hover outline on disabled chips
+.mat-mdc-chip.mat-mdc-chip-disabled {
+    &:hover {
+        background-color: rgba(0, 0, 0, 0.12) !important;
+        box-shadow: none !important;
+        cursor: not-allowed !important;
+    }
+
+    &:focus {
+        box-shadow: none !important;
+        outline: none !important;
+    }
+}
+
+// Disable pointer events on disabled form field
+.mat-mdc-form-field.mat-form-field-disabled .mat-mdc-chip-list {
+    pointer-events: none;
+}

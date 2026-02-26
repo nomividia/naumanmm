@@ -1,0 +1,45 @@
+<div
+    *ngIf="snackData"
+    style="
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        align-content: center;
+    "
+>
+    <div>
+        {{ snackData.message }}
+    </div>
+    <div
+        style="
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            align-content: center;
+        "
+    >
+        <ng-container *ngIf="snackData && snackData.actionLabel">
+            <button
+                type="button"
+                *ngIf="snackData.actionName"
+                mat-button
+                (click)="handleAction(null)"
+            >
+                {{ snackData.actionLabel }}
+            </button>
+            <a *ngIf="snackData.url" mat-button [href]="snackData.url">
+                {{ snackData.actionLabel }}
+            </a>
+            <a
+                *ngIf="snackData.routerLink"
+                mat-button
+                [routerLink]="snackData.routerLink"
+            >
+                {{ snackData.actionLabel }}
+            </a>
+        </ng-container>
+        <button mat-icon-button (click)="matSnackBarRef.dismiss()">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+</div>

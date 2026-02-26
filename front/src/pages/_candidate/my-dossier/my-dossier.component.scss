@@ -1,0 +1,90 @@
+@import '../../../variables.scss';
+
+app-my-dossier {
+    .container {
+        padding: 20px 22px;
+    }
+    .mat-tab-labels {
+        justify-content: center;
+    }
+    .candidat-header-container {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+
+        padding: 0 50px;
+        .t-grey {
+            color: grey;
+        }
+    }
+    .dossier-progress-container {
+        color: $mmi-orange;
+        .mat-progress-bar {
+            min-width: 250px;
+            margin: 0 10px;
+        }
+    }
+    .text-wrap {
+        max-width: 470px;
+        white-space: break-spaces;
+        line-height: 23px;
+        text-align: left;
+    }
+    span {
+        font-size: 13px;
+    }
+    .upload-btn,
+    .download-btn {
+        height: 25px;
+        padding: 0px 10px;
+        line-height: 22px;
+        margin-left: 10px;
+        mat-icon {
+            margin-right: 2px;
+            height: 22px;
+        }
+        .material-icons-outlined {
+            font-size: 20px;
+        }
+    }
+    .upload-btn {
+        background-color: $mmi-orange;
+        color: white;
+        mat-icon {
+            color: white;
+        }
+    }
+    .download-btn {
+        color: $mmi-orange;
+        border-color: $mmi-orange !important;
+        mat-icon {
+            color: $mmi-orange;
+        }
+    }
+    .mainLoadingOverlay {
+        background-color: rgba(0, 0, 0, 0.241);
+        .mat-spinner circle {
+            stroke: $mmi-orange;
+        }
+    }
+
+    // .gap-20 {
+    //     gap: 20%;
+    // }
+
+    // COMPLETION STATUS DOTS
+    .completion-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        margin-right: 5px;
+
+        &.complete {
+            background-color: $mmi-green;
+        }
+
+        &.incomplete {
+            background-color: #862f09;
+        }
+    }
+}

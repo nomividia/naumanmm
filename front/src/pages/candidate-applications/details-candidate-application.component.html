@@ -1,0 +1,20 @@
+<app-drawer-main-container
+    [headerTitle]="
+        ('Global.CandidateApplication' | translate) +
+        ' - ' +
+        ('label' | dbTranslate : candidateApplication?.applyStatus | lowercase)
+    "
+>
+    <div class="loading-wrapper" [style.display]="loading ? '' : 'none'">
+        <mat-spinner diameter="50" strokeWidth="6"></mat-spinner>
+    </div>
+
+    <app-candidate-application-informations
+        [candidateApplicationId]="candidateApplicationId"
+        [disabled]="candidateApplication?.disabled"
+        (onArchive)="onArchive($event)"
+        (onLoaded)="onLoaded($event)"
+        [loading]="loading"
+    >
+    </app-candidate-application-informations>
+</app-drawer-main-container>

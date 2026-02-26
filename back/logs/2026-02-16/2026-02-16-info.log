@@ -1,0 +1,725 @@
+
+[2026-02-16T12:51:34] - [info] => 
+    Node app listening on port 3037
+    {
+  "ApiBasePath": "/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back",
+  "db_log_enabled": false,
+  "ApiScheme": "http",
+  "EnvName": "production",
+  "UseRedis": false,
+  "FirebaseEnabled": false,
+  "UseRedisCache": false,
+  "MailProvider": "SendInBlue",
+  "SmtpSecure": false,
+  "IgnoreAllMailSending": false,
+  "PreserveFilesInTempDirectory": false,
+  "JobAdderMigrationFiles": true,
+  "CandidateApplicationsMigrationCsvFiles": true,
+  "ForceDeleteGCloudFiles": false,
+  "UseTypeOrmMigrations": true,
+  "UseRedisWebSocketAdapter": false,
+  "SmsProvider": "SendInBlue",
+  "IgnoreAllSmsSending": false,
+  "PM2ClusterMode": true,
+  "GCloudAppEngineHosted": false,
+  "db_host": "localhost",
+  "db_port": 3306,
+  "db_user": "root",
+  "db_password": "",
+  "db_name": "mmi",
+  "ApiPort": 3037,
+  "SmtpHost": "smtp.mailtrap.io",
+  "SmtpUser": "",
+  "SmtpPassword": "",
+  "SmtpPort": 465,
+  "MailSender": "contact@morganmallet.agency",
+  "SsrEnabled": false,
+  "BaseURL": "https://mmi.morganmallet.agency",
+  "SendInBlueApiKey": "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",
+  "GDriveClientSecretFileName": "gdrive-client-secret.json",
+  "FirebaseDbUrl": "",
+  "GoogleRecaptchaSecretKey": "6Lem774aAAAAACayqDlD3YCXqss1kFmO0UZPX-wx",
+  "GDriveRootFolder": "",
+  "JobAdderBackupHost": "localhost",
+  "JobAdderBackupUser": "sa",
+  "JobAdderBackupPassword": "k2Vx62R8cQJe",
+  "JobAdderAttachmentsFolder": "/root/dev/jobadder-data",
+  "PM2AppName": "mmi",
+  "HtmlTemplatesFolderName": "html_templates",
+  "PublicUploadsDirectoryName": "public",
+  "PrivateUploadsDirectoryName": "private",
+  "PublicImagesFolder": "/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/uploads/public/images",
+  "PdfPublicOutputFolder": "/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/uploads/public/pdf_output",
+  "PdfPrivateOutputFolder": "/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/uploads/private/pdf_output",
+  "UploadedFilesTempDirectory": "/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/uploads/uploaded-files-temp",
+  "UserPrivateFilesDirectory": "/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/uploads/private/users",
+  "UserPublicFilesDirectory": "/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/uploads/public/users",
+  "CandidateApplicationsDirectory": "/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/uploads/private/candidate-applications",
+  "CandidateApplicationsPublicDirectory": "/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/uploads/public/candidate-applications",
+  "CandidatesDirectory": "/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/uploads/private/candidates",
+  "CandidatesPublicDirectory": "/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/uploads/public/candidates",
+  "PublicFolder": "/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/uploads/public",
+  "PublicTempFolder": "/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/uploads/public/temp"
+}
+[2026-02-16T12:51:34] - [info] => 
+    scheduling job  "Daily Interview Report - US" (id=dailyInterviewReportUS) ...
+[2026-02-16T12:51:34] - [info] => 
+    scheduling job  "Daily Interview Report - World" (id=dailyInterviewReportWorld) ...
+[2026-02-16T12:51:34] - [info] => 
+    scheduling job  "Nettoyage des contacts pour la newsletter" (id=nxsCleanNewsletterRecipients) ...
+[2026-02-16T12:51:34] - [info] => 
+    scheduling job  "Nettoyage" (id=nxsJobsCleaning) ...
+[2026-02-16T12:51:34] - [info] => 
+    scheduling job  "Actualisation des statuts des newsletter" (id=nxsNewsletterRefreshLoop) ...
+[2026-02-16T12:51:34] - [info] => 
+    scheduling job  "Revert candidates from InProcess older than 14 days" (id=revertExpiredInProcessStatuses) ...
+[2026-02-16T12:51:34] - [info] => 
+    scheduling job  "Mise à jour du statut des candidats interviewés" (id=updateInterviewedCandidatesStatus) ...
+[2026-02-16T12:51:34] - [info] => 
+    scheduling job  "Weekly Interview Report" (id=weeklyInterviewReport) ...
+[2026-02-16T12:57:51] - [info] => 
+    Node app listening on port 3037
+    {
+  "ApiBasePath": "/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back",
+  "db_log_enabled": false,
+  "ApiScheme": "http",
+  "EnvName": "production",
+  "UseRedis": false,
+  "FirebaseEnabled": false,
+  "UseRedisCache": false,
+  "MailProvider": "SendInBlue",
+  "SmtpSecure": false,
+  "IgnoreAllMailSending": false,
+  "PreserveFilesInTempDirectory": false,
+  "JobAdderMigrationFiles": true,
+  "CandidateApplicationsMigrationCsvFiles": true,
+  "ForceDeleteGCloudFiles": false,
+  "UseTypeOrmMigrations": true,
+  "UseRedisWebSocketAdapter": false,
+  "SmsProvider": "SendInBlue",
+  "IgnoreAllSmsSending": false,
+  "PM2ClusterMode": true,
+  "GCloudAppEngineHosted": false,
+  "db_host": "localhost",
+  "db_port": 3306,
+  "db_user": "root",
+  "db_password": "",
+  "db_name": "mmi",
+  "ApiPort": 3037,
+  "SmtpHost": "smtp.mailtrap.io",
+  "SmtpUser": "",
+  "SmtpPassword": "",
+  "SmtpPort": 465,
+  "MailSender": "contact@morganmallet.agency",
+  "SsrEnabled": false,
+  "BaseURL": "https://mmi.morganmallet.agency",
+  "SendInBlueApiKey": "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",
+  "GDriveClientSecretFileName": "gdrive-client-secret.json",
+  "FirebaseDbUrl": "",
+  "GoogleRecaptchaSecretKey": "6Lem774aAAAAACayqDlD3YCXqss1kFmO0UZPX-wx",
+  "GDriveRootFolder": "",
+  "JobAdderBackupHost": "localhost",
+  "JobAdderBackupUser": "sa",
+  "JobAdderBackupPassword": "k2Vx62R8cQJe",
+  "JobAdderAttachmentsFolder": "/root/dev/jobadder-data",
+  "PM2AppName": "mmi",
+  "HtmlTemplatesFolderName": "html_templates",
+  "PublicUploadsDirectoryName": "public",
+  "PrivateUploadsDirectoryName": "private",
+  "PublicImagesFolder": "/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/uploads/public/images",
+  "PdfPublicOutputFolder": "/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/uploads/public/pdf_output",
+  "PdfPrivateOutputFolder": "/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/uploads/private/pdf_output",
+  "UploadedFilesTempDirectory": "/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/uploads/uploaded-files-temp",
+  "UserPrivateFilesDirectory": "/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/uploads/private/users",
+  "UserPublicFilesDirectory": "/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/uploads/public/users",
+  "CandidateApplicationsDirectory": "/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/uploads/private/candidate-applications",
+  "CandidateApplicationsPublicDirectory": "/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/uploads/public/candidate-applications",
+  "CandidatesDirectory": "/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/uploads/private/candidates",
+  "CandidatesPublicDirectory": "/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/uploads/public/candidates",
+  "PublicFolder": "/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/uploads/public",
+  "PublicTempFolder": "/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/uploads/public/temp"
+}
+[2026-02-16T12:57:51] - [info] => 
+    scheduling job  "Daily Interview Report - US" (id=dailyInterviewReportUS) ...
+[2026-02-16T12:57:51] - [info] => 
+    scheduling job  "Daily Interview Report - World" (id=dailyInterviewReportWorld) ...
+[2026-02-16T12:57:51] - [info] => 
+    scheduling job  "Nettoyage des contacts pour la newsletter" (id=nxsCleanNewsletterRecipients) ...
+[2026-02-16T12:57:51] - [info] => 
+    scheduling job  "Nettoyage" (id=nxsJobsCleaning) ...
+[2026-02-16T12:57:51] - [info] => 
+    scheduling job  "Actualisation des statuts des newsletter" (id=nxsNewsletterRefreshLoop) ...
+[2026-02-16T12:57:51] - [info] => 
+    scheduling job  "Revert candidates from InProcess older than 14 days" (id=revertExpiredInProcessStatuses) ...
+[2026-02-16T12:57:51] - [info] => 
+    scheduling job  "Mise à jour du statut des candidats interviewés" (id=updateInterviewedCandidatesStatus) ...
+[2026-02-16T12:57:51] - [info] => 
+    scheduling job  "Weekly Interview Report" (id=weeklyInterviewReport) ...
+[2026-02-16T13:31:26] - [info] => 
+    Node app listening on port 3037
+    {
+  "ApiBasePath": "/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back",
+  "db_log_enabled": false,
+  "ApiScheme": "http",
+  "EnvName": "production",
+  "UseRedis": false,
+  "FirebaseEnabled": false,
+  "UseRedisCache": false,
+  "MailProvider": "SendInBlue",
+  "SmtpSecure": false,
+  "IgnoreAllMailSending": false,
+  "PreserveFilesInTempDirectory": false,
+  "JobAdderMigrationFiles": true,
+  "CandidateApplicationsMigrationCsvFiles": true,
+  "ForceDeleteGCloudFiles": false,
+  "UseTypeOrmMigrations": true,
+  "UseRedisWebSocketAdapter": false,
+  "SmsProvider": "SendInBlue",
+  "IgnoreAllSmsSending": false,
+  "PM2ClusterMode": true,
+  "GCloudAppEngineHosted": false,
+  "db_host": "localhost",
+  "db_port": 3306,
+  "db_user": "root",
+  "db_password": "Nomia123@",
+  "db_name": "mmi",
+  "ApiPort": 3037,
+  "SmtpHost": "smtp.mailtrap.io",
+  "SmtpUser": "",
+  "SmtpPassword": "",
+  "SmtpPort": 465,
+  "MailSender": "contact@morganmallet.agency",
+  "SsrEnabled": false,
+  "BaseURL": "https://mmi.morganmallet.agency",
+  "SendInBlueApiKey": "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",
+  "GDriveClientSecretFileName": "gdrive-client-secret.json",
+  "FirebaseDbUrl": "",
+  "GoogleRecaptchaSecretKey": "6Lem774aAAAAACayqDlD3YCXqss1kFmO0UZPX-wx",
+  "GDriveRootFolder": "",
+  "JobAdderBackupHost": "localhost",
+  "JobAdderBackupUser": "sa",
+  "JobAdderBackupPassword": "k2Vx62R8cQJe",
+  "JobAdderAttachmentsFolder": "/root/dev/jobadder-data",
+  "PM2AppName": "mmi",
+  "HtmlTemplatesFolderName": "html_templates",
+  "PublicUploadsDirectoryName": "public",
+  "PrivateUploadsDirectoryName": "private",
+  "PublicImagesFolder": "/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/uploads/public/images",
+  "PdfPublicOutputFolder": "/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/uploads/public/pdf_output",
+  "PdfPrivateOutputFolder": "/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/uploads/private/pdf_output",
+  "UploadedFilesTempDirectory": "/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/uploads/uploaded-files-temp",
+  "UserPrivateFilesDirectory": "/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/uploads/private/users",
+  "UserPublicFilesDirectory": "/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/uploads/public/users",
+  "CandidateApplicationsDirectory": "/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/uploads/private/candidate-applications",
+  "CandidateApplicationsPublicDirectory": "/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/uploads/public/candidate-applications",
+  "CandidatesDirectory": "/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/uploads/private/candidates",
+  "CandidatesPublicDirectory": "/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/uploads/public/candidates",
+  "PublicFolder": "/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/uploads/public",
+  "PublicTempFolder": "/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/uploads/public/temp"
+}
+[2026-02-16T13:31:27] - [info] => 
+    scheduling job  "Daily Interview Report - US" (id=dailyInterviewReportUS) ...
+[2026-02-16T13:31:27] - [info] => 
+    scheduling job  "Daily Interview Report - World" (id=dailyInterviewReportWorld) ...
+[2026-02-16T13:31:27] - [info] => 
+    scheduling job  "Nettoyage des contacts pour la newsletter" (id=nxsCleanNewsletterRecipients) ...
+[2026-02-16T13:31:27] - [info] => 
+    scheduling job  "Nettoyage" (id=nxsJobsCleaning) ...
+[2026-02-16T13:31:27] - [info] => 
+    scheduling job  "Actualisation des statuts des newsletter" (id=nxsNewsletterRefreshLoop) ...
+[2026-02-16T13:31:27] - [info] => 
+    scheduling job  "Revert candidates from InProcess older than 14 days" (id=revertExpiredInProcessStatuses) ...
+[2026-02-16T13:31:27] - [info] => 
+    scheduling job  "Mise à jour du statut des candidats interviewés" (id=updateInterviewedCandidatesStatus) ...
+[2026-02-16T13:31:27] - [info] => 
+    scheduling job  "Weekly Interview Report" (id=weeklyInterviewReport) ...
+[2026-02-16T13:40:00] - [info] => 
+    Running job  "Actualisation des statuts des newsletter" (id=nxsNewsletterRefreshLoop) ...
+[2026-02-16T13:40:00] - [info] => 
+    calling job method refreshNewsletterLoop ...
+[2026-02-16T13:40:00] - [info] => 
+    refresh newsletter loop  - 10 to treat
+[2026-02-16T13:40:00] - [info] => 
+    refresh newsletter loop  - getting stat from sib
+[2026-02-16T13:40:00] - [info] => 
+    refresh newsletter loop  - getting stat from sib
+[2026-02-16T13:40:01] - [info] => 
+    refresh newsletter loop  - getting stat from sib
+[2026-02-16T13:40:01] - [info] => 
+    refresh newsletter loop  - getting stat from sib
+[2026-02-16T13:40:02] - [info] => 
+    refresh newsletter loop  - getting stat from sib
+[2026-02-16T13:40:03] - [info] => 
+    refresh newsletter loop  - getting stat from sib
+[2026-02-16T13:40:04] - [info] => 
+    refresh newsletter loop  - getting stat from sib
+[2026-02-16T13:40:04] - [info] => 
+    refresh newsletter loop  - getting stat from sib
+[2026-02-16T13:40:05] - [info] => 
+    refresh newsletter loop  - getting stat from sib
+[2026-02-16T13:40:06] - [info] => 
+    refresh newsletter loop  - getting stat from sib
+[2026-02-16T13:50:00] - [info] => 
+    Running job  "Actualisation des statuts des newsletter" (id=nxsNewsletterRefreshLoop) ...
+[2026-02-16T13:50:00] - [info] => 
+    calling job method refreshNewsletterLoop ...
+[2026-02-16T13:50:00] - [info] => 
+    refresh newsletter loop  - 10 to treat
+[2026-02-16T13:50:00] - [info] => 
+    refresh newsletter loop  - getting stat from sib
+[2026-02-16T13:50:00] - [info] => 
+    refresh newsletter loop  - getting stat from sib
+[2026-02-16T13:50:01] - [info] => 
+    refresh newsletter loop  - getting stat from sib
+[2026-02-16T13:50:01] - [info] => 
+    refresh newsletter loop  - getting stat from sib
+[2026-02-16T13:50:02] - [info] => 
+    refresh newsletter loop  - getting stat from sib
+[2026-02-16T13:50:03] - [info] => 
+    refresh newsletter loop  - getting stat from sib
+[2026-02-16T13:50:04] - [info] => 
+    refresh newsletter loop  - getting stat from sib
+[2026-02-16T13:50:05] - [info] => 
+    refresh newsletter loop  - getting stat from sib
+[2026-02-16T13:50:06] - [info] => 
+    refresh newsletter loop  - getting stat from sib
+[2026-02-16T13:50:06] - [info] => 
+    refresh newsletter loop  - getting stat from sib
+[2026-02-16T13:58:17] - [info] => 
+    Node app listening on port 3037
+    {
+  "ApiBasePath": "/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back",
+  "db_log_enabled": false,
+  "ApiScheme": "http",
+  "EnvName": "development",
+  "UseRedis": false,
+  "FirebaseEnabled": false,
+  "UseRedisCache": false,
+  "MailProvider": "SendInBlue",
+  "SmtpSecure": false,
+  "IgnoreAllMailSending": false,
+  "PreserveFilesInTempDirectory": false,
+  "JobAdderMigrationFiles": true,
+  "CandidateApplicationsMigrationCsvFiles": true,
+  "ForceDeleteGCloudFiles": false,
+  "UseTypeOrmMigrations": true,
+  "UseRedisWebSocketAdapter": false,
+  "SmsProvider": "SendInBlue",
+  "IgnoreAllSmsSending": false,
+  "PM2ClusterMode": true,
+  "GCloudAppEngineHosted": false,
+  "db_host": "localhost",
+  "db_port": 3306,
+  "db_user": "root",
+  "db_password": "Nomia123@",
+  "db_name": "mmi",
+  "ApiPort": 3037,
+  "SmtpHost": "smtp.mailtrap.io",
+  "SmtpUser": "",
+  "SmtpPassword": "",
+  "SmtpPort": 465,
+  "MailSender": "contact@morganmallet.agency",
+  "SsrEnabled": false,
+  "BaseURL": "https://mmi.morganmallet.agency",
+  "SendInBlueApiKey": "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",
+  "GDriveClientSecretFileName": "gdrive-client-secret.json",
+  "FirebaseDbUrl": "",
+  "GoogleRecaptchaSecretKey": "6Lem774aAAAAACayqDlD3YCXqss1kFmO0UZPX-wx",
+  "GDriveRootFolder": "",
+  "JobAdderBackupHost": "localhost",
+  "JobAdderBackupUser": "sa",
+  "JobAdderBackupPassword": "k2Vx62R8cQJe",
+  "JobAdderAttachmentsFolder": "/root/dev/jobadder-data",
+  "PM2AppName": "mmi",
+  "HtmlTemplatesFolderName": "html_templates",
+  "PublicUploadsDirectoryName": "public",
+  "PrivateUploadsDirectoryName": "private",
+  "PublicImagesFolder": "/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/uploads/public/images",
+  "PdfPublicOutputFolder": "/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/uploads/public/pdf_output",
+  "PdfPrivateOutputFolder": "/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/uploads/private/pdf_output",
+  "UploadedFilesTempDirectory": "/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/uploads/uploaded-files-temp",
+  "UserPrivateFilesDirectory": "/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/uploads/private/users",
+  "UserPublicFilesDirectory": "/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/uploads/public/users",
+  "CandidateApplicationsDirectory": "/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/uploads/private/candidate-applications",
+  "CandidateApplicationsPublicDirectory": "/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/uploads/public/candidate-applications",
+  "CandidatesDirectory": "/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/uploads/private/candidates",
+  "CandidatesPublicDirectory": "/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/uploads/public/candidates",
+  "PublicFolder": "/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/uploads/public",
+  "PublicTempFolder": "/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/uploads/public/temp"
+}
+[2026-02-16T13:58:17] - [info] => 
+    scheduling job  "Daily Interview Report - US" (id=dailyInterviewReportUS) ...
+[2026-02-16T13:58:17] - [info] => 
+    scheduling job  "Daily Interview Report - World" (id=dailyInterviewReportWorld) ...
+[2026-02-16T13:58:17] - [info] => 
+    scheduling job  "Nettoyage des contacts pour la newsletter" (id=nxsCleanNewsletterRecipients) ...
+[2026-02-16T13:58:17] - [info] => 
+    scheduling job  "Nettoyage" (id=nxsJobsCleaning) ...
+[2026-02-16T13:58:17] - [info] => 
+    scheduling job  "Actualisation des statuts des newsletter" (id=nxsNewsletterRefreshLoop) ...
+[2026-02-16T13:58:17] - [info] => 
+    scheduling job  "Revert candidates from InProcess older than 14 days" (id=revertExpiredInProcessStatuses) ...
+[2026-02-16T13:58:17] - [info] => 
+    scheduling job  "Mise à jour du statut des candidats interviewés" (id=updateInterviewedCandidatesStatus) ...
+[2026-02-16T13:58:17] - [info] => 
+    scheduling job  "Weekly Interview Report" (id=weeklyInterviewReport) ...
+[2026-02-16T14:00:00] - [info] => 
+    Running job  "Actualisation des statuts des newsletter" (id=nxsNewsletterRefreshLoop) ...
+[2026-02-16T14:00:00] - [info] => 
+    calling job method refreshNewsletterLoop ...
+[2026-02-16T14:10:00] - [info] => 
+    Running job  "Actualisation des statuts des newsletter" (id=nxsNewsletterRefreshLoop) ...
+[2026-02-16T14:10:00] - [info] => 
+    calling job method refreshNewsletterLoop ...
+[2026-02-16T14:20:00] - [info] => 
+    Running job  "Actualisation des statuts des newsletter" (id=nxsNewsletterRefreshLoop) ...
+[2026-02-16T14:20:00] - [info] => 
+    calling job method refreshNewsletterLoop ...
+[2026-02-16T14:30:00] - [info] => 
+    Running job  "Actualisation des statuts des newsletter" (id=nxsNewsletterRefreshLoop) ...
+[2026-02-16T14:30:00] - [info] => 
+    calling job method refreshNewsletterLoop ...
+[2026-02-16T14:37:23] - [info] => 
+    Node app listening on port 3037
+    {
+  "ApiBasePath": "/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back",
+  "db_log_enabled": false,
+  "ApiScheme": "http",
+  "EnvName": "development",
+  "UseRedis": false,
+  "FirebaseEnabled": false,
+  "UseRedisCache": false,
+  "MailProvider": "SendInBlue",
+  "SmtpSecure": false,
+  "IgnoreAllMailSending": false,
+  "PreserveFilesInTempDirectory": false,
+  "JobAdderMigrationFiles": true,
+  "CandidateApplicationsMigrationCsvFiles": true,
+  "ForceDeleteGCloudFiles": false,
+  "UseTypeOrmMigrations": true,
+  "UseRedisWebSocketAdapter": false,
+  "SmsProvider": "SendInBlue",
+  "IgnoreAllSmsSending": false,
+  "PM2ClusterMode": true,
+  "GCloudAppEngineHosted": false,
+  "db_host": "localhost",
+  "db_port": 3306,
+  "db_user": "root",
+  "db_password": "Nomia123@",
+  "db_name": "mmi",
+  "ApiPort": 3037,
+  "SmtpHost": "smtp.mailtrap.io",
+  "SmtpUser": "",
+  "SmtpPassword": "",
+  "SmtpPort": 465,
+  "MailSender": "contact@morganmallet.agency",
+  "SsrEnabled": false,
+  "BaseURL": "https://mmi.morganmallet.agency",
+  "SendInBlueApiKey": "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",
+  "GDriveClientSecretFileName": "gdrive-client-secret.json",
+  "FirebaseDbUrl": "",
+  "GoogleRecaptchaSecretKey": "6Lem774aAAAAACayqDlD3YCXqss1kFmO0UZPX-wx",
+  "GDriveRootFolder": "",
+  "JobAdderBackupHost": "localhost",
+  "JobAdderBackupUser": "sa",
+  "JobAdderBackupPassword": "k2Vx62R8cQJe",
+  "JobAdderAttachmentsFolder": "/root/dev/jobadder-data",
+  "PM2AppName": "mmi",
+  "HtmlTemplatesFolderName": "html_templates",
+  "PublicUploadsDirectoryName": "public",
+  "PrivateUploadsDirectoryName": "private",
+  "PublicImagesFolder": "/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/uploads/public/images",
+  "PdfPublicOutputFolder": "/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/uploads/public/pdf_output",
+  "PdfPrivateOutputFolder": "/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/uploads/private/pdf_output",
+  "UploadedFilesTempDirectory": "/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/uploads/uploaded-files-temp",
+  "UserPrivateFilesDirectory": "/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/uploads/private/users",
+  "UserPublicFilesDirectory": "/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/uploads/public/users",
+  "CandidateApplicationsDirectory": "/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/uploads/private/candidate-applications",
+  "CandidateApplicationsPublicDirectory": "/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/uploads/public/candidate-applications",
+  "CandidatesDirectory": "/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/uploads/private/candidates",
+  "CandidatesPublicDirectory": "/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/uploads/public/candidates",
+  "PublicFolder": "/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/uploads/public",
+  "PublicTempFolder": "/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/uploads/public/temp"
+}
+[2026-02-16T14:37:23] - [info] => 
+    scheduling job  "Daily Interview Report - US" (id=dailyInterviewReportUS) ...
+[2026-02-16T14:37:23] - [info] => 
+    scheduling job  "Daily Interview Report - World" (id=dailyInterviewReportWorld) ...
+[2026-02-16T14:37:23] - [info] => 
+    scheduling job  "Nettoyage des contacts pour la newsletter" (id=nxsCleanNewsletterRecipients) ...
+[2026-02-16T14:37:23] - [info] => 
+    scheduling job  "Nettoyage" (id=nxsJobsCleaning) ...
+[2026-02-16T14:37:23] - [info] => 
+    scheduling job  "Actualisation des statuts des newsletter" (id=nxsNewsletterRefreshLoop) ...
+[2026-02-16T14:37:23] - [info] => 
+    scheduling job  "Revert candidates from InProcess older than 14 days" (id=revertExpiredInProcessStatuses) ...
+[2026-02-16T14:37:23] - [info] => 
+    scheduling job  "Mise à jour du statut des candidats interviewés" (id=updateInterviewedCandidatesStatus) ...
+[2026-02-16T14:37:23] - [info] => 
+    scheduling job  "Weekly Interview Report" (id=weeklyInterviewReport) ...
+[2026-02-16T14:40:00] - [info] => 
+    Running job  "Actualisation des statuts des newsletter" (id=nxsNewsletterRefreshLoop) ...
+[2026-02-16T14:40:00] - [info] => 
+    calling job method refreshNewsletterLoop ...
+[2026-02-16T14:43:05] - [info] => 
+    Node app listening on port 3037
+    {
+  "ApiBasePath": "/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back",
+  "db_log_enabled": false,
+  "ApiScheme": "http",
+  "EnvName": "development",
+  "UseRedis": false,
+  "FirebaseEnabled": false,
+  "UseRedisCache": false,
+  "MailProvider": "SendInBlue",
+  "SmtpSecure": false,
+  "IgnoreAllMailSending": false,
+  "PreserveFilesInTempDirectory": false,
+  "JobAdderMigrationFiles": true,
+  "CandidateApplicationsMigrationCsvFiles": true,
+  "ForceDeleteGCloudFiles": false,
+  "UseTypeOrmMigrations": true,
+  "UseRedisWebSocketAdapter": false,
+  "SmsProvider": "SendInBlue",
+  "IgnoreAllSmsSending": false,
+  "PM2ClusterMode": true,
+  "GCloudAppEngineHosted": false,
+  "db_host": "localhost",
+  "db_port": 3306,
+  "db_user": "root",
+  "db_password": "Nomia123@",
+  "db_name": "mmi",
+  "ApiPort": 3037,
+  "SmtpHost": "smtp.mailtrap.io",
+  "SmtpUser": "",
+  "SmtpPassword": "",
+  "SmtpPort": 465,
+  "MailSender": "contact@morganmallet.agency",
+  "SsrEnabled": false,
+  "BaseURL": "https://mmi.morganmallet.agency",
+  "SendInBlueApiKey": "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",
+  "GDriveClientSecretFileName": "gdrive-client-secret.json",
+  "FirebaseDbUrl": "",
+  "GoogleRecaptchaSecretKey": "6Lem774aAAAAACayqDlD3YCXqss1kFmO0UZPX-wx",
+  "GDriveRootFolder": "",
+  "JobAdderBackupHost": "localhost",
+  "JobAdderBackupUser": "sa",
+  "JobAdderBackupPassword": "k2Vx62R8cQJe",
+  "JobAdderAttachmentsFolder": "/root/dev/jobadder-data",
+  "PM2AppName": "mmi",
+  "HtmlTemplatesFolderName": "html_templates",
+  "PublicUploadsDirectoryName": "public",
+  "PrivateUploadsDirectoryName": "private",
+  "PublicImagesFolder": "/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/uploads/public/images",
+  "PdfPublicOutputFolder": "/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/uploads/public/pdf_output",
+  "PdfPrivateOutputFolder": "/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/uploads/private/pdf_output",
+  "UploadedFilesTempDirectory": "/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/uploads/uploaded-files-temp",
+  "UserPrivateFilesDirectory": "/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/uploads/private/users",
+  "UserPublicFilesDirectory": "/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/uploads/public/users",
+  "CandidateApplicationsDirectory": "/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/uploads/private/candidate-applications",
+  "CandidateApplicationsPublicDirectory": "/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/uploads/public/candidate-applications",
+  "CandidatesDirectory": "/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/uploads/private/candidates",
+  "CandidatesPublicDirectory": "/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/uploads/public/candidates",
+  "PublicFolder": "/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/uploads/public",
+  "PublicTempFolder": "/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/uploads/public/temp"
+}
+[2026-02-16T14:43:05] - [info] => 
+    scheduling job  "Daily Interview Report - US" (id=dailyInterviewReportUS) ...
+[2026-02-16T14:43:05] - [info] => 
+    scheduling job  "Daily Interview Report - World" (id=dailyInterviewReportWorld) ...
+[2026-02-16T14:43:05] - [info] => 
+    scheduling job  "Nettoyage des contacts pour la newsletter" (id=nxsCleanNewsletterRecipients) ...
+[2026-02-16T14:43:05] - [info] => 
+    scheduling job  "Nettoyage" (id=nxsJobsCleaning) ...
+[2026-02-16T14:43:05] - [info] => 
+    scheduling job  "Actualisation des statuts des newsletter" (id=nxsNewsletterRefreshLoop) ...
+[2026-02-16T14:43:05] - [info] => 
+    scheduling job  "Revert candidates from InProcess older than 14 days" (id=revertExpiredInProcessStatuses) ...
+[2026-02-16T14:43:05] - [info] => 
+    scheduling job  "Mise à jour du statut des candidats interviewés" (id=updateInterviewedCandidatesStatus) ...
+[2026-02-16T14:43:05] - [info] => 
+    scheduling job  "Weekly Interview Report" (id=weeklyInterviewReport) ...
+[2026-02-16T14:44:29] - [info] => 
+    Node app listening on port 3037
+    {
+  "ApiBasePath": "/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back",
+  "db_log_enabled": false,
+  "ApiScheme": "http",
+  "EnvName": "development",
+  "UseRedis": false,
+  "FirebaseEnabled": false,
+  "UseRedisCache": false,
+  "MailProvider": "SendInBlue",
+  "SmtpSecure": false,
+  "IgnoreAllMailSending": false,
+  "PreserveFilesInTempDirectory": false,
+  "JobAdderMigrationFiles": true,
+  "CandidateApplicationsMigrationCsvFiles": true,
+  "ForceDeleteGCloudFiles": false,
+  "UseTypeOrmMigrations": true,
+  "UseRedisWebSocketAdapter": false,
+  "SmsProvider": "SendInBlue",
+  "IgnoreAllSmsSending": false,
+  "PM2ClusterMode": true,
+  "GCloudAppEngineHosted": false,
+  "db_host": "localhost",
+  "db_port": 3306,
+  "db_user": "root",
+  "db_password": "Nomia123@",
+  "db_name": "mmi",
+  "ApiPort": 3037,
+  "SmtpHost": "smtp.mailtrap.io",
+  "SmtpUser": "",
+  "SmtpPassword": "",
+  "SmtpPort": 465,
+  "MailSender": "contact@morganmallet.agency",
+  "SsrEnabled": false,
+  "BaseURL": "https://mmi.morganmallet.agency",
+  "SendInBlueApiKey": "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",
+  "GDriveClientSecretFileName": "gdrive-client-secret.json",
+  "FirebaseDbUrl": "",
+  "GoogleRecaptchaSecretKey": "6Lem774aAAAAACayqDlD3YCXqss1kFmO0UZPX-wx",
+  "GDriveRootFolder": "",
+  "JobAdderBackupHost": "localhost",
+  "JobAdderBackupUser": "sa",
+  "JobAdderBackupPassword": "k2Vx62R8cQJe",
+  "JobAdderAttachmentsFolder": "/root/dev/jobadder-data",
+  "PM2AppName": "mmi",
+  "HtmlTemplatesFolderName": "html_templates",
+  "PublicUploadsDirectoryName": "public",
+  "PrivateUploadsDirectoryName": "private",
+  "PublicImagesFolder": "/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/uploads/public/images",
+  "PdfPublicOutputFolder": "/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/uploads/public/pdf_output",
+  "PdfPrivateOutputFolder": "/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/uploads/private/pdf_output",
+  "UploadedFilesTempDirectory": "/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/uploads/uploaded-files-temp",
+  "UserPrivateFilesDirectory": "/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/uploads/private/users",
+  "UserPublicFilesDirectory": "/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/uploads/public/users",
+  "CandidateApplicationsDirectory": "/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/uploads/private/candidate-applications",
+  "CandidateApplicationsPublicDirectory": "/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/uploads/public/candidate-applications",
+  "CandidatesDirectory": "/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/uploads/private/candidates",
+  "CandidatesPublicDirectory": "/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/uploads/public/candidates",
+  "PublicFolder": "/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/uploads/public",
+  "PublicTempFolder": "/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/uploads/public/temp"
+}
+[2026-02-16T14:44:29] - [info] => 
+    scheduling job  "Daily Interview Report - US" (id=dailyInterviewReportUS) ...
+[2026-02-16T14:44:29] - [info] => 
+    scheduling job  "Daily Interview Report - World" (id=dailyInterviewReportWorld) ...
+[2026-02-16T14:44:29] - [info] => 
+    scheduling job  "Nettoyage des contacts pour la newsletter" (id=nxsCleanNewsletterRecipients) ...
+[2026-02-16T14:44:29] - [info] => 
+    scheduling job  "Nettoyage" (id=nxsJobsCleaning) ...
+[2026-02-16T14:44:29] - [info] => 
+    scheduling job  "Actualisation des statuts des newsletter" (id=nxsNewsletterRefreshLoop) ...
+[2026-02-16T14:44:29] - [info] => 
+    scheduling job  "Revert candidates from InProcess older than 14 days" (id=revertExpiredInProcessStatuses) ...
+[2026-02-16T14:44:29] - [info] => 
+    scheduling job  "Mise à jour du statut des candidats interviewés" (id=updateInterviewedCandidatesStatus) ...
+[2026-02-16T14:44:29] - [info] => 
+    scheduling job  "Weekly Interview Report" (id=weeklyInterviewReport) ...
+[2026-02-16T14:46:12] - [info] => 
+    Node app listening on port 3037
+    {
+  "ApiBasePath": "/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back",
+  "db_log_enabled": false,
+  "ApiScheme": "http",
+  "EnvName": "development",
+  "UseRedis": false,
+  "FirebaseEnabled": false,
+  "UseRedisCache": false,
+  "MailProvider": "SendInBlue",
+  "SmtpSecure": false,
+  "IgnoreAllMailSending": false,
+  "PreserveFilesInTempDirectory": false,
+  "JobAdderMigrationFiles": true,
+  "CandidateApplicationsMigrationCsvFiles": true,
+  "ForceDeleteGCloudFiles": false,
+  "UseTypeOrmMigrations": true,
+  "UseRedisWebSocketAdapter": false,
+  "SmsProvider": "SendInBlue",
+  "IgnoreAllSmsSending": false,
+  "PM2ClusterMode": true,
+  "GCloudAppEngineHosted": false,
+  "db_host": "localhost",
+  "db_port": 3306,
+  "db_user": "root",
+  "db_password": "Nomia123@",
+  "db_name": "mmi",
+  "ApiPort": 3037,
+  "SmtpHost": "smtp.mailtrap.io",
+  "SmtpUser": "",
+  "SmtpPassword": "",
+  "SmtpPort": 465,
+  "MailSender": "contact@morganmallet.agency",
+  "SsrEnabled": false,
+  "BaseURL": "https://mmi.morganmallet.agency",
+  "SendInBlueApiKey": "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",
+  "GDriveClientSecretFileName": "gdrive-client-secret.json",
+  "FirebaseDbUrl": "",
+  "GoogleRecaptchaSecretKey": "6Lem774aAAAAACayqDlD3YCXqss1kFmO0UZPX-wx",
+  "GDriveRootFolder": "",
+  "JobAdderBackupHost": "localhost",
+  "JobAdderBackupUser": "sa",
+  "JobAdderBackupPassword": "k2Vx62R8cQJe",
+  "JobAdderAttachmentsFolder": "/root/dev/jobadder-data",
+  "PM2AppName": "mmi",
+  "HtmlTemplatesFolderName": "html_templates",
+  "PublicUploadsDirectoryName": "public",
+  "PrivateUploadsDirectoryName": "private",
+  "PublicImagesFolder": "/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/uploads/public/images",
+  "PdfPublicOutputFolder": "/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/uploads/public/pdf_output",
+  "PdfPrivateOutputFolder": "/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/uploads/private/pdf_output",
+  "UploadedFilesTempDirectory": "/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/uploads/uploaded-files-temp",
+  "UserPrivateFilesDirectory": "/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/uploads/private/users",
+  "UserPublicFilesDirectory": "/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/uploads/public/users",
+  "CandidateApplicationsDirectory": "/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/uploads/private/candidate-applications",
+  "CandidateApplicationsPublicDirectory": "/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/uploads/public/candidate-applications",
+  "CandidatesDirectory": "/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/uploads/private/candidates",
+  "CandidatesPublicDirectory": "/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/uploads/public/candidates",
+  "PublicFolder": "/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/uploads/public",
+  "PublicTempFolder": "/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/back/uploads/public/temp"
+}
+[2026-02-16T14:46:12] - [info] => 
+    scheduling job  "Daily Interview Report - US" (id=dailyInterviewReportUS) ...
+[2026-02-16T14:46:12] - [info] => 
+    scheduling job  "Daily Interview Report - World" (id=dailyInterviewReportWorld) ...
+[2026-02-16T14:46:12] - [info] => 
+    scheduling job  "Nettoyage des contacts pour la newsletter" (id=nxsCleanNewsletterRecipients) ...
+[2026-02-16T14:46:12] - [info] => 
+    scheduling job  "Nettoyage" (id=nxsJobsCleaning) ...
+[2026-02-16T14:46:12] - [info] => 
+    scheduling job  "Actualisation des statuts des newsletter" (id=nxsNewsletterRefreshLoop) ...
+[2026-02-16T14:46:12] - [info] => 
+    scheduling job  "Revert candidates from InProcess older than 14 days" (id=revertExpiredInProcessStatuses) ...
+[2026-02-16T14:46:12] - [info] => 
+    scheduling job  "Mise à jour du statut des candidats interviewés" (id=updateInterviewedCandidatesStatus) ...
+[2026-02-16T14:46:12] - [info] => 
+    scheduling job  "Weekly Interview Report" (id=weeklyInterviewReport) ...
+[2026-02-16T14:50:00] - [info] => 
+    Running job  "Actualisation des statuts des newsletter" (id=nxsNewsletterRefreshLoop) ...
+[2026-02-16T14:50:00] - [info] => 
+    calling job method refreshNewsletterLoop ...
+[2026-02-16T15:00:00] - [info] => 
+    Running job  "Actualisation des statuts des newsletter" (id=nxsNewsletterRefreshLoop) ...
+[2026-02-16T15:00:00] - [info] => 
+    calling job method refreshNewsletterLoop ...
+[2026-02-16T15:10:00] - [info] => 
+    Running job  "Actualisation des statuts des newsletter" (id=nxsNewsletterRefreshLoop) ...
+[2026-02-16T15:10:00] - [info] => 
+    calling job method refreshNewsletterLoop ...
+[2026-02-16T15:20:00] - [info] => 
+    Running job  "Actualisation des statuts des newsletter" (id=nxsNewsletterRefreshLoop) ...
+[2026-02-16T15:20:00] - [info] => 
+    calling job method refreshNewsletterLoop ...
+[2026-02-16T15:45:46] - [info] => 
+    Running job  "Actualisation des statuts des newsletter" (id=nxsNewsletterRefreshLoop) ...
+[2026-02-16T15:45:46] - [info] => 
+    calling job method refreshNewsletterLoop ...
+[2026-02-16T16:50:36] - [info] => 
+    Running job  "Actualisation des statuts des newsletter" (id=nxsNewsletterRefreshLoop) ...
+[2026-02-16T16:50:36] - [info] => 
+    calling job method refreshNewsletterLoop ...
+[2026-02-16T17:25:21] - [info] => 
+    Running job  "Actualisation des statuts des newsletter" (id=nxsNewsletterRefreshLoop) ...
+[2026-02-16T17:25:21] - [info] => 
+    calling job method refreshNewsletterLoop ...

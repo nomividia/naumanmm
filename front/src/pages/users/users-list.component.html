@@ -1,0 +1,183 @@
+<app-drawer-main-container
+    [headerTitle]="'Menu.Users' | translate"
+    [headerLink]="'/' + RoutesList.AdminUsers + '/new'"
+    [headerLinkText]="'Menu.CreateUser' | translate"
+>
+    <mat-tab-group
+        mat-align-tabs="center"
+        animationDuration="0ms"
+        (selectedTabChange)="onTabChange($event)"
+    >
+        <mat-tab label="MMI">
+            <ng-container
+                *ngTemplateOutlet="
+                    listUser;
+                    context: { items: items, showSelectRoles: true }
+                "
+            ></ng-container>
+        </mat-tab>
+        <mat-tab [label]="'Menu.Candidates' | translate">
+            <ng-container
+                *ngTemplateOutlet="listUser; context: { items: items }"
+            ></ng-container>
+        </mat-tab>
+        <!-- <mat-tab *ngIf="GlobalAppService.userHasRole(AuthDataService.currentUser,RolesList.AdminTech)"
+            [label]="'Global.All' | translate">
+            <ng-container *ngTemplateOutlet="listUser;context:{items:items,showSelectRoles:true}"></ng-container>
+        </mat-tab> -->
+    </mat-tab-group>
+    <mat-paginator
+        class="mat-paginator-sticky"
+        [length]="filteredItemsCount"
+        [pageSize]="20"
+        [pageSizeOptions]="[10, 20, 100]"
+    ></mat-paginator>
+</app-drawer-main-container>
+
+<ng-template #listUser let-items="items" let-showSelectRoles="showSelectRoles">
+    <div class="nxs-list-page">
+        <div class="nxs-list-page-filters">
+            <div class="filters-wrapper">
+                <ng-container *ngIf="request">
+                    <mat-form-field
+                        appearance="outline"
+                        *ngIf="showSelectRoles"
+                        class="nxs-small-mat-input long-width"
+                        [appInputBg]="request.selectedRoleCodes"
+                    >
+                        <mat-label>{{
+                            'User.FilterByRole' | translate
+                        }}</mat-label>
+                        <mat-select
+                            [(ngModel)]="request.selectedRoleCodes"
+                            multiple
+                            (ngModelChange)="loadData()"
+                        >
+                            <mat-option
+                                *ngFor="let role of rolesList"
+                                [value]="role.role"
+                            >
+                                {{ role.label }}</mat-option
+                            >
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field
+                        appearance="outline"
+                        class="nxs-small-mat-input long-width"
+                        [appInputBg]="request.search"
+                    >
+                        <mat-label>{{ 'Global.Search' | translate }}</mat-label>
+                        <input
+                            matInput
+                            autocomplete="off"
+                            [(ngModel)]="request.search"
+                            (ngModelChange)="loadDataDelayed()"
+                            type="text"
+                            [placeholder]="'Global.Search' | translate"
+                        />
+                        <mat-icon
+                            matSuffix
+                            style="cursor: pointer"
+                            (click)="request.search = ''; loadData()"
+                        >
+                            close</mat-icon
+                        >
+                    </mat-form-field>
+                    <mat-checkbox
+                        [disabled]="loading"
+                        [(ngModel)]="request.includeDisabled"
+                        (ngModelChange)="loadData()"
+                    >
+                        {{ 'Global.IncludeArchived' | translate }}
+                    </mat-checkbox>
+                </ng-container>
+            </div>
+        </div>
+        <hr class="low-opacity" />
+        <div class="nxs-list-page-content">
+            <div
+                class="loading-wrapper"
+                [style.display]="loading ? '' : 'none'"
+            >
+                <mat-spinner diameter="50" strokeWidth="6"></mat-spinner>
+            </div>
+            <a
+                [routerLink]="[
+                    '/' + RoutesList.AdminUsers + '/' + user.userName
+                ]"
+                routerLinkActive="router-link-active"
+                class="nxs-list-item-wrapper-container"
+                *ngFor="let user of items"
+            >
+                <div
+                    class="candidate-wrapper-item d-flex align-items-center long-item"
+                >
+                    <div
+                        class="profile-picture"
+                        [style.backgroundImage]="
+                            'url(' + ImagesHelper.getUserPicture(user) + ')'
+                        "
+                    ></div>
+                    <div class="candidate-info">
+                        {{ user.lastName | uppercase }} {{ user.firstName }}
+                        <br />
+                        <span>
+                            {{ user.userName }}
+                        </span>
+                    </div>
+                </div>
+                <div class="vertical-separator"></div>
+                <div
+                    class="candidate-wrapper-item d-flex align-items-center long-item"
+                >
+                    <mat-icon
+                        class="grey-icon"
+                        fontSet="material-icons-outlined"
+                        [matTooltip]="'Tooltip.Mail' | translate"
+                        >email</mat-icon
+                    >
+                    <div class="userMail">
+                        <span [matTooltip]="user.mail">
+                            {{ user.mail }}
+                        </span>
+                    </div>
+                </div>
+                <div class="vertical-separator"></div>
+                <div
+                    class="candidate-wrapper-item d-flex align-items-center"
+                    style="min-width: 30%; max-width: 31%"
+                >
+                    <mat-icon
+                        class="grey-icon"
+                        fontSet="material-icons-outlined"
+                        [matTooltip]="'Tooltip.Roles' | translate"
+                        >admin_panel_settings
+                    </mat-icon>
+                    <div>
+                        <span>
+                            {{ displayRoles(user.roles) }}
+                        </span>
+                    </div>
+                </div>
+
+                <div class="actions">
+                    <button
+                        mat-flat-button
+                        class="statut-btn"
+                        [ngClass]="{
+                            'statut-btn-green': !user.disabled,
+                            'statut-btn-red': user.disabled
+                        }"
+                    >
+                        <ng-container *ngIf="!user.disabled">
+                            {{ 'User.Enabled' | translate }}
+                        </ng-container>
+                        <ng-container *ngIf="user.disabled">
+                            {{ 'User.Disabled' | translate }}
+                        </ng-container>
+                    </button>
+                </div>
+            </a>
+        </div>
+    </div>
+</ng-template>

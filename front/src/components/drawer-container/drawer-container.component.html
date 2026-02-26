@@ -1,0 +1,29 @@
+<mat-drawer-container>
+    <mat-drawer
+        #drawer
+        [mode]="mobileQuery.matches ? 'over' : 'side'"
+        [opened]="!mobileQuery.matches"
+    >
+        <app-left-side></app-left-side>
+    </mat-drawer>
+    <ng-container>
+        <header
+            [title]="headerTitle"
+            [smallText]="headerSmallText"
+            [link]="headerLink"
+            [linkText]="headerLinkText"
+            [menuExpanded]="menuExpanded"
+            [hasSearchInput]="hasSearchInput"
+            [subTitle]="headerSubTitle"
+            [endIcon]="headerEndIcon"
+            (inputSearchChange)="inputSearchChange.emit($event)"
+            [searchInputDelay]="searchInputDelay"
+            [showPendingModification]="showPendingModifications"
+            [searchInputText]="searchInputText"
+            [searchInputDisabled]="searchInputDisabled"
+        ></header>
+    </ng-container>
+    <div class="content" [style.padding]="padding">
+        <ng-content></ng-content>
+    </div>
+</mat-drawer-container>

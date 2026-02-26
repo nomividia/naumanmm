@@ -1,0 +1,761 @@
+<!-- <div class="loading-wrapper" [style.display]="loading ? '': 'none'">
+    <mat-spinner diameter="50" strokeWidth="6"></mat-spinner>
+</div> -->
+
+<div
+    class="d-flex align-items-center justify-content-between action"
+    *ngIf="candidateApplication"
+>
+    <div
+        style="width: 100%"
+        class="d-flex align-items-center"
+        *ngIf="!forCandidate"
+    >
+        <!-- <div>
+            <h1 *ngIf="!forCandidate">{{'label'
+                | dbTranslate:candidateApplication?.applyStatus |lowercase}}
+            </h1>
+        </div> -->
+        <div *ngIf="linkedCandidate">
+            <div style="font-size: 12px; color: gray; margin-left: 20px">
+                <a
+                    [routerLink]="
+                        '/' +
+                        RoutesList.CandidatesList +
+                        '/' +
+                        linkedCandidate.id
+                    "
+                    style="display: flex; align-items: center"
+                    target="_blank"
+                    [matTooltip]="'Global.Open' | translate"
+                >
+                    {{ 'Candidate.CandidateAlreadyExist' | translate }} -
+                    {{ 'label' | dbTranslate : linkedCandidate?.candidateStatus
+                    }}<mat-icon
+                        style="
+                            width: 18px;
+                            font-size: 18px;
+                            height: 18px;
+                            margin-left: 4px;
+                        "
+                        >open_in_new</mat-icon
+                    ></a
+                >
+            </div>
+        </div>
+    </div>
+    <div class="d-flex align-items-center justify-content-between">
+        <mat-spinner
+            *ngIf="loading"
+            [diameter]="35"
+            [strokeWidth]="3"
+            style="margin-right: 20px"
+        ></mat-spinner>
+        <ng-container *ngIf="!forCandidate">
+            <!-- <button [matTooltip]="'Candidate.TransferCandidate' | translate"
+                *ngIf="candidateApplication?.applyStatus?.code === (pendingStatut) || candidateApplication?.applyStatus?.code === (toBeSortedStatut)"
+                [disabled]="loading" mat-raised-button (click)="transferCandidateApplication()" class="btn-normal app-green-button">
+                {{'Candidate.TransferCandidate' | translate}}
+            </button> -->
+            <button
+                [matTooltip]="'Candidate.AcceptApplication' | translate"
+                *ngIf="
+                    candidateApplication?.applyStatus?.code === pendingStatut ||
+                    candidateApplication?.applyStatus?.code === toBeSortedStatut
+                "
+                [disabled]="loading"
+                mat-raised-button
+                (click)="acceptCandidateApplication()"
+                class="btn-normal app-green-button"
+            >
+                {{ 'Candidate.AcceptApplication' | translate }}
+            </button>
+            <button
+                [matTooltip]="'Candidate.RefuseApplication' | translate"
+                *ngIf="
+                    candidateApplication?.applyStatus?.code === pendingStatut ||
+                    candidateApplication?.applyStatus?.code === toBeSortedStatut
+                "
+                [disabled]="loading"
+                mat-raised-button
+                (click)="refuseCandidateApplication()"
+                color="warn"
+                class="ml-2 mr-2 btn-normal"
+            >
+                {{ 'Candidate.RefuseApplication' | translate }}
+            </button>
+
+            <button
+                mat-icon-button
+                color="primary"
+                *ngIf="
+                    GlobalAppService.userHasOneOfRoles(
+                        AuthDataService.currentUser,
+                        [
+                            RolesList.Consultant,
+                            RolesList.RH,
+                            RolesList.Admin,
+                            RolesList.AdminTech
+                        ]
+                    )
+                "
+                [matTooltip]="
+                    this.candidateApplication.guidExchange
+                        ? ('CandidateApplication.OpenPrivateExchange'
+                          | translate)
+                        : ('CandidateApplication.StartPrivateExchange'
+                          | translate)
+                "
+                [disabled]="loading"
+                (click)="openPrivateExchange()"
+                class="bordered-icon"
+            >
+                <mat-icon class="material-icons-outlined"> chat </mat-icon>
+            </button>
+            <button
+                *ngIf="
+                    GlobalAppService.userHasOneOfRoles(
+                        AuthDataService.currentUser,
+                        [
+                            RolesList.Consultant,
+                            RolesList.RH,
+                            RolesList.Admin,
+                            RolesList.AdminTech
+                        ]
+                    )
+                "
+                mat-icon-button
+                color="primary"
+                [matTooltip]="'Tooltip.UnSeenStatus' | translate"
+                [disabled]="loading || disabled || !candidateApplication.seen"
+                (click)="setUnseen()"
+                class="bordered-icon"
+            >
+                <mat-icon class="material-icons-outlined"
+                    >remove_red_eye</mat-icon
+                >
+            </button>
+
+            <!-- <button
+                *ngIf="
+                    GlobalAppService.userHasOneOfRoles(
+                        AuthDataService.currentUser,
+                        [RolesList.Admin, RolesList.AdminTech, RolesList.RH]
+                    )
+                "
+                mat-icon-button
+                color="primary"
+                [matTooltip]="
+                    'CandidateApplication.ArchiveCandidateApplication'
+                        | translate
+                "
+                [disabled]="loading || disabled"
+                (click)="onSetArchive()"
+                class="bordered-icon"
+            >
+                <mat-icon class="material-icons-outlined">
+                    inventory_2
+                </mat-icon>
+            </button> -->
+
+            <button
+                mat-icon-button
+                color="primary"
+                *ngIf="
+                    GlobalAppService.userHasRole(
+                        AuthDataService.currentUser,
+                        RolesList.AdminTech
+                    )
+                "
+                [matTooltip]="'CandidateApplication.Delete' | translate"
+                [disabled]="loading"
+                (click)="deleteCandidateApplication()"
+                class="bordered-icon"
+            >
+                <mat-icon class="material-icons-outlined"> delete </mat-icon>
+            </button>
+            <button
+                mat-icon-button
+                color="primary"
+                matTooltip="{{
+                    'CandidateApplication.TransferCandidateApplication.TransferCandidateApplicationByMail'
+                        | translate
+                }}"
+                class="bordered-icon"
+                [disabled]="loading"
+                (click)="transferCandidateApplicationByMail()"
+            >
+                <mat-icon class="material-icons-outlined">
+                    forward_to_inbox
+                </mat-icon>
+            </button>
+        </ng-container>
+    </div>
+</div>
+<div class="d-flex row-container" *ngIf="candidateApplication">
+    <div class="first-block edit-page-block">
+        <h2>{{ 'Global.Files' | translate }}</h2>
+        <hr style="margin-bottom: unset" />
+        <mat-tab-group animationDuration="0ms" *ngIf="firstLoaded">
+            <mat-tab
+                [disabled]="loading"
+                *ngIf="candidateApplication?.resumeFileBase64"
+            >
+                <ng-template mat-tab-label>
+                    <mat-icon class="orange-icon mr-1">attach_file</mat-icon>
+                    CV
+                </ng-template>
+
+                <div
+                    *ngIf="
+                        isDocumentPdfOrImage(
+                            candidateApplication?.mainResumeFile
+                        )
+                    "
+                >
+                    <div class="mt-2" style="height: 100%">
+                        <!-- Simple PDF viewer with iframe -->
+                        <iframe
+                            *ngIf="pdfBase64"
+                            [src]="pdfDataUrl"
+                            style="width: 100%; height: 600px; border: none"
+                            title="PDF Viewer"
+                        >
+                        </iframe>
+                        <img
+                            class="w-100"
+                            [src]="candidateApplication.resumeFileBase64"
+                            alt=""
+                            *ngIf="
+                                candidateApplication.resumeFileBase64 &&
+                                !pdfBase64
+                            "
+                        />
+                    </div>
+                    <div style="margin-top: 30px">
+                        <!-- TODO : traduire -->
+                        <button mat-raised-button (click)="downloadResume()">
+                            {{ 'CandidateApplication.Download' | translate }}
+                        </button>
+                    </div>
+                </div>
+                <!-- <div *ngIf="isDocumentWord(candidateApplication?.mainResumeFile)">
+                    <nxs-doc-viewer></nxs-doc-viewer>
+                </div> -->
+                <div
+                    *ngIf="
+                        !isDocumentPdfOrImage(
+                            candidateApplication?.mainResumeFile
+                        )
+                    "
+                >
+                    <p
+                        style="text-align: center; margin-top: 20px"
+                        *ngIf="!loading"
+                    >
+                        {{ 'CandidateApplication.NoDisplayDocument' | translate
+                        }}<button
+                            (click)="
+                                downloadFile(
+                                    candidateApplication?.mainResumeFile
+                                )
+                            "
+                            mat-button
+                            matTooltip="{{ 'ToolTip.DowloadFile' | translate }}"
+                        >
+                            <mat-icon fontSet="material-icons-outlined"
+                                >file_download</mat-icon
+                            >ici
+                        </button>
+                    </p>
+                </div>
+            </mat-tab>
+            <mat-tab [disabled]="loading">
+                <ng-template mat-tab-label>
+                    <mat-icon class="orange-icon mr-1">attach_file</mat-icon>
+                    {{ 'Global.Photo' | translate }}
+                </ng-template>
+                <div class="mt-2" style="height: 100vh; margin-bottom: -140px">
+                    <!---<img class="custom-picture"
+                        [src]="ImagesHelper.getCandidateApplicationPicture(environment.apiBaseUrl, candidateApplication)"
+                        alt="" />-->
+                    <img
+                        class="custom-picture"
+                        *ngIf="candidatePicture"
+                        [src]="candidatePicture"
+                        alt=""
+                    />
+                </div>
+            </mat-tab>
+            <mat-tab
+                [disabled]="loading"
+                *ngIf="candidateApplication?.partnerResumeFileBase64"
+            >
+                <ng-template mat-tab-label>
+                    <mat-icon class="orange-icon mr-1">attach_file</mat-icon>
+                    {{ 'Candidate.PartnerCV' | translate }}
+                </ng-template>
+                <div
+                    *ngIf="
+                        isDocumentPdfOrImage(
+                            candidateApplication?.partnerResumeFile
+                        )
+                    "
+                >
+                    <div
+                        class="mt-2"
+                        style="height: 100vh; margin-bottom: -140px"
+                    >
+                        <!-- Simple PDF viewer with iframe for partner -->
+                        <iframe
+                            *ngIf="partnerPdfBase64"
+                            [src]="partnerPdfDataUrl"
+                            style="width: 100%; height: 600px; border: none"
+                            title="Partner PDF Viewer"
+                        >
+                        </iframe>
+                        <img
+                            class="w-100"
+                            [src]="candidateApplication.partnerResumeFileBase64"
+                            alt=""
+                            *ngIf="
+                                candidateApplication.partnerResumeFileBase64 &&
+                                !partnerPdfBase64
+                            "
+                        />
+                    </div>
+                </div>
+                <div
+                    *ngIf="
+                        !isDocumentPdfOrImage(
+                            candidateApplication?.partnerResumeFile
+                        )
+                    "
+                >
+                    <p
+                        style="text-align: center; margin-top: 20px"
+                        *ngIf="!loading"
+                    >
+                        Ce document ne peut être affiché. Vous pouvez le
+                        télécharger en cliquant
+                        <button
+                            (click)="
+                                downloadFile(
+                                    candidateApplication?.partnerResumeFile
+                                )
+                            "
+                            mat-button
+                            matTooltip="{{ 'ToolTip.DowloadFile' | translate }}"
+                        >
+                            <mat-icon fontSet="material-icons-outlined"
+                                >file_download</mat-icon
+                            >ici
+                        </button>
+                    </p>
+                </div>
+            </mat-tab>
+        </mat-tab-group>
+    </div>
+
+    <div class="ml-4 second-block">
+        <div class="linked-announcement edit-page-block">
+            <h2>{{ 'Candidate.RelatedAd' | translate }}</h2>
+            <hr />
+
+            <p
+                class="bold mt-2"
+                *ngIf="candidateApplication.spontaneousApplication"
+            >
+                {{ 'Global.SpontaneousApplication' | translate }}
+            </p>
+            <ng-container
+                *ngIf="
+                    !candidateApplication.candidateApplicationJobs?.length &&
+                    candidateApplication.jobOfferLinkedRef
+                "
+            >
+                {{ 'Global.Ref' | translate }} :
+                {{ candidateApplication.jobOfferLinkedRef }}
+            </ng-container>
+            <ng-container
+                *ngIf="candidateApplication.candidateApplicationJobs?.length"
+            >
+                <ng-container
+                    *ngFor="
+                        let jobOfferWithApplication of candidateApplication?.candidateApplicationJobs
+                    "
+                >
+                    <ng-container *ngIf="jobOfferWithApplication">
+                        <div class="bold mt-2">
+                            {{ jobOfferWithApplication?.jobOffer?.title }}<br />
+                            {{ 'Global.Ref' | translate }}
+                            {{ jobOfferWithApplication?.jobOffer?.ref }}
+                        </div>
+                        <div class="mt-2">
+                            <p>
+                                {{
+                                    jobOfferWithApplication.jobOffer?.city
+                                        | titlecase
+                                }},
+                                {{
+                                    RefData.getCountryLabel(
+                                        jobOfferWithApplication.jobOffer
+                                            ?.country
+                                    ) | titlecase
+                                }}
+                            </p>
+                            <p>
+                                {{ 'JobOffer.CreationDate' | translate }}
+                                {{
+                                    jobOfferWithApplication.jobOffer
+                                        ?.creationDate | date
+                                }}
+                            </p>
+                            <br />
+                            <ng-container
+                                *ngIf="
+                                    jobOfferWithApplication.jobOffer?.consultant
+                                "
+                            >
+                                <!-- <p>{{'JobOffer.RelatedConsultant' | translate}}</p> -->
+                                <div class="d-flex align-items-center">
+                                    <div class="consultant-picture"></div>
+                                    <p class="m-0">
+                                        {{
+                                            jobOfferWithApplication.jobOffer
+                                                ?.consultant?.firstName
+                                                | titlecase
+                                        }}
+                                        {{
+                                            jobOfferWithApplication.jobOffer
+                                                ?.consultant?.lastName
+                                                | uppercase
+                                        }}
+                                    </p>
+                                </div>
+                            </ng-container>
+                        </div>
+                        <a
+                            mat-raised-button
+                            color="accent"
+                            target="_blank"
+                            [routerLink]="
+                                '/' +
+                                RoutesList.JobOffers +
+                                '/' +
+                                jobOfferWithApplication?.jobOfferId
+                            "
+                            class="blue-btn"
+                            >{{ 'JobOffer.SeeAd' | translate }}</a
+                        >
+                    </ng-container>
+                </ng-container>
+            </ng-container>
+        </div>
+
+        <div class="candidate edit-page-block mt-4">
+            <div class="d-flex justify-content-between">
+                <h2>{{ 'Menu.Candidate' | translate }}</h2>
+
+                <div
+                    class="d-flex align-items-center"
+                    *ngIf="candidateApplication.inCouple"
+                    matTooltip="Candidature en couple"
+                >
+                    Couple
+                    <mat-icon class="ml-1">favorite</mat-icon>
+                </div>
+            </div>
+            <hr />
+
+            <div
+                class="d-flex justify-content-between"
+                style="align-items: flex-start"
+            >
+                <table class="table">
+                    <tr>
+                        <td class="left-cell">
+                            {{ 'Global.LastName' | translate }}
+                        </td>
+                        <td class="right-cell">
+                            {{ candidateApplication.lastName | uppercase }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="left-cell">
+                            {{ 'Global.FirstName' | translate }}
+                        </td>
+                        <td class="right-cell">
+                            {{ candidateApplication.firstName | titlecase }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="left-cell">
+                            {{ 'Candidate.Gender' | translate }}
+                        </td>
+                        <td class="right-cell">
+                            {{
+                                'label'
+                                    | dbTranslate : candidateApplication.gender
+                            }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="left-cell">
+                            {{ 'Candidate.Age' | translate }}
+                        </td>
+                        <td class="right-cell">
+                            <ng-container
+                                *ngIf="getAge(candidateApplication.birthDate)"
+                            >
+                                {{ getAge(candidateApplication.birthDate) }}
+                                {{ 'Global.Years' | translate }}
+                            </ng-container>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="left-cell">
+                            {{ 'Candidate.FamilySituation' | translate }}
+                        </td>
+                        <td class="right-cell">
+                            {{
+                                'label'
+                                    | dbTranslate
+                                        : candidateApplication.relationshipStatus
+                            }}
+                        </td>
+                    </tr>
+                </table>
+
+                <table *ngIf="candidateApplication.inCouple" class="ml-3">
+                    <tr>
+                        <td class="left-cell" style="min-width: 100px">
+                            {{ 'Global.LastName' | translate }}
+                        </td>
+                        <td class="right-cell">
+                            {{
+                                candidateApplication.partnerLastName | uppercase
+                            }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="left-cell" style="min-width: 100px">
+                            {{ 'Global.FirstName' | translate }}
+                        </td>
+                        <td class="right-cell">
+                            {{
+                                candidateApplication.partnerFirstName
+                                    | titlecase
+                            }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="left-cell" style="min-width: 100px">
+                            {{ 'Candidate.Gender' | translate }}
+                        </td>
+                        <td class="right-cell">
+                            {{
+                                'label'
+                                    | dbTranslate
+                                        : candidateApplication.partnerGender
+                            }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="left-cell" style="min-width: 100px">
+                            {{ 'Global.Phone' | translate }}
+                        </td>
+                        <td class="right-cell">
+                            {{
+                                candidateApplication.partnerPhone ||
+                                    ('Global.NotInformed' | translate)
+                            }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="left-cell" style="min-width: 100px">
+                            {{ 'Candidate.Email' | translate }}
+                        </td>
+                        <td class="right-cell">
+                            {{
+                                candidateApplication.partnerEmail ||
+                                    ('Global.NotInformed' | translate)
+                            }}
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <table class="mt-2">
+                <tr>
+                    <td class="left-cell">
+                        {{ 'Global.Address' | translate }}
+                    </td>
+                    <td class="right-cell">
+                        {{ candidateApplication.address?.lineOne | titlecase }}
+                        <br />
+                        {{ candidateApplication.address?.lineTwo | titlecase }}
+                    </td>
+                </tr>
+                <tr>
+                    <td class="left-cell">
+                        {{ 'Global.CityCode' | translate }}
+                    </td>
+                    <td class="right-cell">
+                        {{ candidateApplication.address?.postalCode }}
+                    </td>
+                </tr>
+                <tr>
+                    <td class="left-cell">{{ 'Global.City' | translate }}</td>
+                    <td class="right-cell">
+                        {{ candidateApplication.address?.city | titlecase }}
+                    </td>
+                </tr>
+                <tr *ngIf="candidateApplication.address?.department">
+                    <td class="left-cell">
+                        {{ 'Address.Department' | translate }}
+                    </td>
+                    <td class="right-cell">
+                        {{
+                            candidateApplication.address?.department | titlecase
+                        }}
+                    </td>
+                </tr>
+                <tr>
+                    <td class="left-cell">
+                        {{ 'Global.Country' | translate }}
+                    </td>
+                    <td class="right-cell">
+                        {{
+                            RefData.getCountryLabel(
+                                candidateApplication.address?.country
+                            )
+                        }}
+                    </td>
+                </tr>
+            </table>
+
+            <table
+                class="mt-2"
+                *ngIf="candidateApplication.candidateCountries?.length"
+            >
+                <tr>
+                    <td class="left-cell">
+                        {{ 'CandidateApplication.Mobility' | translate }} -
+                        {{ 'Global.Country' | translate }}
+                    </td>
+                    <td class="right-cell">
+                        <span
+                            *ngFor="
+                                let item of candidateApplication.candidateCountries
+                            "
+                            >{{ getCountryFromCode(item.country) }},
+                        </span>
+                    </td>
+                </tr>
+
+                <tr *ngIf="candidateApplication.candidateDepartments?.length">
+                    <td class="left-cell">
+                        {{ 'CandidateApplication.Mobility' | translate }} -
+                        {{ 'Address.Department' | translate }}
+                    </td>
+                    <td class="right-cell">
+                        <span
+                            *ngFor="
+                                let item of candidateApplication.candidateDepartments
+                            "
+                            >{{ item.department }},
+                        </span>
+                    </td>
+                </tr>
+            </table>
+
+            <table class="mt-2">
+                <tr>
+                    <td class="left-cell">
+                        {{ 'Candidate.PhoneHome' | translate }}
+                    </td>
+                    <td class="right-cell">
+                        <ng-container
+                            *ngIf="!candidateApplication?.phoneSecondary"
+                            >{{ 'Global.NotInformed' | translate }}
+                        </ng-container>
+                        {{ candidateApplication?.phoneSecondary }}
+                    </td>
+                </tr>
+                <tr>
+                    <td class="left-cell">{{ 'Global.Phone' | translate }}</td>
+                    <td class="right-cell">
+                        {{ candidateApplication?.phone }}
+                    </td>
+                </tr>
+                <tr>
+                    <td class="left-cell">
+                        {{ 'Candidate.Email' | translate }}
+                    </td>
+                    <td class="right-cell">{{ candidateApplication.email }}</td>
+                </tr>
+            </table>
+
+            <table class="mt-2">
+                <tr>
+                    <td class="left-cell">{{ 'Global.OneJob' | translate }}</td>
+                    <td class="right-cell">
+                        {{
+                            'label'
+                                | dbTranslate : candidateApplication.profession
+                        }}
+                    </td>
+                </tr>
+                <tr>
+                    <td class="left-cell">
+                        {{ 'Candidate.AddedValue' | translate }}
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">{{ candidateApplication.skills }}</td>
+                </tr>
+            </table>
+
+            <table class="mt-2" *ngIf="isUsCountry()">
+                <tr>
+                    <td class="left-cell">
+                        {{
+                            'Êtes-vous autorisé à travailler aux États-Unis ?'
+                                | translate
+                        }}
+                    </td>
+                    <td class="right-cell">
+                        {{
+                            candidateApplication.allowed_to_work_us
+                                ? ('Global.Yes' | translate)
+                                : candidateApplication.allowed_to_work_us ==
+                                  null
+                                ? ''
+                                : ('Global.No' | translate)
+                        }}
+                    </td>
+                </tr>
+                <tr>
+                    <td class="left-cell">
+                        {{
+                            "Aurez-vous besoin, maintenant ou à l'avenir, " +
+                                "d'un parrainage pour travailler aux États-Unis ?"
+                                | translate
+                        }}
+                    </td>
+                    <td class="right-cell">
+                        {{
+                            candidateApplication.require_sponsorship_us
+                                ? ('Global.Yes' | translate)
+                                : candidateApplication.allowed_to_work_us ==
+                                  null
+                                ? ''
+                                : ('Global.No' | translate)
+                        }}
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>

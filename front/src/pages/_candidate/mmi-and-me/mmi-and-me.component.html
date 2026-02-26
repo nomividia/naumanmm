@@ -1,0 +1,56 @@
+<app-drawer-main-container [headerTitle]="'Menu.MMIAndMe' | translate">
+    <mat-tab-group class="container" *ngIf="candidatId">
+        <mat-tab [label]="'Candidate.MyDiscussions' | translate">
+            <div class="row-container d-flex">
+                <div class="column-container information-container mt-4">
+                    <div class="edit-page-block">
+                        <h2>
+                            {{ 'MMIAndMe.ContactMMI' | translate }}
+                        </h2>
+                        <hr />
+                        <p>
+                            {{ 'MMIAndMe.ExchangeWithMMi' | translate }}
+                            <br />
+                            <br />
+                            {{ 'MMIAndMe.ContactDirect' | translate }}
+                        </p>
+
+                        <div class="d-flex justify-content-center mt-3">
+                            <a
+                                href="https://www.personneldemaison.agency/nos-agences.html"
+                                mat-raised-button
+                                color="primary"
+                                target="blank"
+                            >
+                                {{ 'Global.ContactAgency' | translate }}
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="exchange-container mt-4">
+                    <app-exchanges
+                        [candidateId]="candidatId"
+                        [senderType]="CandidateMessageSenderType.Candidate"
+                        >4
+                    </app-exchanges>
+                </div>
+            </div>
+        </mat-tab>
+        <mat-tab [label]="'Candidate.MyInterviews' | translate">
+            <div class="mt-4">
+                <app-interview-list
+                    mode="candidate"
+                    [loading]="loading"
+                    [candidateInterviewsList]="interviewList"
+                    (onInterviewClick)="openDetailInterviewDialog($event)"
+                >
+                </app-interview-list>
+            </div>
+        </mat-tab>
+        <mat-tab [label]="'Candidate.TOS' | translate">
+            <div class="mt-4">
+                <app-tos-dialog [displayAcceptBtn]="false"></app-tos-dialog>
+            </div>
+        </mat-tab>
+    </mat-tab-group>
+</app-drawer-main-container>

@@ -1,0 +1,4 @@
+###
+GET {{sidBaseUrl}}/account
+Content-Type: application/json
+api-key: {{sibApiKey}}

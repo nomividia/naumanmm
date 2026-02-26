@@ -1,0 +1,2008 @@
+<div *ngIf="!entity?.addresses?.[0]?.country && firstAddress">
+    <div
+        class="d-flex"
+        style="
+            justify-content: center;
+            text-align: center;
+            margin-top: 30px;
+            gap: 10px;
+        "
+    >
+        <div>
+            <div
+                class="d-flex"
+                style="justify-content: center; text-align: center"
+            >
+                <p>
+                    {{
+                        (isMyDossier
+                            ? 'Veuillez sélectionner votre pays'
+                            : 'Veuillez sélectionner le pays du candidat'
+                        ) | translate
+                    }}
+                </p>
+            </div>
+            <app-address
+                [dFlexRow]="true"
+                [smallInput]="true"
+                [address]="firstAddress"
+                mode="single"
+                [showOnlyCountry]="true"
+                (addressChange)="onMainCountryChange()"
+                [disabled]="loading"
+            >
+            </app-address>
+        </div>
+    </div>
+</div>
+<div class="d-flex row-container mt-1" *ngIf="entity?.addresses?.[0]?.country">
+    <div class="column-container">
+        <div class="edit-page-block" [class.selected]="editModes.informations">
+            <ng-container
+                *ngTemplateOutlet="
+                    editBtn;
+                    context: { editModeKey: 'informations' }
+                "
+            >
+            </ng-container>
+            <h2>{{ 'Candidate.Information' | translate }}</h2>
+            <hr />
+
+            <ng-container *ngIf="editModes.informations">
+                <mat-form-field
+                    class="nxs-small-mat-input"
+                    appearance="outline"
+                >
+                    <mat-label>{{ 'Global.LastName' | translate }}</mat-label>
+                    <input
+                        [placeholder]="'Global.LastName' | translate"
+                        matInput
+                        type="text"
+                        [disabled]="loading"
+                        [(ngModel)]="entity.lastName"
+                        (ngModelChange)="emitModification()"
+                        required
+                    />
+                </mat-form-field>
+
+                <mat-form-field
+                    class="nxs-small-mat-input"
+                    appearance="outline"
+                >
+                    <mat-label>{{ 'Global.FirstName' | translate }}</mat-label>
+                    <input
+                        [placeholder]="'Global.FirstName' | translate"
+                        matInput
+                        type="text"
+                        [disabled]="loading"
+                        [(ngModel)]="entity.firstName"
+                        (ngModelChange)="emitModification()"
+                        required
+                    />
+                </mat-form-field>
+
+                <div *ngIf="getLanguageCode() == 'en'">
+                    <!-- nickname -->
+                    <mat-form-field
+                        class="nxs-small-mat-input"
+                        appearance="outline"
+                    >
+                        <mat-label>{{
+                            'Global.NickName' | translate
+                        }}</mat-label>
+                        <input
+                            [placeholder]="'Global.NickName' | translate"
+                            matInput
+                            type="text"
+                            [disabled]="loading"
+                            [(ngModel)]="entity.nickName"
+                            (ngModelChange)="emitModification()"
+                        />
+                    </mat-form-field>
+                </div>
+
+                <mat-form-field
+                    class="nxs-small-mat-input"
+                    appearance="outline"
+                    *ngIf="
+                        SharedCountryService.showCandidateDetailFields(entity)
+                    "
+                >
+                    <mat-label>{{ 'Candidate.Gender' | translate }}</mat-label>
+                    <mat-select
+                        [(ngModel)]="entity.genderId"
+                        name="gender"
+                        (ngModelChange)="emitModification()"
+                    >
+                        <mat-option
+                            *ngFor="let item of genderList"
+                            [value]="item.id"
+                        >
+                            {{ 'label' | dbTranslate: item }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field
+                    class="nxs-small-mat-input"
+                    appearance="outline"
+                    *ngIf="
+                        SharedCountryService.showCandidateDetailFields(entity)
+                    "
+                >
+                    <mat-label>{{
+                        'Candidate.Birthdate' | translate
+                    }}</mat-label>
+                    <input
+                        matInput
+                        [(ngModel)]="entity.birthDate"
+                        (ngModelChange)="emitModification()"
+                        [matDatepicker]="pickerSelected"
+                        [disabled]="loading"
+                        [max]="today"
+                    />
+                    <mat-datepicker-toggle
+                        matSuffix
+                        [for]="pickerSelected"
+                    ></mat-datepicker-toggle>
+                    <mat-datepicker #pickerSelected></mat-datepicker>
+                </mat-form-field>
+
+                <mat-form-field
+                    class="nxs-small-mat-input"
+                    appearance="outline"
+                    *ngIf="
+                        SharedCountryService.showCandidateDetailFields(entity)
+                    "
+                >
+                    <mat-label>{{
+                        'Candidate.FamilySituation' | translate
+                    }}</mat-label>
+                    <mat-select
+                        [disabled]="loading"
+                        name="relationShipStatus"
+                        [(ngModel)]="entity.relationshipStatusId"
+                        (ngModelChange)="emitModification()"
+                    >
+                        <mat-option
+                            *ngFor="let item of relationshipStatusList"
+                            [value]="item.id"
+                        >
+                            {{ 'label' | dbTranslate: item }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field
+                    class="nxs-small-mat-input"
+                    appearance="outline"
+                    *ngIf="
+                        SharedCountryService.showCandidateDetailFields(entity)
+                    "
+                >
+                    <mat-label>{{
+                        'Candidate.Nationality' | translate
+                    }}</mat-label>
+                    <mat-select
+                        [(ngModel)]="entity.nationality"
+                        (ngModelChange)="emitModification()"
+                        [disabled]="loading"
+                    >
+                        <mat-option
+                            *ngFor="
+                                let item of RefData.countriesListForCurrentLanguage
+                            "
+                            [value]="item.code"
+                        >
+                            {{ item.label }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-checkbox
+                    [(ngModel)]="entity.inCouple"
+                    (ngModelChange)="emitModification()"
+                    >{{ 'Candidate.CandidateApplyWithSpouse' | translate }}
+                </mat-checkbox>
+
+                <div *ngIf="isUsCountry()">
+                    <div
+                        class="d-flex"
+                        style="
+                            align-items: center;
+                            font-size: 13px;
+                            margin-top: 10px;
+                            gap: 10px;
+                        "
+                    >
+                        {{
+                            'Êtes-vous autorisé à travailler aux États-Unis ?'
+                                | translate
+                        }}
+                        <mat-radio-group
+                            class="d-flex"
+                            style="gap: 6px"
+                            [(ngModel)]="entity.allowed_to_work_us"
+                            (ngModelChange)="emitModification()"
+                        >
+                            <mat-radio-button [value]="true">{{
+                                'Global.Yes' | translate
+                            }}</mat-radio-button>
+                            <mat-radio-button [value]="false">{{
+                                'Global.No' | translate
+                            }}</mat-radio-button>
+                        </mat-radio-group>
+                    </div>
+
+                    <div
+                        class="d-flex"
+                        style="
+                            align-items: center;
+                            font-size: 13px;
+                            margin-top: 10px;
+                            gap: 10px;
+                        "
+                    >
+                        {{
+                            "Aurez-vous besoin, maintenant ou à l'avenir, d'un parrainage pour travailler" +
+                                ' aux États-Unis ?' | translate
+                        }}
+                        <mat-radio-group
+                            class="d-flex"
+                            style="gap: 6px"
+                            [(ngModel)]="entity.require_sponsorship_us"
+                            [ngModelOptions]="{ standalone: true }"
+                        >
+                            <mat-radio-button [value]="true">{{
+                                'Global.Yes' | translate
+                            }}</mat-radio-button>
+                            <mat-radio-button [value]="false">{{
+                                'Global.No' | translate
+                            }}</mat-radio-button>
+                        </mat-radio-group>
+                    </div>
+                </div>
+            </ng-container>
+
+            <ng-container *ngIf="!editModes.informations">
+                <div class="edit-page-block-item">
+                    <p class="title">{{ 'Global.LastName' | translate }}</p>
+                    <p>
+                        {{
+                            (entity.lastName | uppercase) ||
+                                ('Global.NotInformed' | translate)
+                        }}
+                    </p>
+                </div>
+
+                <div class="edit-page-block-item">
+                    <p class="title">{{ 'Global.FirstName' | translate }}</p>
+                    <p>
+                        {{
+                            entity.firstName ||
+                                ('Global.NotInformed' | translate)
+                        }}
+                    </p>
+                </div>
+
+                <div *ngIf="getLanguageCode() == 'en'">
+                    <!-- nickname -->
+                    <div class="edit-page-block-item">
+                        <p class="title">{{ 'Global.NickName' | translate }}</p>
+                        <p>
+                            {{
+                                entity.nickName ||
+                                    ('Global.NotInformed' | translate)
+                            }}
+                        </p>
+                    </div>
+                </div>
+
+                <div
+                    class="edit-page-block-item"
+                    *ngIf="
+                        SharedCountryService.showCandidateDetailFields(entity)
+                    "
+                >
+                    <p class="title">{{ 'Candidate.Gender' | translate }}</p>
+                    <p>
+                        {{
+                            entity.gender
+                                ? ('label' | dbTranslate: entity.gender)
+                                : ('Global.NotInformed' | translate)
+                        }}
+                    </p>
+                </div>
+
+                <div
+                    class="edit-page-block-item"
+                    *ngIf="
+                        SharedCountryService.showCandidateDetailFields(entity)
+                    "
+                >
+                    <p class="title">{{ 'Candidate.Birthdate' | translate }}</p>
+                    <p>
+                        {{
+                            (entity.birthDate | date: 'dd/MM/yyyy') ||
+                                ('Global.NotInformed' | translate)
+                        }}
+                        <ng-container *ngIf="entity.birthDate">
+                            ({{ DateHelpers.getAge(entity.birthDate) }}
+                            {{ 'Global.Years' | translate }})
+                        </ng-container>
+                    </p>
+                </div>
+
+                <div
+                    class="edit-page-block-item"
+                    *ngIf="
+                        SharedCountryService.showCandidateDetailFields(entity)
+                    "
+                >
+                    <p class="title">
+                        {{ 'Candidate.FamilySituation' | translate }}
+                    </p>
+                    <p>
+                        {{
+                            entity.relationshipStatus
+                                ? ('label'
+                                  | dbTranslate: entity.relationshipStatus)
+                                : ('Global.NotInformed' | translate)
+                        }}
+                    </p>
+                </div>
+
+                <div
+                    class="edit-page-block-item"
+                    *ngIf="
+                        SharedCountryService.showCandidateDetailFields(entity)
+                    "
+                >
+                    <p class="title">
+                        {{ 'Candidate.Nationality' | translate }}
+                    </p>
+                    <p>
+                        {{
+                            RefData.getCountryLabel(entity.nationality) ||
+                                ('Global.NotInformedFeminine' | translate)
+                        }}
+                    </p>
+                </div>
+                <div class="edit-page-block-item">
+                    <p class="title">
+                        {{ 'Candidate.CandidateApplyWithSpouse' | translate }}
+                    </p>
+                    <p *ngIf="entity.inCouple">
+                        {{ 'Global.Yes' | translate }}
+                    </p>
+                    <p *ngIf="!entity.inCouple">
+                        {{ 'Global.No' | translate }}
+                    </p>
+                </div>
+                <div class="edit-page-block-item" *ngIf="isUsCountry()">
+                    <p class="title">
+                        {{
+                            'Êtes-vous autorisé à travailler aux États-Unis ?'
+                                | translate
+                        }}
+                    </p>
+                    <p *ngIf="entity.allowed_to_work_us">
+                        {{ 'Global.Yes' | translate }}
+                    </p>
+                    <p
+                        *ngIf="
+                            !entity.allowed_to_work_us &&
+                            entity.allowed_to_work_us != null
+                        "
+                    >
+                        {{ 'Global.No' | translate }}
+                    </p>
+                    <p *ngIf="entity.allowed_to_work_us == null">
+                        {{ 'Non défini' | translate }}
+                    </p>
+                </div>
+
+                <div class="edit-page-block-item" *ngIf="isUsCountry()">
+                    <p class="title">
+                        {{
+                            "Aurez-vous besoin, maintenant ou à l'avenir, d'un parrainage pour travailler" +
+                                ' aux États-Unis ?' | translate
+                        }}
+                    </p>
+                    <p *ngIf="entity.require_sponsorship_us">
+                        {{ 'Global.Yes' | translate }}
+                    </p>
+                    <p
+                        *ngIf="
+                            !entity.require_sponsorship_us &&
+                            entity.require_sponsorship_us != null
+                        "
+                    >
+                        {{ 'Global.No' | translate }}
+                    </p>
+                    <p *ngIf="entity.require_sponsorship_us == null">
+                        {{ 'Non défini' | translate }}
+                    </p>
+                </div>
+            </ng-container>
+        </div>
+
+        <div
+            class="edit-page-block mt-3"
+            [class.selected]="editModes.currentJobs"
+        >
+            <ng-container>
+                <ng-container
+                    *ngTemplateOutlet="
+                        editBtn;
+                        context: { editModeKey: 'currentJobs', lockIcon: true }
+                    "
+                >
+                </ng-container>
+            </ng-container>
+
+            <h2>{{ 'Candidate.CurrentJob' | translate }}</h2>
+            <hr />
+
+            <div class="edit-page-block-item">
+                <ng-container *ngIf="entity.candidateCurrentJobs?.length">
+                    <ul *ngIf="!editModes.currentJobs">
+                        <ng-container
+                            *ngFor="
+                                let currentJob of entity.candidateCurrentJobs
+                            "
+                        >
+                            <li *ngIf="currentJob?.currentJob?.label">
+                                {{
+                                    'label' | dbTranslate: currentJob.currentJob
+                                }}
+                            </li>
+                        </ng-container>
+                    </ul>
+                    <p *ngIf="editModes.currentJobs">
+                        {{ entity.candidateCurrentJobs?.length }}
+                        {{ 'Candidate.CurrentJobsKnown' | translate }}
+                    </p>
+                </ng-container>
+                <p *ngIf="!entity.candidateCurrentJobs?.length">
+                    {{ 'Global.NotInformed' | translate }}
+                </p>
+            </div>
+            <div
+                *ngIf="editModes.currentJobs"
+                class="mt-3 d-flex align-items-center"
+            >
+                <app-jobs-selector
+                    fieldAppearance="outline"
+                    [multipleSelection]="true"
+                    [placeholder]="'Candidate.CurrentJob' | translate"
+                    [disabled]="loading"
+                    class="nxs-small-mat-input long-width"
+                    [(ngModel)]="selectedCurrentJobIds"
+                    (ngModelChange)="onCurrentJobsChange()"
+                >
+                </app-jobs-selector>
+                <span
+                    *ngIf="isNew"
+                    style="color: #990909; margin-left: 8px; font-size: 1.2em"
+                    >*</span
+                >
+            </div>
+        </div>
+
+        <!-- Resume upload for new candidate -->
+        <div class="edit-page-block mt-3" [class.selected]="true" *ngIf="isNew">
+            <h2>
+                {{ 'Global.Resume' | translate }}
+                <span style="color: #990909; margin-left: 4px; font-size: 1.2em"
+                    >*</span
+                >
+            </h2>
+            <hr />
+            <div
+                class="d-flex align-items-center"
+                style="gap: 10px; flex-wrap: wrap"
+            >
+                <button
+                    [disabled]="loading"
+                    (click)="openResumeFilePicker()"
+                    mat-raised-button
+                    color="primary"
+                    class="btn-normal"
+                >
+                    <mat-icon class="material-icons-outlined"
+                        >file_upload</mat-icon
+                    >
+                    {{ 'Global.Import' | translate }}
+                </button>
+                <nxs-file-upload
+                    [hasDropZone]="false"
+                    [showUploadButton]="false"
+                    [showProgressBar]="false"
+                    [showFilesList]="false"
+                    [data]="resumeUploadData"
+                    [options]="resumeUploadOptions"
+                    [disabled]="loading"
+                    (onCompleteItem)="onResumeUploadComplete($event)"
+                >
+                </nxs-file-upload>
+                <ng-container *ngIf="resumeUploadData?.fileItems?.length > 0">
+                    <mat-icon style="color: green">check_circle</mat-icon>
+                    <span>{{ resumeUploadData.fileItems[0]._file.name }}</span>
+                </ng-container>
+                <ng-container *ngIf="!resumeUploadData?.fileItems?.length">
+                    <span style="font-style: italic; color: #999">
+                        {{ 'ErrorsCandidate.CVMandatory' | translate }}
+                    </span>
+                </ng-container>
+            </div>
+        </div>
+
+        <div
+            class="edit-page-block mt-3"
+            [class.selected]="editModes.complement"
+            *ngIf="!isNew"
+        >
+            <ng-container
+                *ngTemplateOutlet="
+                    editBtn;
+                    context: { editModeKey: 'complement' }
+                "
+            ></ng-container>
+            <h2>{{ 'Candidate.Complement' | translate }}</h2>
+            <hr />
+
+            <div class="edit-page-block-item">
+                <p class="title">
+                    {{ 'Candidate.GlobalMobility' | translate }}*
+                </p>
+                <ng-container
+                    *ngIf="!editModes.complement; else globalMobilityEdit"
+                >
+                    <ng-container *ngIf="entity.globalMobility">
+                        <p>{{ 'Global.No' | translate }}</p>
+                    </ng-container>
+                    <ng-container *ngIf="!entity.globalMobility">
+                        <p>{{ 'Global.Yes' | translate }}</p>
+                    </ng-container>
+                </ng-container>
+
+                <ng-template #globalMobilityEdit>
+                    <mat-radio-group
+                        [(ngModel)]="entity.globalMobility"
+                        (ngModelChange)="onGlobalMobilityChange()"
+                        aria-label="Select an option"
+                        class="nxs-small-mat-input ml-2"
+                    >
+                        <mat-radio-button [value]="false" class="mr-2">{{
+                            'Global.Yes' | translate
+                        }}</mat-radio-button>
+                        <mat-radio-button [value]="true">{{
+                            'Global.No' | translate
+                        }}</mat-radio-button>
+                    </mat-radio-group>
+                </ng-template>
+            </div>
+
+            <!-- Country selector for mobility -->
+            <div class="edit-page-block-item" *ngIf="!entity.globalMobility">
+                <p class="title">
+                    {{ 'Candidate.MobilityOtherCountry' | translate }}*
+                </p>
+                <ng-container
+                    *ngIf="!editModes.complement; else editingCountries"
+                >
+                    <p>{{ getCountriesMobility() }}</p>
+                </ng-container>
+
+                <ng-template #editingCountries>
+                    <mat-form-field
+                        class="nxs-small-mat-input"
+                        appearance="outline"
+                    >
+                        <mat-label>{{
+                            'Candidate.MobilityOtherCountry' | translate
+                        }}</mat-label>
+                        <mat-select
+                            [(ngModel)]="countriesSelected"
+                            (ngModelChange)="
+                                emitModification(); setCountriesSelectedCodes()
+                            "
+                            multiple
+                        >
+                            <mat-option
+                                *ngFor="
+                                    let item of RefData.countriesListForCurrentLanguage
+                                "
+                                [value]="item"
+                            >
+                                {{ getCountryFromCode(item.code) }}</mat-option
+                            >
+                        </mat-select>
+                    </mat-form-field>
+
+                    <mat-chip-list *ngIf="entity.candidateDepartments?.length">
+                        <mat-chip
+                            *ngFor="let item of entity.candidateDepartments"
+                            color="primary"
+                            selected
+                        >
+                            {{ item.department }}
+                            <mat-icon
+                                matChipRemove
+                                (click)="removeCandidateDepartment(item)"
+                                >cancel
+                            </mat-icon>
+                        </mat-chip>
+                    </mat-chip-list>
+                </ng-template>
+            </div>
+
+            <div class="edit-page-block-item">
+                <p class="title">{{ 'Candidate.Child' | translate }}*</p>
+                <ng-container
+                    *ngIf="
+                        entity.candidateChildrens?.length &&
+                            !editModes.complement;
+                        else child
+                    "
+                >
+                </ng-container>
+                <ng-template #child>
+                    <ng-container *ngIf="!editModes.complement; else isEdit">
+                        <ng-container *ngIf="entity.hasNoChildren">
+                            <p>{{ 'Global.Yes' | translate }}</p>
+                        </ng-container>
+                        <ng-container *ngIf="!entity.hasNoChildren">
+                            <p>{{ 'Global.No' | translate }}</p>
+                        </ng-container>
+                    </ng-container>
+
+                    <ng-template #isEdit>
+                        <mat-radio-group
+                            [(ngModel)]="entity.hasNoChildren"
+                            (ngModelChange)="onHasNoChildrenChange()"
+                            aria-label="Select an option"
+                            class="nxs-small-mat-input ml-2"
+                        >
+                            <mat-radio-button [value]="true" class="mr-2"
+                                >Yes</mat-radio-button
+                            >
+                            <mat-radio-button [value]="false"
+                                >No</mat-radio-button
+                            >
+                        </mat-radio-group>
+                    </ng-template>
+                </ng-template>
+            </div>
+
+            <!-- Number of dependent children -->
+            <div class="edit-page-block-item" *ngIf="entity.hasNoChildren">
+                <p class="title">
+                    {{ 'Candidate.DependentChildren' | translate }}*
+                </p>
+                <ng-container
+                    *ngIf="!editModes.complement; else editingDependentChildren"
+                >
+                    <p>
+                        {{
+                            (entity.dependentChildren !== null &&
+                            entity.dependentChildren !== undefined
+                                ? entity.dependentChildren
+                                : 0) || ('Global.NotInformed' | translate)
+                        }}
+                    </p>
+                </ng-container>
+
+                <ng-template #editingDependentChildren>
+                    <mat-form-field
+                        class="nxs-small-mat-input"
+                        appearance="outline"
+                    >
+                        <input
+                            matInput
+                            type="number"
+                            [min]="0"
+                            [placeholder]="'0'"
+                            [(ngModel)]="entity.dependentChildren"
+                            (ngModelChange)="emitModification()"
+                        />
+                    </mat-form-field>
+                </ng-template>
+            </div>
+
+            <div class="edit-page-block-item">
+                <p class="title">{{ 'Candidate.Pets' | translate }}*</p>
+                <ng-container
+                    *ngIf="
+                        entity.candidatePets?.length && !editModes.complement;
+                        else pets
+                    "
+                >
+                </ng-container>
+                <ng-template #pets>
+                    <ng-container
+                        *ngIf="!editModes.complement; else editingPet"
+                    >
+                        <ng-container *ngIf="entity.animal">
+                            <p>{{ 'Global.Yes' | translate }}</p>
+                        </ng-container>
+                        <ng-container *ngIf="!entity.animal">
+                            <p>{{ 'Global.No' | translate }}</p>
+                        </ng-container>
+                    </ng-container>
+
+                    <ng-template #editingPet>
+                        <mat-radio-group
+                            [(ngModel)]="entity.animal"
+                            name="animal"
+                            (ngModelChange)="emitModification()"
+                            aria-label="Select an option"
+                            class="nxs-small-mat-input ml-2"
+                        >
+                            <mat-radio-button [value]="true" class="mr-2"
+                                >Yes</mat-radio-button
+                            >
+                            <mat-radio-button [value]="false"
+                                >No</mat-radio-button
+                            >
+                        </mat-radio-group>
+                    </ng-template>
+                </ng-template>
+            </div>
+
+            <div class="edit-page-block-item">
+                <p class="title">
+                    {{ 'Candidate.DriverLicence' | translate }}*
+                </p>
+                <ng-container
+                    *ngIf="!editModes.complement; else driverLicences"
+                >
+                    <div class="d-flex flex-sb">
+                        <ng-container *ngIf="entity.hasLicenceDriver">
+                            <p>{{ 'Candidate.NoLicence' | translate }}</p>
+                        </ng-container>
+                        <ng-container
+                            *ngIf="
+                                entity.candidateLicences?.length &&
+                                !entity.hasLicenceDriver
+                            "
+                        >
+                            <p
+                                [innerHTML]="
+                                    joinCandidateLicenceWithCountryToDisplay(
+                                        entity.candidateLicences
+                                    )
+                                "
+                            ></p>
+                        </ng-container>
+                        <p
+                            *ngIf="
+                                !entity.hasLicenceDriver === undefined ||
+                                (!entity.hasLicenceDriver &&
+                                    !entity.candidateLicences?.length)
+                            "
+                        >
+                            {{ 'Global.NotInformed' | translate }}
+                        </p>
+                    </div>
+                </ng-container>
+
+                <ng-template #driverLicences>
+                    <ng-container
+                        *ngIf="!editModes.complement; else editingLicences"
+                    >
+                        <ng-container *ngIf="!entity.hasLicenceDriver">
+                            <p>{{ 'Global.Yes' | translate }}</p>
+                        </ng-container>
+                        <ng-container *ngIf="entity.hasLicenceDriver">
+                            <p>{{ 'Global.No' | translate }}</p>
+                        </ng-container>
+                    </ng-container>
+
+                    <ng-template #editingLicences>
+                        <mat-radio-group
+                            [(ngModel)]="hasNoLicenceDriver"
+                            name="hasLicenceDriver"
+                            (ngModelChange)="hasNoLicenceDriverChange()"
+                            aria-label="Select an option"
+                            class="nxs-small-mat-input ml-2"
+                        >
+                            <mat-radio-button [value]="true" class="mr-2"
+                                >Yes</mat-radio-button
+                            >
+                            <mat-radio-button [value]="false"
+                                >No</mat-radio-button
+                            >
+                        </mat-radio-group>
+
+                        <ng-container *ngIf="!entity.hasLicenceDriver">
+                            <div
+                                class="d-flex align-items-baseline"
+                                style="gap: 10px"
+                                *ngFor="let licence of entity.candidateLicences"
+                            >
+                                <button
+                                    mat-icon-button
+                                    [disabled]="loading"
+                                    color="primary"
+                                    (click)="removeCandidateLicence(licence)"
+                                >
+                                    <mat-icon>remove_circle_outline</mat-icon>
+                                </button>
+                                <mat-form-field
+                                    class="nxs-small-mat-input small-width"
+                                    appearance="outline"
+                                >
+                                    <mat-label>{{
+                                        'Candidate.DriverLicence' | translate
+                                    }}</mat-label>
+                                    <mat-select
+                                        [(ngModel)]="licence.licenceId"
+                                        (ngModelChange)="emitModification()"
+                                    >
+                                        <mat-option
+                                            *ngFor="let item of licencesList"
+                                            [value]="item.id"
+                                            >{{ 'label' | dbTranslate: item }}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                                <mat-form-field
+                                    class="nxs-small-mat-input small-width"
+                                    appearance="outline"
+                                >
+                                    <mat-label>{{
+                                        'Global.Country' | translate
+                                    }}</mat-label>
+                                    <mat-select
+                                        [(ngModel)]="licence.countryCode"
+                                        (ngModelChange)="emitModification()"
+                                        [disabled]="
+                                            loading || !licence.licenceId
+                                        "
+                                        required
+                                    >
+                                        <mat-option
+                                            *ngFor="
+                                                let item of RefData.countriesListForCurrentLanguage
+                                            "
+                                            [value]="item.code"
+                                        >
+                                            {{ item.label }}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <div
+                                class="d-flex align-items-center"
+                                style="flex-wrap: wrap"
+                            >
+                                <button
+                                    mat-icon-button
+                                    [disabled]="loading"
+                                    color="primary"
+                                    [matTooltip]="
+                                        'Candidate.AddLicence' | translate
+                                    "
+                                    (click)="addCandidateLicence()"
+                                >
+                                    <mat-icon>add_circle_outline</mat-icon>
+                                </button>
+                                <p class="primary">
+                                    <a (click)="addCandidateLicence()">{{
+                                        'Candidate.AddLicence' | translate
+                                    }}</a>
+                                </p>
+                            </div>
+                        </ng-container>
+                    </ng-template>
+                </ng-template>
+            </div>
+        </div>
+    </div>
+    <div class="column-container">
+        <div class="edit-page-block" [class.selected]="editModes.contact">
+            <ng-container
+                *ngTemplateOutlet="editBtn; context: { editModeKey: 'contact' }"
+            ></ng-container>
+            <h2>{{ 'Candidate.Contact' | translate }}</h2>
+            <hr />
+
+            <ng-container *ngIf="editModes.contact">
+                <nxs-intl-tel-input
+                    [preferredCountries]="['fr', 'es', 'ae', 'gb', 'us']"
+                    class="nxs-small-mat-input"
+                    [matLabel]="'Global.Phone' | translate"
+                    [(ngModel)]="entity.phone"
+                    (ngModelChange)="emitModification()"
+                    [required]="true"
+                >
+                </nxs-intl-tel-input>
+
+                <nxs-intl-tel-input
+                    [preferredCountries]="['fr', 'es', 'ae', 'gb', 'us']"
+                    class="nxs-small-mat-input"
+                    [matLabel]="'Global.PhoneFix' | translate"
+                    [(ngModel)]="entity.phoneSecondary"
+                    (ngModelChange)="emitModification()"
+                >
+                </nxs-intl-tel-input>
+
+                <mat-form-field
+                    class="nxs-small-mat-input"
+                    appearance="outline"
+                >
+                    <mat-label>E-mail</mat-label>
+                    <input
+                        placeholder="E-mail"
+                        matInput
+                        type="email"
+                        [(ngModel)]="entity.email"
+                        (ngModelChange)="emitModification()"
+                        required
+                    />
+                </mat-form-field>
+
+                <div
+                    *ngFor="
+                        let email of entity.additionalEmails;
+                        let i = index;
+                        trackBy: trackByIndex
+                    "
+                    style="display: flex; align-items: center; gap: 8px"
+                >
+                    <mat-form-field
+                        class="nxs-small-mat-input"
+                        appearance="outline"
+                        style="flex: 1"
+                    >
+                        <mat-label>E-mail {{ i + 2 }}</mat-label>
+                        <input
+                            placeholder="E-mail"
+                            matInput
+                            type="email"
+                            [(ngModel)]="entity.additionalEmails[i]"
+                            (ngModelChange)="emitModification()"
+                        />
+                    </mat-form-field>
+                    <button
+                        mat-icon-button
+                        color="warn"
+                        (click)="removeAdditionalEmail(i)"
+                        type="button"
+                    >
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </div>
+                <button
+                    mat-stroked-button
+                    (click)="addAdditionalEmail()"
+                    type="button"
+                    style="margin-bottom: 16px"
+                >
+                    <mat-icon>add</mat-icon>
+                    {{ 'Candidate.AddAdditionalEmail' | translate }}
+                </button>
+            </ng-container>
+
+            <ng-container *ngIf="!editModes.contact">
+                <div class="edit-page-block-item">
+                    <p class="title">{{ 'Global.Phone' | translate }}</p>
+                    <p>
+                        {{ entity.phone || ('Global.NotInformed' | translate) }}
+                    </p>
+                </div>
+
+                <div class="edit-page-block-item">
+                    <p class="title">{{ 'Global.PhoneFix' | translate }}</p>
+                    <p>
+                        {{
+                            entity.phoneSecondary ||
+                                ('Global.NotInformed' | translate)
+                        }}
+                    </p>
+                </div>
+
+                <div class="edit-page-block-item">
+                    <p class="title">E-mail</p>
+                    <p>
+                        <a
+                            *ngIf="entity.email; else noEmail"
+                            [href]="'mailto:' + entity.email"
+                            target="_blank"
+                        >
+                            {{ entity.email }}
+                        </a>
+                        <ng-template #noEmail>
+                            {{ 'Global.NotInformed' | translate }}
+                        </ng-template>
+                    </p>
+                </div>
+
+                <div
+                    class="edit-page-block-item"
+                    *ngIf="entity.additionalEmails?.length"
+                >
+                    <p class="title">
+                        {{ 'Candidate.AdditionalEmails' | translate }}
+                    </p>
+                    <p *ngFor="let additionalEmail of entity.additionalEmails">
+                        <a
+                            [href]="'mailto:' + additionalEmail"
+                            target="_blank"
+                            >{{ additionalEmail }}</a
+                        >
+                    </p>
+                </div>
+            </ng-container>
+        </div>
+
+        <div class="edit-page-block mt-3" [class.selected]="editModes.location">
+            <ng-container
+                *ngTemplateOutlet="
+                    editBtn;
+                    context: { editModeKey: 'location' }
+                "
+            ></ng-container>
+            <h2>{{ 'Candidate.Location' | translate }}</h2>
+            <hr />
+
+            <ng-container *ngIf="editModes.location">
+                <div *ngFor="let address of this.entity?.addresses">
+                    <app-address
+                        mode="single"
+                        [address]="address"
+                        (onAdd)="addAddress()"
+                        (onModification)="emitModification($event)"
+                        [smallInput]="true"
+                    >
+                    </app-address>
+                </div>
+
+                <div *ngIf="!entity.addresses?.length">
+                    <button
+                        style="margin: 0 auto"
+                        mat-raised-button
+                        color="primary"
+                        [disabled]="loading"
+                        (click)="addAddress()"
+                    >
+                        <mat-icon fontSet="material-icons-outlined"
+                            >add</mat-icon
+                        >{{ 'Address.Add' | translate }}
+                    </button>
+                </div>
+            </ng-container>
+
+            <ng-container *ngIf="!editModes.location">
+                <div class="edit-page-block-item">
+                    <p class="title">{{ 'Address.Address' | translate }}</p>
+                    <p>
+                        {{
+                            entity.addresses && entity?.addresses[0]?.lineOne
+                                ? entity?.addresses[0]?.lineOne
+                                : ('Global.NotInformed' | translate)
+                        }}
+
+                        <ng-container
+                            *ngIf="
+                                entity.addresses &&
+                                entity?.addresses[0]?.lineTwo
+                            "
+                        >
+                            <br />
+                            {{ entity?.addresses[0]?.lineTwo }}
+                        </ng-container>
+                    </p>
+                </div>
+
+                <div class="edit-page-block-item">
+                    <p class="title">{{ 'Address.City' | translate }}</p>
+                    <p>
+                        {{
+                            (entity.addresses?.length &&
+                            entity.addresses[0]?.city
+                                ? entity?.addresses[0]?.city
+                                : ('Global.NotInformed' | translate)
+                            ) | titlecase
+                        }}
+                    </p>
+                </div>
+                <div class="edit-page-block-item">
+                    <p class="title">{{ 'Address.PostalCode' | translate }}</p>
+                    <p>
+                        {{
+                            entity.addresses?.length &&
+                            entity.addresses[0]?.postalCode
+                                ? entity.addresses[0]?.postalCode
+                                : ('Global.NotInformed' | translate)
+                        }}
+                    </p>
+                </div>
+
+                <div class="edit-page-block-item">
+                    <p class="title">{{ 'Address.Department' | translate }}</p>
+                    <p>
+                        {{
+                            entity.addresses?.length &&
+                            entity.addresses[0]?.department
+                                ? (entity?.addresses[0]?.department | titlecase)
+                                : ('Global.NotInformed' | translate)
+                        }}
+                    </p>
+                </div>
+
+                <div class="edit-page-block-item">
+                    <p class="title">{{ 'Address.Country' | translate }}</p>
+                    <p>
+                        {{
+                            entity.addresses?.length &&
+                            entity.addresses[0]?.country
+                                ? RefData.getCountryLabel(
+                                      entity.addresses[0]?.country
+                                  )
+                                : ('Global.NotInformed' | translate)
+                        }}
+                    </p>
+                </div>
+            </ng-container>
+        </div>
+    </div>
+
+    <div class="column-container">
+        <div
+            class="edit-page-blue-block mb-3 notes-block"
+            *ngIf="showNotes && !isNew"
+            [class.selected]="editModes.notes"
+            style="padding-bottom: 70px"
+        >
+            <ng-container
+                *ngTemplateOutlet="editBtn; context: { editModeKey: 'notes' }"
+            >
+            </ng-container>
+            <h2>{{ 'Candidate.Rating' | translate }}</h2>
+            <hr />
+
+            <app-star-note
+                [note]="entity.note"
+                (onRateSelected)="entity.note = $event; emitModification()"
+                [editMode]="editModes.notes"
+            >
+            </app-star-note>
+
+            <ng-container *ngIf="notesToDisplay?.length; else noItem">
+                <ng-container *ngFor="let note of notesToDisplay">
+                    <div
+                        class="edit-page-block-item d-flex justify-content-between"
+                    >
+                        <mat-form-field
+                            *ngIf="
+                                currentEditNote?.id === note.id &&
+                                    isEditingNotes;
+                                else noEditNote
+                            "
+                            appearance="outline"
+                            style="width: 100%"
+                            class="nxs-small-mat-input"
+                        >
+                            <mat-label>{{
+                                'Candidate.GiveReview' | translate
+                            }}</mat-label>
+                            <textarea
+                                matInput
+                                [(ngModel)]="candidateComment"
+                                (ngModelChange)="emitModification()"
+                                cdkTextareaAutosize
+                                cdkAutosizeMinRows="3"
+                                cdkAutosizeMaxRows="5"
+                            ></textarea>
+                        </mat-form-field>
+                        <ng-template #noEditNote>
+                            <div style="flex: 1">
+                                <p class="note-author-date">
+                                    {{ note.consultant?.lastName }}
+                                    {{ note.consultant?.firstName }} -
+                                    {{
+                                        note.modifDate | date: 'dd/MM/yyy HH:mm'
+                                    }}
+                                </p>
+
+                                <p style="white-space: pre-line">
+                                    {{ note.content | translate }}
+                                </p>
+
+                                <!-- Display attached files (only show successfully uploaded files) -->
+                                <div
+                                    class="note-files-list"
+                                    *ngIf="
+                                        getUploadedNoteFiles(note.files)?.length
+                                    "
+                                >
+                                    <div
+                                        class="note-file-item"
+                                        *ngFor="
+                                            let file of getUploadedNoteFiles(
+                                                note.files
+                                            )
+                                        "
+                                    >
+                                        <mat-icon
+                                            class="file-icon"
+                                            fontSet="material-icons-outlined"
+                                            >attachment</mat-icon
+                                        >
+                                        <span
+                                            class="file-name clickable"
+                                            (click)="openNoteFile(file)"
+                                            [matTooltip]="
+                                                'Global.OpenFile' | translate
+                                            "
+                                        >
+                                            {{ file.file?.name }}
+                                        </span>
+                                        <button
+                                            mat-icon-button
+                                            *ngIf="
+                                                editModes.notes &&
+                                                note.consultant &&
+                                                AuthDataService.currentUser
+                                                    .id === note.consultant.id
+                                            "
+                                            (click)="
+                                                deleteNoteFile(note.id, file.id)
+                                            "
+                                            [matTooltip]="
+                                                'Global.Delete' | translate
+                                            "
+                                            class="delete-file-btn"
+                                        >
+                                            <mat-icon>close</mat-icon>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- File upload for existing notes (only when editing) -->
+                                <div
+                                    class="note-file-upload"
+                                    *ngIf="
+                                        editModes.notes &&
+                                        note.id &&
+                                        note.consultant &&
+                                        AuthDataService.currentUser.id ===
+                                            note.consultant.id &&
+                                        getNoteFileUploadWrapper(note.id)
+                                    "
+                                >
+                                    <button
+                                        mat-stroked-button
+                                        color="primary"
+                                        class="add-file-btn"
+                                        (click)="openNoteFilePicker(note.id)"
+                                    >
+                                        <mat-icon>attach_file</mat-icon>
+                                        {{
+                                            'Candidate.AttachFiles' | translate
+                                        }}
+                                    </button>
+                                    <nxs-file-upload
+                                        [hasDropZone]="false"
+                                        [showUploadButton]="false"
+                                        [showProgressBar]="false"
+                                        [showFilesList]="false"
+                                        [data]="
+                                            getNoteFileUploadWrapper(note.id)
+                                                .fileUploadData
+                                        "
+                                        [options]="
+                                            getNoteFileUploadWrapper(note.id)
+                                                .fileUploadOptions
+                                        "
+                                        (onCompleteItem)="
+                                            onNoteFileUploadComplete(
+                                                $event,
+                                                note.id
+                                            )
+                                        "
+                                    >
+                                    </nxs-file-upload>
+                                </div>
+                            </div>
+                        </ng-template>
+                        <div
+                            *ngIf="
+                                note.consultant &&
+                                AuthDataService.currentUser.id ===
+                                    note.consultant.id &&
+                                editModes.notes
+                            "
+                            class="d-flex align-items-center"
+                        >
+                            <ng-container *ngIf="!isEditingNotes">
+                                <button
+                                    mat-icon-button
+                                    [matTooltip]="
+                                        'Experience.EditNote' | translate
+                                    "
+                                    (click)="editSelectedNote(note)"
+                                >
+                                    <mat-icon>edit</mat-icon>
+                                </button>
+                                <button
+                                    mat-icon-button
+                                    [matTooltip]="
+                                        'Experience.DeleteNote' | translate
+                                    "
+                                    (click)="deleteNote(note.id)"
+                                >
+                                    <mat-icon>delete</mat-icon>
+                                </button>
+                            </ng-container>
+                            <button
+                                *ngIf="
+                                    isEditingNotes &&
+                                    currentEditNote?.id === note.id &&
+                                    isEditingNotes
+                                "
+                                mat-icon-button
+                                [matTooltip]="
+                                    'Experience.ConfirmUpdateNote' | translate
+                                "
+                                (click)="updateNote()"
+                            >
+                                <mat-icon>check</mat-icon>
+                            </button>
+                            <button
+                                *ngIf="
+                                    isEditingNotes &&
+                                    currentEditNote?.id === note.id &&
+                                    isEditingNotes
+                                "
+                                mat-icon-button
+                                [matTooltip]="
+                                    'Experience.CancelUpdateNote' | translate
+                                "
+                                (click)="
+                                    isEditingNotes = false;
+                                    currentEditNote = null
+                                "
+                            >
+                                <mat-icon>close</mat-icon>
+                            </button>
+                        </div>
+                    </div>
+                    <hr class="note-separator" />
+                </ng-container>
+            </ng-container>
+
+            <ng-template #noItem>
+                <div class="edit-page-block-item" *ngIf="!editModes.notes">
+                    <p>{{ 'Candidate.NoRatingForCandidate' | translate }}.</p>
+                </div>
+            </ng-template>
+
+            <ng-container *ngIf="canLookMore()">
+                <button mat-button color="primary" (click)="lookMore()">
+                    {{ 'Candidate.SeeMoreNotes' | translate }}
+                </button>
+            </ng-container>
+
+            <ng-container *ngIf="editModes.notes">
+                <div
+                    class="new-note-container"
+                    *ngIf="!isEditingNotes && addNewNote"
+                >
+                    <div
+                        class="d-flex align-items-start"
+                        style="column-gap: 10px"
+                    >
+                        <mat-form-field
+                            appearance="outline"
+                            style="width: 100%"
+                            class="nxs-small-mat-input"
+                        >
+                            <mat-label>{{
+                                'Candidate.GiveReview' | translate
+                            }}</mat-label>
+                            <textarea
+                                matInput
+                                [(ngModel)]="candidateComment"
+                                (ngModelChange)="emitModification()"
+                                cdkTextareaAutosize
+                                cdkAutosizeMinRows="3"
+                                cdkAutosizeMaxRows="5"
+                            ></textarea>
+                        </mat-form-field>
+                        <button
+                            mat-icon-button
+                            [matTooltip]="'Experience.AddNewNote' | translate"
+                            (click)="confirmNewNote()"
+                        >
+                            <mat-icon>check</mat-icon>
+                        </button>
+                        <button
+                            mat-icon-button
+                            [matTooltip]="
+                                'Experience.CancelNewNote' | translate
+                            "
+                            (click)="cancelNewNote()"
+                        >
+                            <mat-icon>cancel</mat-icon>
+                        </button>
+                    </div>
+
+                    <!-- File upload for new note -->
+                    <div class="new-note-file-upload">
+                        <button
+                            mat-stroked-button
+                            color="primary"
+                            class="add-file-btn"
+                            (click)="openNewNoteFilePicker()"
+                        >
+                            <mat-icon>attach_file</mat-icon>
+                            {{ 'Candidate.AttachFiles' | translate }}
+                        </button>
+                        <nxs-file-upload
+                            [hasDropZone]="false"
+                            [showUploadButton]="false"
+                            [showProgressBar]="false"
+                            [showFilesList]="false"
+                            [data]="newNoteFileUploadData"
+                            [options]="newNoteFileUploadOptions"
+                            (onCompleteItem)="
+                                onNewNoteFileUploadComplete($event)
+                            "
+                        >
+                        </nxs-file-upload>
+
+                        <!-- Display uploaded files for new note -->
+                        <div
+                            class="new-note-files-list"
+                            *ngIf="newNoteUploadedFiles?.length"
+                        >
+                            <div
+                                class="note-file-item"
+                                *ngFor="
+                                    let fileItem of newNoteUploadedFiles;
+                                    let i = index
+                                "
+                            >
+                                <mat-icon
+                                    class="file-icon"
+                                    fontSet="material-icons-outlined"
+                                    >attachment</mat-icon
+                                >
+                                <span class="file-name">
+                                    {{ fileItem.file?.name }}
+                                </span>
+                                <button
+                                    mat-icon-button
+                                    (click)="removeNewNoteFile(i)"
+                                    [matTooltip]="'Global.Delete' | translate"
+                                    class="delete-file-btn"
+                                >
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <button
+                    *ngIf="!isEditingNotes && !addNewNote"
+                    style="position: absolute; bottom: 10px; right: 10px"
+                    mat-icon-button
+                    mat-raised-button
+                    [matTooltip]="'Experience.AddNote' | translate"
+                    (click)="addNote()"
+                    color="primary"
+                >
+                    <mat-icon>add</mat-icon>
+                </button>
+            </ng-container>
+        </div>
+        <div
+            *ngIf="entity.inCouple"
+            class="edit-page-block mb-3"
+            [class.selected]="editModes.complement"
+        >
+            <ng-container
+                *ngTemplateOutlet="
+                    editBtn;
+                    context: { editModeKey: 'conjoint' }
+                "
+            ></ng-container>
+            <h2>{{ 'Candidate.Spouse' | translate }}</h2>
+            <hr />
+
+            <ng-container *ngIf="editModes.conjoint">
+                <mat-form-field
+                    class="nxs-small-mat-input"
+                    appearance="outline"
+                >
+                    <mat-label>{{ 'Global.LastName' | translate }}</mat-label>
+                    <input
+                        [placeholder]="'Global.Keywords' | translate"
+                        matInput
+                        type="text"
+                        [disabled]="loading"
+                        [(ngModel)]="entity.partnerLastName"
+                        (ngModelChange)="emitModification()"
+                    />
+                </mat-form-field>
+
+                <mat-form-field
+                    class="nxs-small-mat-input"
+                    appearance="outline"
+                >
+                    <mat-label>{{ 'Global.FirstName' | translate }}</mat-label>
+                    <input
+                        [placeholder]="'Global.Keywords' | translate"
+                        matInput
+                        type="text"
+                        [disabled]="loading"
+                        [(ngModel)]="entity.partnerFirstName"
+                        (ngModelChange)="emitModification()"
+                    />
+                </mat-form-field>
+
+                <mat-form-field
+                    class="nxs-small-mat-input"
+                    appearance="outline"
+                    *ngIf="
+                        SharedCountryService.showCandidateDetailFields(entity)
+                    "
+                >
+                    <mat-label>{{ 'Candidate.Gender' | translate }}</mat-label>
+                    <mat-select
+                        [(ngModel)]="entity.partnerGenderId"
+                        name="gender"
+                        (ngModelChange)="emitModification()"
+                    >
+                        <mat-option
+                            *ngFor="let item of genderList"
+                            [value]="item.id"
+                        >
+                            {{ 'label' | dbTranslate: item }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <nxs-intl-tel-input
+                    class="nxs-small-mat-input"
+                    [matLabel]="'Global.Phone' | translate"
+                    [(ngModel)]="entity.partnerPhone"
+                    (ngModelChange)="emitModification()"
+                >
+                </nxs-intl-tel-input>
+
+                <mat-form-field
+                    class="nxs-small-mat-input"
+                    appearance="outline"
+                >
+                    <mat-label>{{ 'Candidate.Email' | translate }}</mat-label>
+                    <input
+                        [placeholder]="'Global.Keywords' | translate"
+                        matInput
+                        type="text"
+                        [disabled]="loading"
+                        [(ngModel)]="entity.partnerEmail"
+                        (ngModelChange)="emitModification()"
+                    />
+                </mat-form-field>
+
+                <mat-form-field
+                    class="nxs-small-mat-input"
+                    appearance="outline"
+                    *ngIf="
+                        SharedCountryService.showCandidateDetailFields(entity)
+                    "
+                >
+                    <mat-label>{{
+                        'Candidate.Birthdate' | translate
+                    }}</mat-label>
+                    <input
+                        matInput
+                        [(ngModel)]="entity.partnerBirthDate"
+                        (ngModelChange)="emitModification()"
+                        [matDatepicker]="pickerSelected"
+                        [disabled]="loading"
+                        (click)="pickerSelected.open()"
+                    />
+                    <mat-datepicker-toggle
+                        matSuffix
+                        [for]="pickerSelected"
+                    ></mat-datepicker-toggle>
+                    <mat-datepicker #pickerSelected></mat-datepicker>
+                </mat-form-field>
+
+                <app-language
+                    [candidateLanguages]="partnerCandidateLangues"
+                    [isEditMode]="editModes.conjoint"
+                    [languagesList]="languagesList"
+                    [levelLanguageList]="levelLanguageList"
+                    (onModification)="emitModification()"
+                    [partnerLanguages]="true"
+                ></app-language>
+            </ng-container>
+
+            <ng-container *ngIf="!editModes.conjoint">
+                <div class="edit-page-block-item">
+                    <p class="title">{{ 'Global.LastName' | translate }}</p>
+                    <p>
+                        {{
+                            (entity.partnerLastName | uppercase) ||
+                                ('Global.NotInformed' | translate)
+                        }}
+                    </p>
+                </div>
+
+                <div class="edit-page-block-item">
+                    <p class="title">{{ 'Global.FirstName' | translate }}</p>
+                    <p>
+                        {{
+                            entity.partnerFirstName ||
+                                ('Global.NotInformed' | translate)
+                        }}
+                    </p>
+                </div>
+
+                <div
+                    class="edit-page-block-item"
+                    *ngIf="
+                        SharedCountryService.showCandidateDetailFields(entity)
+                    "
+                >
+                    <p class="title">{{ 'Candidate.Gender' | translate }}</p>
+                    <p>
+                        {{
+                            entity.partnerGender?.label ||
+                                ('Global.NotInformed' | translate)
+                        }}
+                    </p>
+                </div>
+
+                <div class="edit-page-block-item">
+                    <p class="title">{{ 'Global.Phone' | translate }}</p>
+                    <p>
+                        {{
+                            entity.partnerPhone ||
+                                ('Global.NotInformed' | translate)
+                        }}
+                    </p>
+                </div>
+
+                <div class="edit-page-block-item">
+                    <p class="title">{{ 'Candidate.Email' | translate }}</p>
+                    <p>
+                        <a
+                            *ngIf="entity.partnerEmail; else noPartnerEmail"
+                            [href]="'mailto:' + entity.partnerEmail"
+                        >
+                            {{ entity.partnerEmail }}
+                        </a>
+                        <ng-template #noPartnerEmail>
+                            {{ 'Global.NotInformed' | translate }}
+                        </ng-template>
+                    </p>
+                </div>
+
+                <div
+                    class="edit-page-block-item"
+                    *ngIf="
+                        SharedCountryService.showCandidateDetailFields(entity)
+                    "
+                >
+                    <p class="title">{{ 'Candidate.Birthdate' | translate }}</p>
+                    <p>
+                        {{
+                            (entity.partnerBirthDate | date: 'dd/MM/yyyy') ||
+                                ('Global.NotInformed' | translate)
+                        }}
+                        <ng-container *ngIf="entity.partnerBirthDate">
+                            ({{ DateHelpers.getAge(entity.partnerBirthDate) }}
+                            {{ 'Global.Years' | translate }})
+                        </ng-container>
+                    </p>
+                </div>
+
+                <app-language
+                    [candidateLanguages]="partnerCandidateLangues"
+                    [isEditMode]="editModes.conjoint"
+                    [languagesList]="languagesList"
+                    [levelLanguageList]="levelLanguageList"
+                    (onModification)="emitModification()"
+                    [partnerLanguages]="true"
+                ></app-language>
+            </ng-container>
+        </div>
+        <div class="edit-page-block mb-3" *ngIf="showConsultant">
+            <ng-container
+                *ngTemplateOutlet="
+                    editBtn;
+                    context: { editModeKey: 'consultant' }
+                "
+            ></ng-container>
+            <h2>{{ 'JobOffer.Consultant' | translate }}</h2>
+            <hr />
+            <ng-container *ngIf="editModes.consultant">
+                <mat-form-field
+                    class="nxs-small-mat-input"
+                    appearance="outline"
+                >
+                    <mat-label>{{
+                        'JobOffer.Consultant' | translate
+                    }}</mat-label>
+                    <mat-select
+                        [(ngModel)]="entity.consultantId"
+                        (ngModelChange)="emitModification()"
+                    >
+                        <mat-option
+                            *ngFor="let consultant of consultantList"
+                            [value]="consultant.id"
+                        >
+                            {{ consultant.firstName }} {{ consultant.lastName }}
+                        </mat-option>
+                        <mat-option [value]="null" *ngIf="entity.consultantId">
+                            Désaffecter le consultant
+                            {{ getConsultantName(entity.consultantId) }} de ce
+                            candidat
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </ng-container>
+            <ng-container *ngIf="!editModes.consultant">
+                <div class="edit-page-block-item">
+                    <div
+                        class="d-flex align-items-center"
+                        *ngIf="
+                            entity.consultant?.firstName &&
+                            entity.consultant?.lastName
+                        "
+                    >
+                        <div
+                            class="consultant-picture"
+                            [style.backgroundImage]="
+                                'url(' +
+                                ImageHelpers.getUserPicture(entity.consultant) +
+                                ')'
+                            "
+                        ></div>
+                        <p class="m-0">
+                            {{ entity.consultant?.firstName | titlecase }}
+                            {{ entity.consultant?.lastName | uppercase }}
+                        </p>
+                    </div>
+                    <ng-container
+                        *ngIf="
+                            !entity.consultant?.firstName &&
+                            !entity.consultant?.lastName
+                        "
+                    >
+                        <p class="title">
+                            {{ 'JobOffer.RelatedConsultant' | translate }}
+                        </p>
+                        <p>{{ 'Candidate.CandidateNotAssign' | translate }}</p>
+                    </ng-container>
+                </div>
+            </ng-container>
+        </div>
+        <!-- <div
+            class="edit-page-block mb-3"
+            style="min-height: 200px"
+            [class.selected]="editModes.skills"
+        >
+            <ng-container
+                *ngTemplateOutlet="editBtn; context: { editModeKey: 'skills' }"
+            ></ng-container>
+            <h2>{{ 'Candidate.SkillsAndValueAdded' | translate }}</h2>
+            <hr />
+
+            <ng-container *ngIf="editModes.skills">
+                <mat-form-field
+                    appearance="outline"
+                    class="nxs-small-mat-input"
+                >
+                    <mat-label>{{
+                        'Candidate.SkillsAndValueAdded' | translate
+                    }}</mat-label>
+                    <textarea
+                        [placeholder]="
+                            'Candidate.SkillsAndValueAdded' | translate
+                        "
+                        [disabled]="loading"
+                        matInput
+                        cols="5"
+                        rows="15"
+                        [(ngModel)]="entity.skills"
+                        (ngModelChange)="emitModification()"
+                    ></textarea>
+                </mat-form-field>
+            </ng-container>
+
+            <ng-container *ngIf="!editModes.skills">
+                <div class="edit-page-block-item">
+                    <p
+                        [innerHtml]="
+                            replaceLineBreakWithBr(entity.skills) ||
+                            ('Global.NotInformed' | translate)
+                        "
+                    ></p>
+                </div>
+            </ng-container>
+        </div> -->
+
+        <div
+            class="edit-page-block"
+            *ngIf="showConditions"
+            [class.selected]="editModes.conditions"
+        >
+            <ng-container
+                *ngTemplateOutlet="
+                    editBtn;
+                    context: { editModeKey: 'conditions' }
+                "
+            ></ng-container>
+            <h2>{{ 'Candidate.DesiredConditions' | translate }}</h2>
+            <hr />
+
+            <app-language
+                [candidateLanguages]="candidateLanguages"
+                [isEditMode]="editModes.conditions"
+                [languagesList]="languagesList"
+                [levelLanguageList]="levelLanguageList"
+                (onModification)="emitModification()"
+            ></app-language>
+            <ng-container *ngIf="editModes.conditions">
+                <mat-form-field
+                    class="nxs-small-mat-input"
+                    appearance="outline"
+                >
+                    <mat-label>{{
+                        'Candidate.HousedJob' | translate
+                    }}</mat-label>
+                    <mat-select
+                        [(ngModel)]="entity.isJobHoused"
+                        (ngModelChange)="emitModification()"
+                        required
+                    >
+                        <mat-option
+                            [value]="item"
+                            *ngFor="let item of JobHousedEnum"
+                        >
+                            {{ item | translate }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field
+                    class="nxs-small-mat-input"
+                    appearance="outline"
+                >
+                    <mat-label>{{
+                        'Candidate.ContractType' | translate
+                    }}</mat-label>
+                    <mat-select
+                        multiple
+                        [(ngModel)]="selectedContractTypesIds"
+                        name="contractType"
+                        (ngModelChange)="emitModification()"
+                        required
+                    >
+                        <mat-option
+                            *ngFor="let item of contractTypes"
+                            [value]="item.id"
+                        >
+                            {{ 'label' | dbTranslate: item }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </ng-container>
+
+            <ng-container *ngIf="!editModes.conditions">
+                <div class="edit-page-block-item">
+                    <p class="title">{{ 'Candidate.HousedJob' | translate }}</p>
+                    <p *ngIf="entity.isJobHoused">
+                        {{ entity.isJobHoused | translate }}
+                    </p>
+                    <p *ngIf="!entity.isJobHoused">
+                        {{ 'Global.NotInformed' | translate }}
+                    </p>
+                </div>
+
+                <div class="edit-page-block-item">
+                    <p class="title">
+                        {{ 'Candidate.ContractType' | translate }}
+                    </p>
+                    <p>
+                        <ng-container
+                            *ngFor="
+                                let item of entity.candidateContracts;
+                                let index = index
+                            "
+                        >
+                            {{ 'label' | dbTranslate: item.contractType }}
+                            <span
+                                *ngIf="
+                                    index !==
+                                    entity.candidateContracts.length - 1
+                                "
+                            >
+                                /
+                            </span>
+                        </ng-container>
+                        <ng-container
+                            *ngIf="!entity.candidateContracts?.length"
+                            >{{
+                                'Global.NotInformed' | translate
+                            }}</ng-container
+                        >
+                    </p>
+                </div>
+            </ng-container>
+        </div>
+    </div>
+</div>
+
+<ng-template
+    #editBtn
+    let-editModeKey="editModeKey"
+    let-addIcon="addIcon"
+    let-lockIcon="lockIcon"
+>
+    <button
+        class="edit-btn"
+        mat-raised-button
+        mat-icon-button
+        color="primary"
+        (click)="onEditClick(editModeKey)"
+        [matTooltip]="
+            $any(editModes)[editModeKey]
+                ? ('Global.Save' | translate)
+                : addIcon
+                  ? ('Candidate.AddNote' | translate)
+                  : ('Candidate.EditInformations' | translate)
+        "
+        [disabled]="loading"
+        *ngIf="isPageBlocEditable(editModeKey)"
+    >
+        <mat-icon *ngIf="!$any(editModes)[editModeKey] && addIcon"
+            >add</mat-icon
+        >
+        <mat-icon *ngIf="!$any(editModes)[editModeKey] && !addIcon"
+            >edit</mat-icon
+        >
+        <mat-icon *ngIf="$any(editModes)[editModeKey]">done</mat-icon>
+    </button>
+    <button
+        (click)="onLockPageBlock(editModeKey)"
+        *ngIf="
+            !$any(editModes)[editModeKey] &&
+            lockIcon &&
+            GlobalAppService.userHasOneOfRoles(AuthDataService.currentUser, [
+                RolesList.RH,
+                RolesList.AdminTech,
+                RolesList.Admin,
+                RolesList.Consultant,
+            ])
+        "
+        class="edit-btn"
+        [ngClass]="{ 'edit-lock': !isPageLock(editModeKey) }"
+        [disabled]="loading"
+        style="position: absolute; right: 60px"
+        mat-raised-button
+        mat-icon-button
+        color="primary"
+        [matTooltip]="
+            isPageLock(editModeKey)
+                ? ('Block.LockedForCandidate' | translate)
+                : ('Block.LockBlock' | translate)
+        "
+    >
+        <mat-icon fontSet="material-icons-outlined">
+            <ng-container *ngIf="isPageLock(editModeKey); else unLock"
+                >lock</ng-container
+            >
+            <ng-template #unLock> lock_open </ng-template>
+        </mat-icon>
+    </button>
+</ng-template>

@@ -1,0 +1,75 @@
+<app-drawer-main-container>
+    <div style="display: flex; justify-content: center; align-items: center">
+        <h1>Live tracking - Current PM2 APP : {{ currentPM2AppId }}</h1>
+        <div style="margin-left: 18px">
+            <button (click)="init()" mat-raised-button color="primary">
+                Recharger
+            </button>
+        </div>
+    </div>
+
+    <div *ngFor="let appWrapper of allUsers">
+        <div style="text-decoration: underline">
+            PM2 APP : {{ appWrapper.pm2AppId }}
+        </div>
+        <div class="main-live-tracking-wrapper">
+            <div class="shadow-block">
+                <div>
+                    <u
+                        ><i
+                            >Utilisateur(s) connecté(s) ({{
+                                appWrapper.users.length
+                            }})</i
+                        ></u
+                    >
+                </div>
+                <br />
+                <div
+                    *ngFor="let user of appWrapper.users"
+                    style="display: flex; align-items: center"
+                >
+                    <div style="margin-right: 10px">
+                        <mat-icon>account_circle</mat-icon>
+                    </div>
+                    <div>
+                        <a *ngIf="user.userLink" [routerLink]="user.userLink">
+                            <b>{{ user.userName }}</b>
+                        </a>
+                        <b *ngIf="!user.userLink">{{ user.userName }}</b> -
+                        {{ getUserLastConnection(user) }}
+                        <div *ngFor="let connection of user.connections">
+                            {{ connection.page }}
+                            <div *ngIf="connection.socketConnection">
+                                socket : {{ connection.socketConnection }} -
+                                date :
+                                {{
+                                    connection.date
+                                        | date : 'dd/MM/yyyy - HH:mm:ss'
+                                }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="shadow-block">
+                <div>
+                    <u
+                        ><i
+                            >Anonyme(s) ({{
+                                appWrapper.anonymousUsers.length
+                            }}
+                            connexion(s) )</i
+                        ></u
+                    >
+                </div>
+                <br />
+                <div *ngFor="let user of appWrapper.anonymousUsers">
+                    <b>{{ user.userName }}</b> -
+                    {{ getUserLastConnection(user, true) }} -
+                    {{ getUserLastConnection(user) }}
+                </div>
+            </div>
+        </div>
+        <hr />
+    </div>
+</app-drawer-main-container>

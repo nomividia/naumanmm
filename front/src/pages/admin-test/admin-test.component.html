@@ -1,0 +1,60 @@
+<app-drawer-main-container>
+    <nxs-multiple-select
+        label="Collaborateur"
+        [(ngModel)]="selectedUsers"
+        [source]="usersList"
+        labelField="userName"
+        appearance="outline"
+    >
+    </nxs-multiple-select>
+    <div class="list-page-wrapper shadow-block">
+        <button
+            mat-raised-button
+            color="primary"
+            (click)="sendNotification(false)"
+        >
+            Envoi notification</button
+        ><br />
+        <br />
+        <br />
+        <button mat-raised-button color="primary" (click)="sendEvent()">
+            Envoi event firebase
+        </button>
+        <br />
+        <br />
+        <button
+            mat-raised-button
+            color="primary"
+            (click)="sendEventSocket(false, false)"
+        >
+            Envoi event socket
+        </button>
+        <br />
+        <br />
+        <button
+            mat-raised-button
+            color="primary"
+            (click)="sendEventSocket(false, true)"
+        >
+            Envoi event socket (all users)
+        </button>
+        <br />
+        <br />
+        <button
+            mat-raised-button
+            color="primary"
+            (click)="sendEventSocket(true, false)"
+        >
+            Envoi event socket from firebase connection
+        </button>
+        <br />
+        <br />
+        <button
+            mat-raised-button
+            color="primary"
+            (click)="getSocketConnections()"
+        >
+            getSocketConnections
+        </button>
+    </div>
+</app-drawer-main-container>

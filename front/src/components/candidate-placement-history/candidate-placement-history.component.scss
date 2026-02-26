@@ -1,0 +1,49 @@
+.candidate-placement-history {
+    .loading-container {
+        display: flex;
+        justify-content: center;
+        padding: 40px 0;
+    }
+
+    .empty-state {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 40px 0;
+        color: #999;
+
+        mat-icon {
+            font-size: 48px;
+            width: 48px;
+            height: 48px;
+            margin-bottom: 16px;
+        }
+
+        p {
+            font-size: 14px;
+        }
+    }
+
+    .placement-table {
+        width: 100%;
+
+        .job-offer-title {
+            font-weight: 500;
+        }
+
+        .job-offer-ref {
+            color: #666;
+            font-size: 12px;
+            margin-left: 4px;
+        }
+
+        .download-btn {
+            mat-icon {
+                font-size: 18px;
+                width: 18px;
+                height: 18px;
+                margin-right: 4px;
+            }
+        }
+    }
+}

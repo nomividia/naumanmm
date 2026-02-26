@@ -1,0 +1,189 @@
+<div class="login-dialog-wrapper">
+    <div class="header-background"></div>
+    <div style="padding: 1px 45px">
+        <!-- <img src="/assets/logos/logo_mmi.png" /> -->
+        <h2>{{ 'Login.LoginFormTitle' | translate }}</h2>
+        <form
+            class="login-form"
+            (ngSubmit)="login(null)"
+            *ngIf="!forgotPasswordForm"
+        >
+            <div>
+                <mat-form-field appearance="outline">
+                    <mat-icon style="margin-right: 10px" matPrefix
+                        >account_circle
+                    </mat-icon>
+                    <mat-label>{{ 'Login.Username' | translate }}</mat-label>
+                    <input
+                        autocomplete="userName"
+                        [disabled]="loading"
+                        matInput
+                        [placeholder]="'Login.Username' | translate"
+                        name="userName"
+                        [(ngModel)]="model.userName"
+                        required
+                    />
+                </mat-form-field>
+            </div>
+            <div>
+                <mat-form-field appearance="outline">
+                    <mat-icon style="margin-right: 10px" matPrefix
+                        >lock
+                    </mat-icon>
+                    <mat-label>{{ 'Login.Password' | translate }}</mat-label>
+                    <input
+                        autocomplete="password"
+                        [type]="passwordVisible ? 'text' : 'password'"
+                        [disabled]="loading"
+                        matInput
+                        [placeholder]="'Login.Password' | translate"
+                        name="password"
+                        [(ngModel)]="model.password"
+                        required
+                    />
+                    <button type="button" matSuffix mat-icon-button>
+                        <mat-icon
+                            *ngIf="!passwordVisible"
+                            (click)="passwordVisible = !passwordVisible"
+                            >visibility_off
+                        </mat-icon>
+                        <mat-icon
+                            *ngIf="passwordVisible"
+                            (click)="passwordVisible = !passwordVisible"
+                            >visibility
+                        </mat-icon>
+                    </button>
+                </mat-form-field>
+            </div>
+
+            <div class="buttons-wrapper" style="justify-content: center">
+                <button
+                    type="submit"
+                    mat-raised-button
+                    color="primary"
+                    [disabled]="loading"
+                >
+                    <div
+                        style="
+                            display: flex;
+                            align-items: center;
+                            justify-items: center;
+                        "
+                    >
+                        <div>
+                            {{ 'Login.Login' | translate }}
+                        </div>
+                        <div
+                            [style.display]="loading ? 'block' : 'none'"
+                            style="margin: 0 8px"
+                        >
+                            <mat-spinner
+                                diameter="20"
+                                strokeWidth="3"
+                            ></mat-spinner>
+                        </div>
+                    </div>
+                </button>
+            </div>
+        </form>
+        <div *ngIf="socialLogin && !forgotPasswordForm" class="buttons-wrapper">
+            <button
+                type="button"
+                mat-raised-button
+                color="primary"
+                (click)="login('Google')"
+                [disabled]="loading"
+            >
+                Connexion avec Google
+            </button>
+            <button
+                type="button"
+                mat-raised-button
+                color="primary"
+                (click)="login('Facebook')"
+                [disabled]="loading"
+            >
+                Connexion avec Facebook
+            </button>
+        </div>
+        <ng-container *ngIf="showForgotPasswordForm">
+            <div *ngIf="!forgotPasswordForm" class="forgot-password-wrapper">
+                <button
+                    type="button"
+                    mat-raised-button
+                    [disabled]="loading"
+                    (click)="forgotPasswordForm = true"
+                >
+                    {{ 'Login.ForgotPassword' | translate }}
+                </button>
+            </div>
+            <div *ngIf="forgotPasswordForm" style="padding: 20px">
+                <h2>{{ 'Login.ForgotPasswordFormTitle' | translate }}</h2>
+                <i style="margin: 16px auto; display: block">{{
+                    'Login.ForgotPasswordFormSubTitle' | translate
+                }}</i>
+                <form class="login-form" (ngSubmit)="sendForgotPasswordMail()">
+                    <mat-form-field appearance="outline">
+                        <mat-icon style="margin-right: 10px" matPrefix
+                            >mail
+                        </mat-icon>
+                        <mat-label>E-mail</mat-label>
+                        <input
+                            [disabled]="loading"
+                            matInput
+                            placeholder="E-mail"
+                            name="mail"
+                            [(ngModel)]="forgotPasswordMail"
+                            required
+                        />
+                    </mat-form-field>
+
+                    <div
+                        style="
+                            display: flex;
+                            justify-content: center;
+                            column-gap: 20px;
+                        "
+                    >
+                        <button
+                            mat-raised-button
+                            [disabled]="loading"
+                            (click)="forgotPasswordForm = false"
+                        >
+                            <mat-icon>chevron_left</mat-icon>
+                            {{ 'Global.Back' | translate }}
+                        </button>
+                        <button
+                            type="submit"
+                            mat-raised-button
+                            color="primary"
+                            [disabled]="loading"
+                        >
+                            <div
+                                style="
+                                    display: flex;
+                                    align-items: center;
+                                    justify-items: center;
+                                "
+                            >
+                                <div>
+                                    {{ 'Global.Validate' | translate }}
+                                </div>
+                                <div
+                                    [style.display]="loading ? 'block' : 'none'"
+                                    style="margin: 0 8px"
+                                >
+                                    <mat-spinner
+                                        diameter="20"
+                                        strokeWidth="3"
+                                    ></mat-spinner>
+                                </div>
+                            </div>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </ng-container>
+        <div *ngIf="errorMessage" [innerHTML]="errorMessage | noSanitize"></div>
+    </div>
+</div>

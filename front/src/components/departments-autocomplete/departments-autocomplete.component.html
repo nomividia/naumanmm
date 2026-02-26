@@ -1,0 +1,33 @@
+<div class="d-flex w-100" style="gap: 6px">
+    <nextalys-app-autocomplete
+        [required]="required"
+        [fullData]="departments"
+        [fullDataSearchMethod]="fullDataSearchMethod"
+        [minLength]="2"
+        [label]="label || 'Candidate.SearchForDepartment' | translate"
+        [(ngModel)]="value"
+        (clearInputClick)="value = null"
+        [autoActiveFirstOption]="true"
+        [autoCompleteIsLoading]="loading"
+        [showClearButton]="true"
+        [disabled]="disabled"
+        [autoClearInput]="true"
+        [placeholder]="label || 'Candidate.SearchForDepartment' | translate"
+        [displayLabel]="displayFunction"
+        [filterResultsOnFullDataChange]="false"
+        class="nxs-small-mat-input"
+        (textChanged)="onTextChange($event)"
+    >
+    </nextalys-app-autocomplete>
+
+    <div *ngIf="showValidBtn && currentText">
+        <button
+            type="button"
+            color="primary"
+            mat-icon-button
+            (click)="onValidate()"
+        >
+            <mat-icon>done</mat-icon>
+        </button>
+    </div>
+</div>

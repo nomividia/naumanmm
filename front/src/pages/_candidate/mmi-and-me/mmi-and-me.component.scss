@@ -1,0 +1,12 @@
+app-mmi-and-me {
+    .mat-tab-labels {
+        justify-content: center;
+    }
+    .information-container {
+        flex-grow: 1;
+        flex-basis: 0;
+    }
+    .exchange-container {
+        flex-grow: 1;
+    }
+}

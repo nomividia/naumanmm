@@ -1,0 +1,47 @@
+@import '../../../variables.scss';
+
+app-interview-list {
+    .white-title {
+        text-align: center;
+        font-size: 40px;
+        color: lightgray;
+        font-weight: 400;
+    }
+
+    .nxs-list-item-wrapper-container > .interview-list {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        color: #081f2f;
+        width: 100%;
+
+        .statut-response-green {
+            background-color: $mmi-green !important;
+            color: white;
+        }
+
+        .statut-response-red {
+            background-color: #862f09 !important;
+            color: white;
+        }
+
+        .no-show-badge {
+            background-color: #ff9800;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+            margin-right: 8px;
+        }
+
+        .clickable-candidate {
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+
+            &:hover {
+                background-color: rgba(0, 0, 0, 0.04);
+            }
+        }
+    }
+}

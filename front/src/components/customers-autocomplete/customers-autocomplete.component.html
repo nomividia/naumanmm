@@ -1,0 +1,16 @@
+<nextalys-app-autocomplete
+    [loadData]="loadCustomers"
+    [minLength]="2"
+    [label]="label ? label : 'Nom du client'"
+    [(ngModel)]="value"
+    (clearInputClick)="value = null"
+    [autoActiveFirstOption]="true"
+    [autoCompleteIsLoading]="loading"
+    [showClearButton]="true"
+    [delay]="500"
+    [disabled]="disabled"
+    [autoClearInput]="true"
+    [placeholder]="placeholder ? placeholder : 'Nom du client'"
+    [displayLabel]="displayFunction"
+>
+</nextalys-app-autocomplete>

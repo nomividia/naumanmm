@@ -1,0 +1,14 @@
+app-language {
+    .mat-form-field {
+        margin-bottom: unset !important;
+    }
+
+    mat-form-field.small-width {
+        width: 150px !important;
+    }
+
+    .inline-input {
+        justify-content: flex-start;
+        column-gap: 10px;
+    }
+}

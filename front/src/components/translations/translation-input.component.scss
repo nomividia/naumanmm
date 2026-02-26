@@ -1,0 +1,21 @@
+app-translation-input {
+    // border: 1px solid black;
+    display: block;
+    width: 100%;
+    mat-form-field.mat-form-field {
+        width: 100%;
+    }
+
+    div.translation-input-wrapper {
+        display: flex;
+        align-items: center;
+        padding-bottom: 10px;
+        mat-form-field.mat-form-field .mat-form-field-wrapper {
+            padding: 0;
+        }
+
+        > * {
+            margin: 0 6px;
+        }
+    }
+}

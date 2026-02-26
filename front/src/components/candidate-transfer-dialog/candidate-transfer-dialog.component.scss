@@ -1,0 +1,14 @@
+app-candidate-job-association-dialog {
+    .content {
+        padding-top: 10px;
+        min-height: 20vh;
+
+        mat-form-field {
+            width: 100%;
+        }
+
+        ul li:not(:first-child) {
+            margin-top: 10px;
+        }
+    }
+}

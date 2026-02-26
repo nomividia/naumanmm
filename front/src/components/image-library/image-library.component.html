@@ -1,0 +1,117 @@
+<div class="images-library-main-wrapper">
+    <div class="images-library-list" style="padding-right: 60px">
+        <ng-container *ngIf="images">
+            <div *ngIf="images.length === 0">Aucune image</div>
+            <div
+                (click)="selectImage(image)"
+                [ngClass]="{
+                    'image-library-wrapper': true,
+                    selected: isImageSelected(image)
+                }"
+                *ngFor="let image of images"
+                [style.backgroundImage]="
+                    'url(' +
+                    GlobalAppService.getPublicImagePath(image.name) +
+                    ')'
+                "
+            ></div>
+        </ng-container>
+        <div
+            style="position: absolute; top: 0; right: 6px"
+            [style.display]="loading ? '' : 'none'"
+        >
+            <mat-spinner diameter="50" strokeWidth="5"></mat-spinner>
+        </div>
+    </div>
+    <div style="width: 25%">
+        <div class="separator"></div>
+        <div
+            style="
+                position: relative;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                width: 100%;
+            "
+        >
+            <div>
+                <ng-container *ngIf="selectedImage">
+                    <fieldset>
+                        <legend>Fichier</legend>
+                        <b>Nom</b> : {{ selectedImage.name }}
+                        <br />
+                        <hr />
+                        <mat-form-field>
+                            <mat-label>Largeur</mat-label>
+                            <input
+                                matInput
+                                type="number"
+                                [(ngModel)]="selectedImage.width"
+                                (ngModelChange)="setHeightFromWidth()"
+                            />
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-label>Hauteur</mat-label>
+                            <input
+                                matInput
+                                type="number"
+                                [(ngModel)]="selectedImage.height"
+                                (ngModelChange)="setWidthFromHeight()"
+                            />
+                        </mat-form-field>
+                        <button
+                            mat-raised-button
+                            color="warn"
+                            (click)="resizeSelectedImage()"
+                        >
+                            <mat-icon fontSet="material-icons-outlined"
+                                >size</mat-icon
+                            >Redimensionner
+                        </button>
+                        <br />
+                        <hr />
+
+                        <br /><b>Poids</b> : {{ selectedImage.size }} <br /><b
+                            >Type</b
+                        >
+                        : {{ selectedImage.mimeType }}
+                        <br />
+                        <div style="text-align: center; margin: 10px auto">
+                            <a
+                                [href]="
+                                    GlobalAppService.getPublicImagePath(
+                                        selectedImage.name
+                                    )
+                                "
+                                target="_blank"
+                                >Ouvrir</a
+                            >
+                        </div>
+                        <br />
+                        <button
+                            mat-raised-button
+                            color="warn"
+                            (click)="removeSelectedImage()"
+                        >
+                            <mat-icon fontSet="material-icons-outlined"
+                                >delete</mat-icon
+                            >Supprimer
+                        </button>
+                    </fieldset>
+                </ng-container>
+            </div>
+            <div style="margin-top: 30px; width: 100%">
+                <nxs-file-upload
+                    *ngIf="fileUploadOptions"
+                    (beforeUploadItem)="loading = true"
+                    (onCompleteAllItems)="onCompleteAll()"
+                    [hasDropZone]="true"
+                    [showProgressBar]="true"
+                    [options]="fileUploadOptions"
+                    [data]="fileUploadData"
+                >
+                </nxs-file-upload>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,355 @@
+
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { RoutesList } from '../../../shared/routes';
+import { RolesList } from '../../../shared/shared-constants';
+import { AuthGuard } from '../providers/guards/auth-guard';
+import { AppHomeGuard } from '../providers/guards/home-guard';
+import { RoleGuard } from '../providers/guards/role-guard';
+
+const routes: Routes = [{
+    path: '',
+    redirectTo: RoutesList.AdminHome,
+    pathMatch: 'full',
+},
+{
+    path: RoutesList.Login,
+    loadChildren: () => import('../pages/login/login.module').then(m => m.LoginModule),
+    pathMatch: "full",
+    data: {
+        preventShowUpgradeSnackBar: true,
+    },
+},
+{
+    path: RoutesList.AdminUsers + '/:userName',
+    loadChildren: () => import('../pages/users/edit-user.module').then(m => m.EditUserModule),
+    pathMatch: "full",
+    canActivate: [AuthGuard],
+},
+{
+    path: RoutesList.AdminUsers,
+    loadChildren: () => import('../pages/users/users-list.module').then(m => m.UsersListModule),
+    pathMatch: "full",
+    canActivate: [RoleGuard],
+    data: { roles: [RolesList.Consultant, RolesList.Admin, RolesList.AdminTech, RolesList.RH] },
+},
+{
+    path: RoutesList.AdminHome,
+    loadChildren: () => import('../pages/home/home.module').then(m => m.HomeModule),
+    pathMatch: "full",
+    canActivate: [AppHomeGuard],
+},
+{
+    path: RoutesList.AdminLogs,
+    loadChildren: () => import('../pages/logs-page/logs-page.module').then(m => m.LogsPageModule),
+    pathMatch: "full",
+    canActivate: [RoleGuard],
+    data: { roles: [RolesList.AdminTech] },
+},
+{
+    path: RoutesList.AdminJobs + '/:jobId',
+    loadChildren: () => import('../pages/jobs/edit-job.module').then(m => m.EditJobModule),
+    pathMatch: "full",
+    canActivate: [RoleGuard],
+    data: { roles: [RolesList.AdminTech] },
+},
+{
+    path: RoutesList.AdminJobs,
+    loadChildren: () => import('../pages/jobs/jobs-list.module').then(m => m.JobsListModule),
+    pathMatch: "full",
+    canActivate: [RoleGuard],
+    data: { roles: [RolesList.AdminTech] },
+},
+{
+    path: RoutesList.AdminActivityLogs,
+    loadChildren: () => import('../pages/activity-logs/activity-logs.module').then(m => m.ActivityLogsModule),
+    pathMatch: "full",
+    canActivate: [RoleGuard],
+    data: { roles: [RolesList.AdminTech] },
+},
+{
+    path: RoutesList.AdminKeyValues,
+    loadChildren: () => import('../pages/key-values/key-values.module').then(m => m.KeyValuesModule),
+    pathMatch: "full",
+    canActivate: [RoleGuard],
+    data: { roles: [RolesList.AdminTech] },
+},
+{
+    path: RoutesList.AdminTest,
+    loadChildren: () => import('../pages/admin-test/admin-test.module').then(m => m.AdminTestModule),
+    pathMatch: "full",
+    canActivate: [RoleGuard],
+    data: { roles: [RolesList.AdminTech] },
+},
+{
+    path: RoutesList.AdminLiveTracking,
+    loadChildren: () => import('../pages/live-tracking/live-tracking.module').then(m => m.LiveTrackingModule),
+    pathMatch: "full",
+    canActivate: [RoleGuard],
+    data: { roles: [RolesList.AdminTech] },
+},
+{
+    path: RoutesList.AdminRoles,
+    loadChildren: () => import('../pages/roles/roles-list.module').then(m => m.RolesListModule),
+    pathMatch: "full",
+    canActivate: [RoleGuard],
+    data: { roles: [RolesList.AdminTech] },
+},
+{
+    path: RoutesList.AdminRoles + '/:id',
+    loadChildren: () => import('../pages/roles/edit-role.module').then(m => m.EditRoleModule),
+    pathMatch: "full",
+    canActivate: [RoleGuard],
+    data: { roles: [RolesList.AdminTech] },
+},
+{
+    path: RoutesList.AdminAppTypes,
+    loadChildren: () => import('../pages/app-types/app-types.module').then(m => m.AppTypesListModule),
+    pathMatch: "full",
+    canActivate: [RoleGuard],
+    data: { roles: [RolesList.Admin] },
+},
+{
+    path: RoutesList.AdminAppTypes + '/:id',
+    loadChildren: () => import('../pages/app-types/edit-app-type.module').then(m => m.EditAppTypeModule),
+    pathMatch: "full",
+    canActivate: [RoleGuard],
+    data: { roles: [RolesList.Admin] },
+},
+{
+    path: RoutesList.RecoverPassword + '/:recoverPasswordToken',
+    loadChildren: () => import('../pages/recover-password/recover-password.module').then(m => m.RecoverPasswordModule),
+    pathMatch: "full",
+},
+{
+    path: RoutesList.CandidatesList,
+    loadChildren: () => import('../pages/candidates/candidates-list.module').then(m => m.ListCandidatesModule),
+    pathMatch: "full",
+    canActivate: [RoleGuard],
+    data: { roles: [RolesList.Consultant, RolesList.Admin, RolesList.AdminTech, RolesList.RH] },
+},
+{
+    path: RoutesList.CandidatesList + '/:id',
+    loadChildren: () => import('../pages/candidates/edit-candidate.module').then(m => m.EditCandidateModule),
+    pathMatch: "full",
+    canActivate: [RoleGuard],
+    data: { roles: [RolesList.Consultant, RolesList.Admin, RolesList.AdminTech, RolesList.RH] },
+},
+{
+    path: RoutesList.Customers,
+    loadChildren: () => import('../pages/customers/customer-list.module').then(m => m.CustomerListModule),
+    pathMatch: "full",
+    canActivate: [RoleGuard],
+    data: { roles: [RolesList.Consultant, RolesList.Admin, RolesList.AdminTech, RolesList.RH] },
+},
+{
+    path: RoutesList.Customers + '/:id',
+    loadChildren: () => import('../pages/customers/edit-customer.module').then(m => m.EditCustomerModule),
+    pathMatch: "full",
+    canActivate: [RoleGuard],
+    data: { roles: [RolesList.Consultant, RolesList.Admin, RolesList.AdminTech, RolesList.RH] },
+},
+{
+    path: RoutesList.CandidateApplicationsList,
+    loadChildren: () => import('../pages/candidate-applications/candidate-applications-list.module').then(m => m.ListCandidateApplicationsModule),
+    pathMatch: "full",
+    canActivate: [RoleGuard],
+    data: { roles: [RolesList.Consultant, RolesList.Admin, RolesList.AdminTech, RolesList.RH] },
+},
+{
+    path: RoutesList.CandidateApplicationsList + '/:id',
+    loadChildren: () => import('../pages/candidate-applications/details-candidate-application.module').then(m => m.DetailsCandidateApplicationModule),
+    pathMatch: "full",
+    canActivate: [RoleGuard],
+    data: { roles: [RolesList.Consultant, RolesList.Admin, RolesList.AdminTech, RolesList.RH] },
+},
+{
+    path: RoutesList.CandidateApplyForm,
+    loadChildren: () => import('../components/candidate-apply-form/candidate-apply-form.module').then(m => m.CandidateApplyFormModule),
+    pathMatch: "full",
+    data: {
+        preventShowUpgradeSnackBar: true,
+    },
+},
+{
+    path: RoutesList.JobOffers + '/ref/:ref',
+    loadChildren: () => import('../pages/job-offers/job-offer-redirect.module').then(m => m.JobOfferRedirectModule),
+    pathMatch: "full",
+},
+{
+    path: RoutesList.JobOffers,
+    loadChildren: () => import('../pages/job-offers/list-job-offers.module').then(m => m.ListJobOffersModule),
+    pathMatch: "full",
+    canActivate: [AuthGuard],
+    data: { roles: [RolesList.Consultant, RolesList.Admin, RolesList.AdminTech, RolesList.RH] },
+},
+{
+    path: RoutesList.JobOffers + '/:id',
+    loadChildren: () => import('../pages/job-offers/edit-job-offer.module').then(m => m.EditCandidateModule),
+    pathMatch: "full",
+    canActivate: [AuthGuard],
+    data: { roles: [RolesList.Consultant, RolesList.Admin, RolesList.AdminTech, RolesList.RH] },
+},
+{
+    path: RoutesList.JobOffers + '/ref/:ref',
+    loadChildren: () => import('../pages/job-offers/job-offer-redirect.module').then(m => m.JobOfferRedirectModule),
+    pathMatch: "full",
+},
+{
+    path: RoutesList.JobOffers + '/:id',
+    loadChildren: () => import('../pages/job-offers/edit-job-offer.module').then(m => m.EditCandidateModule),
+    pathMatch: "full",
+    canActivate: [AuthGuard],
+    data: { roles: [RolesList.Consultant, RolesList.Admin, RolesList.AdminTech, RolesList.RH] },
+},
+{
+    path: RoutesList.CandidateRefApplyForm,
+    loadChildren: () => import('../components/candidate-ref-apply-form/candidate-ref-apply-form.module').then(m => m.CandidateRefApplyFormModule),
+    pathMatch: "full",
+    canActivate: [RoleGuard],
+    data: { roles: [RolesList.Consultant, RolesList.Admin, RolesList.AdminTech, RolesList.RH] },
+},
+{
+    path: RoutesList.Messaging,
+    loadChildren: () => import('../pages/messaging/messaging.module').then(m => m.MessagingModule),
+    pathMatch: "full",
+    canActivate: [RoleGuard],
+    data: { roles: [RolesList.Consultant, RolesList.Admin, RolesList.AdminTech, RolesList.RH] },
+},
+{
+    path: RoutesList.JobReferences,
+    loadChildren: () => import('../pages/job-references/job-references-distinct.module').then(m => m.JobReferencesDistinctModule),
+    pathMatch: "full",
+    canActivate: [RoleGuard],
+    data: { roles: [RolesList.Admin, RolesList.AdminTech] },
+},
+{
+    path: RoutesList.JobReferencesDetails,
+    loadChildren: () => import('../pages/job-references/job-references-details.module').then(m => m.JobReferencesDetailsModule),
+    pathMatch: "full",
+    canActivate: [RoleGuard],
+    data: { roles: [RolesList.Admin, RolesList.AdminTech] },
+},
+// Candidate section
+{
+    path: RoutesList.Candidate_MyApplications,
+    loadChildren: () => import('../pages/_candidate/my-applications/my-applications.module').then(m => m.MyApplicationsModule),
+    pathMatch: "full",
+    canActivate: [RoleGuard],
+    data: { roles: [RolesList.Candidate] },
+},
+{
+    path: RoutesList.Candidate_MyApplications + '/:id',
+    loadChildren: () => import('../pages/_candidate/my-applications/my-application-detail.module').then(m => m.MyApplicationDetailModule),
+    pathMatch: "full",
+    canActivate: [RoleGuard],
+    data: { roles: [RolesList.Candidate] },
+},
+{
+    path: RoutesList.Candidate_MyDossier,
+    loadChildren: () => import('../pages/_candidate/my-dossier/my-dossier.module').then(m => m.MyDossierModule),
+    pathMatch: "full",
+    canActivate: [RoleGuard],
+    data: { roles: [RolesList.Candidate] },
+},
+{
+    path: RoutesList.Candidate_MyMmiResume,
+    loadChildren: () => import('../pages/_candidate/my-mmi-resume/my-mmi-resume.module').then(m => m.MyMmiResumeModule),
+    pathMatch: "full",
+    canActivate: [RoleGuard],
+    data: { roles: [RolesList.Candidate] },
+},
+{
+    path: RoutesList.Candidate_MmiAndMe,
+    loadChildren: () => import('../pages/_candidate/mmi-and-me/mmi-and-me.module').then(m => m.MmiAndMeModule),
+    pathMatch: "full",
+    canActivate: [RoleGuard],
+    data: { roles: [RolesList.Candidate] },
+},
+
+{
+    path: RoutesList.MatchCandidateJobOffer,
+    loadChildren: () => import('../pages/match-candidate-jobOffer/match-candidate-jobOffer.module').then(m => m.MatchCandidateJobOfferModule),
+    pathMatch: "full",
+    canActivate: [RoleGuard],
+    data: { roles: [RolesList.Candidate] },
+},
+{
+    path: RoutesList.Candidate_MyDashBoard,
+    loadChildren: () => import('../pages/_candidate/my-candidate-dashboard/candidate-dashboard.module').then(m => m.CandidateDashboardModule),
+    pathMatch: "full",
+    canActivate: [RoleGuard],
+    data: { roles: [RolesList.Candidate] },
+},
+{
+    path: RoutesList.Newsletters,
+    loadChildren: () => import('../pages/newsletters/list-newsletters.module').then(m => m.ListNewslettersModule),
+    pathMatch: "full",
+    canActivate: [RoleGuard],
+    data: { roles: [RolesList.Admin, RolesList.AdminTech, RolesList.Newsletter] },
+},
+{
+    path: RoutesList.Newsletters + '/:id',
+    loadChildren: () => import('../pages/newsletters/edit-newsletter.module').then(m => m.EditNewsLetterModule),
+    pathMatch: "full",
+    canActivate: [RoleGuard],
+    data: { roles: [RolesList.Admin, RolesList.AdminTech, RolesList.Newsletter] },
+},
+{
+    path: RoutesList.AnonymousExchange + '/:id',
+    loadChildren: () => import('../pages/anonymous-exchanges/mmi-private-exchange/mmi-private-exchange.module').then(m => m.MmiPrivateExchangeModule),
+    pathMatch: "full",
+    canActivate: [RoleGuard],
+    data: { roles: [RolesList.Admin, RolesList.AdminTech, RolesList.Consultant, RolesList.RH] },
+},
+{
+    path: RoutesList.AnonymousExchange + '/p' + '/:id',
+    loadChildren: () => import('../pages/anonymous-exchanges/private-exchange/private-exchange.module').then(m => m.PrivateExchangeModule),
+    pathMatch: "full",
+},
+{
+    path: RoutesList.InterviewsManage,
+    loadChildren: () => import('../pages/interview-manage/interview-manage.module').then(m => m.InterviewsManageModule),
+    pathMatch: "full",
+},
+{
+    path: RoutesList.InterviewsManage + '/:guid',
+    loadChildren: () => import('../pages/interview-manage/interview-manage.module').then(m => m.InterviewsManageModule),
+    pathMatch: "full",
+},
+{
+    path: RoutesList.Interviews,
+    loadChildren: () => import('../pages/consultant-interviews/consultant-interviews.module').then(m => m.ConsultantInterviewsModule),
+    pathMatch: "full",
+    canActivate: [RoleGuard],
+    data: { roles: [RolesList.Admin, RolesList.AdminTech, RolesList.Consultant, RolesList.RH] },
+},
+{
+    path: RoutesList.UnsubscribeNewsletter + '/:guid',
+    loadChildren: () => import('../pages/unsubscribe-newsletter/unsubscribe-newsletter.module').then(m => m.UnsubscribeNewsletterModule),
+    pathMatch: "full",
+},
+{
+    path: RoutesList.AdminMailsTests,
+    loadChildren: () => import('../pages/mail-tests/mails-tests.module').then(m => m.MailsTestsModule),
+    pathMatch: "full",
+    canActivate: [RoleGuard],
+    data: { roles: [RolesList.AdminTech] },
+},
+// Last
+{
+    path: RoutesList.NotFound,
+    loadChildren: () => import('../pages/not-found/not-found.module').then(m => m.NotFoundModule),
+    pathMatch: "full",
+},
+{
+    path: '**',
+    loadChildren: () => import('../pages/not-found/not-found.module').then(m => m.NotFoundModule),
+},
+];
+
+@NgModule({
+    imports: [RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy' })],
+    exports: [RouterModule],
+})
+export class AppRoutingModule { }

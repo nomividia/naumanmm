@@ -1,0 +1,25 @@
+<mat-form-field
+    class="nxs-small-mat-input"
+    appearance="outline"
+    [class.mat-form-field-disabled]="disabled"
+>
+    <mat-label>{{ 'Address.City' | translate }}</mat-label>
+    <mat-chip-list #chipList aria-label="City selection">
+        <mat-chip
+            *ngFor="let city of cities"
+            (removed)="!disabled && removeCity(city)"
+            [disabled]="disabled"
+            class="city-chip"
+        >
+            {{ city | titlecase }}
+            <mat-icon matChipRemove *ngIf="!disabled">cancel</mat-icon>
+        </mat-chip>
+        <input
+            placeholder="{{ hasCities ? '' : placeholder }}"
+            [matChipInputFor]="chipList"
+            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+            (matChipInputTokenEnd)="addCity($event)"
+            [disabled]="disabled"
+        />
+    </mat-chip-list>
+</mat-form-field>

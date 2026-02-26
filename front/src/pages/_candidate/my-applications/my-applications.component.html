@@ -1,0 +1,39 @@
+<app-drawer-main-container
+    [headerTitle]="'Menu.MyCandidateApplications' | translate"
+>
+    <div class="nxs-list-page">
+        <!-- <div class="nxs-list-page-filters"> -->
+        <!-- <h2>
+                {{"Menu.CandidateApplications" | translate}}
+            </h2> -->
+        <!-- <div class="filters-wrapper">
+                <ng-container *ngIf="request">
+                    <mat-form-field appearance="outline" class="nxs-small-mat-input">
+                        <mat-label>{{'Global.SearchByName' | translate}}</mat-label>
+                        <input matInput autocomplete="off" [(ngModel)]="request.search"
+                            (ngModelChange)="loadDataDelayedComponent()" type="text" placeholder="Rechercher" />
+                        <mat-icon matSuffix style="cursor: pointer;" (click)="request.search='';loadDataComponent();">
+                            close
+                        </mat-icon>
+                    </mat-form-field>
+                </ng-container>
+            </div> -->
+        <!-- </div> -->
+
+        <!-- <hr class="low-opacity" /> -->
+
+        <div>
+            <button mat-flat-button color="primary" (click)="openApplyDialog()">
+                {{ 'CandidateApplication.ApplyToAJobOffer' | translate }}
+            </button>
+        </div>
+        <app-candidate-applications-list-minified
+            [requestComponent]="request"
+            #candidateListComponent
+            [currentCandidateApplications]="true"
+            [displayApplicationStatus]="false"
+            [displayCandidateStatus]="false"
+        >
+        </app-candidate-applications-list-minified>
+    </div>
+</app-drawer-main-container>

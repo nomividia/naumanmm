@@ -1,0 +1,57 @@
+<div id="content">
+    <h1>{{ 'Interview.InterviewConfirmation' | translate }}</h1>
+    <br />
+
+    <div *ngIf="candidateResponse && !alreadyAccepted && !alreadyRefused">
+        <i *ngIf="candidateResponse === 'accepted'">
+            {{ 'Interview.InterviewAccepted' | translate }}
+        </i>
+        <i *ngIf="candidateResponse === 'refused'">
+            {{ 'Interview.InterviewRefused' | translate }}
+        </i>
+    </div>
+    <div *ngIf="alreadyAccepted || alreadyRefused">
+        <i *ngIf="alreadyAccepted">
+            {{ 'Interview.InterviewAlreadyAccepted' | translate }}
+        </i>
+        <i *ngIf="alreadyRefused">
+            {{ 'Interview.InterviewAlreadyRefused' | translate }}
+        </i>
+    </div>
+
+    <!-- TODO : afficher le détail de l'entretien -->
+    <br />
+    <br />
+
+    <ng-container *ngIf="currentInterview">
+        <p>
+            {{ 'Interview.InterviewObjective' | translate }} :
+            {{ currentInterview.title }}
+        </p>
+        <p>
+            {{ 'Interview.Hour' | translate }} :
+            {{
+                currentInterview.date
+                    | date
+                        : 'd MMM yyyy ' +
+                              "'" +
+                              ('Global.at' | translate) +
+                              "'" +
+                              ' HH:mm'
+            }}
+        </p>
+        <p *ngIf="currentInterview.agencyPlace === 'visio'">
+            {{ 'Interview.Visio' | translate }}
+        </p>
+        <p *ngIf="agencyPlace">
+            {{ 'Interview.InterviewPlace' | translate }} : {{ agencyPlace }}
+        </p>
+    </ng-container>
+
+    <br />
+    <br />
+
+    <button mat-flat-button color="primary" (click)="backToHome()">
+        {{ 'Interview.ClickToReturnHome' | translate }}
+    </button>
+</div>

@@ -1,0 +1,92 @@
+<div class="dialog-main-container">
+    <div class="loading-wrapper" [style.display]="loading ? '' : 'none'">
+        <mat-spinner diameter="50" strokeWidth="6"></mat-spinner>
+    </div>
+
+    <button mat-icon-button class="close-btn" (click)="dialogRef.close()">
+        <mat-icon fontSet="material-icons-outlined">close</mat-icon>
+    </button>
+
+    <h1>Transférer la candidature à un utilisateur</h1>
+
+    <form (ngSubmit)="onValidate()">
+        <mat-form-field class="w-100" appearance="outline">
+            <mat-label>{{ 'Global.Sender' | translate }}</mat-label>
+            <input
+                placeholder="Email"
+                matInput
+                type="text"
+                disabled="true"
+                [(ngModel)]="currentUserMail"
+                name="sender"
+                required
+            />
+        </mat-form-field>
+
+        <div class="w-100">
+            <mat-form-field class="w-100" appearance="outline">
+                <mat-label>Destinataire</mat-label>
+                <mat-select
+                    [disabled]="loading"
+                    [(ngModel)]="selectedRecipient"
+                    (selectionChange)="onRecipientChange($event.value)"
+                    name="recipient"
+                    required
+                >
+                    <mat-option
+                        *ngFor="let item of RecipientList"
+                        [value]="item"
+                        >{{ item.name }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <mat-form-field class="w-100" appearance="outline">
+            <mat-label>Objet</mat-label>
+            <input
+                placeholder="Objet"
+                matInput
+                type="text"
+                [disabled]="loading"
+                [(ngModel)]="mailObject.object"
+                name="object"
+                required
+            />
+        </mat-form-field>
+
+        <p *ngIf="mailError" class="error">{{ mailError }}</p>
+
+        <!-- <nxs-rich-editor
+            placeholder="Message"
+            [(ngModel)]="mailObject.content"
+            name="content"
+            [disabled]="loading"
+        >
+        </nxs-rich-editor> -->
+
+        <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Message</mat-label>
+            <textarea
+                placeholder="Message"
+                [disabled]="loading"
+                matInput
+                cols="5"
+                rows="5"
+                [(ngModel)]="mailObject.content"
+                name="content"
+                required
+            ></textarea>
+        </mat-form-field>
+
+        <div class="btns-container">
+            <button
+                class="validate-btn"
+                mat-raised-button
+                color="primary"
+                [disabled]="loading"
+            >
+                {{ 'Global.Send' | translate }}
+            </button>
+        </div>
+    </form>
+</div>

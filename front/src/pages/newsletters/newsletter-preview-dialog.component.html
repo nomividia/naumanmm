@@ -1,0 +1,28 @@
+<!-- <h2 mat-dialog-title>{{'Newsletter.Preview' | translate}} E-mail
+</h2> -->
+<mat-dialog-content>
+    <iframe
+        class="preview-iframe"
+        #previewFrame
+        [style.display]="loading ? 'none' : ''"
+    ></iframe>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button
+        color="primary"
+        *ngIf="!!data?.beforeSendMode"
+        mat-button
+        [disabled]="loading"
+        (click)="validate()"
+    >
+        {{ 'Global.Validate' | translate }}
+    </button>
+    <button color="warn" mat-button [disabled]="loading" (click)="cancel()">
+        <ng-container *ngIf="!!data?.beforeSendMode">
+            {{ 'Global.Cancel' | translate }}
+        </ng-container>
+        <ng-container *ngIf="!data?.beforeSendMode">
+            {{ 'Global.Close' | translate }}
+        </ng-container>
+    </button>
+</mat-dialog-actions>

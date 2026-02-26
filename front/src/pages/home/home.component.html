@@ -1,0 +1,77 @@
+<app-drawer-main-container>
+    <div class="main-content">
+        <h1>
+            {{ 'Dashboard.Welcome' | translate }}
+            {{ AuthDataService.currentUser.firstName }}
+        </h1>
+
+        <div
+            *ngIf="GlobalAppService.currentUserIsConsultantOrRH()"
+            class="d-flex flex-wrap"
+            style="cursor: pointer; gap: 20px"
+        >
+            <div
+                (click)="jobOfferClicked()"
+                class="stat-item"
+                matTooltip="{{ 'User.JobOfferLinked1' | translate }} {{
+                    'User.JobOfferLinked2' | translate
+                }}"
+            >
+                <!-- <span>{{jobOfferLinkedCount || 0}}</span> -->
+                <p class="text-center primary">
+                    {{ 'User.JobOfferLinked1' | translate }} <br />
+                    {{ 'User.JobOfferLinked2' | translate }}
+                </p>
+            </div>
+
+            <div
+                (click)="recruitmentActivityClicked()"
+                class="stat-item"
+                matTooltip="{{ 'User.RecruitmentActivity1' | translate }} {{
+                    'User.RecruitmentActivity2' | translate
+                }}"
+            >
+                <p class="text-center primary">
+                    {{ 'User.RecruitmentActivity1' | translate }} <br />
+                    {{ 'User.RecruitmentActivity2' | translate }}
+                </p>
+            </div>
+
+            <!-- <div
+                (click)="applicationSourceClicked()"
+                class="stat-item"
+                matTooltip="Application Source Rate"
+            >
+                <p class="text-center primary">Application Source<br />Rate</p>
+            </div> -->
+
+            <!-- <div style="cursor: pointer;" class="stat-item" matTooltip="{{'Tooltip.SeeCandidate' | translate}}"
+                [routerLink]="'/' + RoutesList.CandidatesList"
+                [queryParams]="{ consultantIds: AuthDataService.currentUser.id }">
+                <span>{{ candidateLinkedCount || 0 }}</span>
+                <p class="text-center">{{'User.CandidatesLinked1' | translate}} <br>
+                    {{'User.CandidatesLinked2' | translate}}</p>
+            </div>
+
+            <div style="cursor: pointer;" class="stat-item" matTooltip="{{'Tooltip.SeeCandidate' | translate}}"
+                [routerLink]="'/' + RoutesList.CandidatesList"
+                [queryParams]="{ consultantIds: AuthDataService.currentUser.id }">
+                <span>{{ candidatePlacedCount || 0 }}</span>
+                <p class="text-center">{{'User.CandidatesPlaced1' | translate}} <br>
+                    {{'User.CandidatesPlaced2' | translate}}</p>
+            </div> -->
+        </div>
+    </div>
+
+    <app-job-offer-list-minified
+        *ngIf="isJobOfferClicked"
+        [request]="consultantFilterRequest"
+    ></app-job-offer-list-minified>
+    <app-recruitment-activity-list
+        *ngIf="isRecruitmentActivityClicked"
+        [request]="consultantFilterRequest"
+    ></app-recruitment-activity-list>
+    <app-application-source-list
+        *ngIf="isApplicationSourceClicked"
+    ></app-application-source-list>
+</app-drawer-main-container>

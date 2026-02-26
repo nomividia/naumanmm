@@ -1,0 +1,143 @@
+<div class="dialog-main-container">
+    <div class="loading-wrapper" [style.display]="loading ? '' : 'none'">
+        <mat-spinner diameter="50" strokeWidth="6"></mat-spinner>
+    </div>
+
+    <button mat-icon-button class="close-btn" (click)="dialogRef.close()">
+        <mat-icon fontSet="material-icons-outlined">close</mat-icon>
+    </button>
+
+    <div class="d-flex justify-content-between align-items-center">
+        <h1>{{ 'Newsletter.ListOfTemplates' | translate }}</h1>
+        <div>
+            <button
+                mat-raised-button
+                color="primary"
+                (click)="onAddNewTemplate()"
+                [disabled]="loading || addOrEditTemplateMode"
+            >
+                <mat-icon>add</mat-icon>
+                {{ 'Newsletter.AddTemplate' | translate }}
+            </button>
+        </div>
+    </div>
+    <div *ngIf="addOrEditTemplateMode && newNewsletterTemplate">
+        <h3>
+            <ng-container *ngIf="!newNewsletterTemplate.id">{{
+                'Newsletter.NewTemplate' | translate
+            }}</ng-container>
+            <ng-container *ngIf="newNewsletterTemplate.id">{{
+                'Newsletter.EditTemplate' | translate
+            }}</ng-container>
+        </h3>
+
+        <form (ngSubmit)="saveNewTemplate()">
+            <mat-form-field
+                class="nxs-small-mat-input w-100"
+                appearance="outline"
+            >
+                <mat-label>{{ 'Newsletter.Title' | translate }}</mat-label>
+                <input
+                    [placeholder]="'Newsletter.Title' | translate"
+                    matInput
+                    type="text"
+                    [disabled]="loading"
+                    [(ngModel)]="newNewsletterTemplate.title"
+                    (ngModelChange)="hasPendingModifications = true"
+                    required
+                    name="title"
+                />
+            </mat-form-field>
+
+            <mat-form-field
+                class="nxs-small-mat-input w-100"
+                appearance="outline"
+            >
+                <mat-label>{{ 'Newsletter.Subject' | translate }}</mat-label>
+                <input
+                    [placeholder]="'Newsletter.Subject' | translate"
+                    matInput
+                    type="text"
+                    [disabled]="loading"
+                    [(ngModel)]="newNewsletterTemplate.subject"
+                    (ngModelChange)="hasPendingModifications = true"
+                    name="subject"
+                />
+            </mat-form-field>
+
+            <mat-form-field
+                appearance="outline"
+                class="nxs-small-mat-input w-100"
+            >
+                <mat-label>{{ 'Newsletter.Content' | translate }}</mat-label>
+                <textarea
+                    [placeholder]="'Newsletter.Content' | translate"
+                    [disabled]="loading"
+                    matInput
+                    rows="5"
+                    [(ngModel)]="newNewsletterTemplate.content"
+                    (ngModelChange)="hasPendingModifications = true"
+                    required
+                    name="content"
+                    cdkTextareaAutosize
+                    [cdkAutosizeMaxRows]="15"
+                ></textarea>
+            </mat-form-field>
+
+            <div class="mt-2">
+                <button mat-raised-button color="primary" [disabled]="loading">
+                    {{ 'Global.Save' | translate }}
+                </button>
+                <button
+                    mat-raised-button
+                    color="danger"
+                    (click)="cancelNewTemplateCreation()"
+                    class="ml-1"
+                    type="button"
+                >
+                    {{ 'Global.Cancel' | translate }}
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <div class="templates-list-container" *ngIf="!addOrEditTemplateMode">
+        <p *ngIf="!newsletterTemplates?.length" class="no-items">
+            {{ 'Newsletter.NoNewsletterTemplates' | translate }}
+        </p>
+
+        <div *ngFor="let item of newsletterTemplates">
+            <div>
+                <p class="title">{{ item.title }}</p>
+                <p class="content">{{ item.content }}</p>
+            </div>
+
+            <div>
+                <button
+                    mat-icon-button
+                    (click)="onUseTemplate(item)"
+                    [matTooltip]="'Newsletter.ApplyToNewsletter' | translate"
+                    [disabled]="loading"
+                >
+                    <mat-icon>undo</mat-icon>
+                </button>
+                <button
+                    mat-icon-button
+                    (click)="onEdit(item)"
+                    [matTooltip]="'Global.Edit' | translate"
+                    [disabled]="loading"
+                >
+                    <mat-icon>edit</mat-icon>
+                </button>
+                <button
+                    mat-icon-button
+                    (click)="onDelete(item)"
+                    [matTooltip]="'Global.Delete' | translate"
+                    [disabled]="loading"
+                >
+                    <mat-icon>delete</mat-icon>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

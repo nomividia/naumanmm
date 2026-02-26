@@ -1,0 +1,210 @@
+<app-drawer-main-container
+    [headerTitle]="'Menu.Customer' | translate"
+    [headerLink]="'/' + RoutesList.Customers + '/new'"
+    [headerLinkText]="'Menu.CreateCustomer' | translate"
+>
+    <div class="nxs-list-pag">
+        <div class="nxs-list-page-filters">
+            <div class="filters-wrapper">
+                <ng-container *ngIf="request">
+                    <mat-form-field
+                        class="nxs-small-mat-input"
+                        appearance="outline"
+                        [appInputBg]="request.employerType"
+                    >
+                        <mat-label>{{
+                            'JobReference.EmployerType' | translate
+                        }}</mat-label>
+                        <mat-select
+                            [(ngModel)]="request.employerType"
+                            completedField
+                            (ngModelChange)="onEmployerTypeChange(); loadData()"
+                        >
+                            <mat-option [value]="null">{{
+                                'Global.NoMatter' | translate
+                            }}</mat-option>
+                            <mat-option value="privatePerson">{{
+                                'Customer.PrivatePerson' | translate
+                            }}</mat-option>
+                            <mat-option value="company">{{
+                                'Customer.Company' | translate
+                            }}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field
+                        appearance="outline"
+                        class="nxs-small-mat-input"
+                        [appInputBg]="request.search"
+                    >
+                        <mat-label>{{
+                            'Global.SearchByName' | translate
+                        }}</mat-label>
+                        <input
+                            matInput
+                            autocomplete="off"
+                            [(ngModel)]="request.search"
+                            (ngModelChange)="loadDataDelayed()"
+                            type="text"
+                            [placeholder]="'Global.SearchByName' | translate"
+                        />
+                        <mat-icon
+                            matSuffix
+                            style="cursor: pointer"
+                            (click)="request.search = ''; loadData()"
+                        >
+                            close
+                        </mat-icon>
+                    </mat-form-field>
+
+                    <nxs-multiple-select
+                        [label]="'Candidate.Location' | translate"
+                        class="nxs-small-mat-input long-width"
+                        appearance="outline"
+                        [(ngModel)]="request.locations"
+                        [source]="countriesList"
+                        (ngModelChange)="loadData()"
+                        [showUnselectAllButton]="true"
+                        [showSelectAllButton]="false"
+                        valueFieldName="code"
+                        labelField="label"
+                        [unselectAllLabel]="'Global.UnselectAll' | translate"
+                    >
+                    </nxs-multiple-select>
+
+                    <!-- <mat-form-field appearance="outline" class="nxs-small-mat-input long-width">
+                        <mat-label>{{'Candidate.Location' | translate}}</mat-label>
+                        <mat-select [(ngModel)]="request.locations" completedField multiple
+                            (ngModelChange)="loadData()">
+                            <mat-option *ngFor="let item of countriesList" [value]="item.code">
+                                {{ item.label}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field> -->
+
+                    <mat-form-field
+                        appearance="outline"
+                        class="nxs-small-mat-input"
+                        [appInputBg]="request.city"
+                    >
+                        <mat-label>{{ 'Global.City' | translate }}</mat-label>
+                        <input
+                            matInput
+                            autocomplete="off"
+                            [(ngModel)]="request.city"
+                            (ngModelChange)="loadDataDelayed()"
+                            type="text"
+                            [placeholder]="'Global.City' | translate"
+                        />
+                        <mat-icon
+                            matSuffix
+                            style="cursor: pointer"
+                            (click)="request.city = ''; loadData()"
+                        >
+                            close
+                        </mat-icon>
+                    </mat-form-field>
+                </ng-container>
+            </div>
+        </div>
+        <hr class="low-opacity" />
+        <div class="nxs-list-page-content">
+            <div
+                class="loading-wrapper"
+                [style.display]="loading ? '' : 'none'"
+            >
+                <mat-spinner diameter="50" strokeWidth="6"></mat-spinner>
+            </div>
+            <div
+                class="nxs-list-item-wrapper-container"
+                [routerLink]="'/' + RoutesList.Customers + '/' + customer.id"
+                *ngFor="let customer of items"
+            >
+                <div class="job-offer-wrapper-item d-flex align-items-center">
+                    <div class="avatar avatar-sm">
+                        <span class="avatar-content">{{
+                            displayInitial(customer) | uppercase
+                        }}</span>
+                    </div>
+                    <div class="ml-1 d-flex align-items-center">
+                        <ng-container *ngIf="customer.isPrivatePerson">
+                            <mat-icon
+                                class="grey-icon"
+                                [matTooltip]="
+                                    'Tooltip.PersonPrivate' | translate
+                                "
+                            >
+                                account_circle
+                            </mat-icon>
+                            {{ customer?.lastName | uppercase }}
+                            {{ (customer?.firstName | titlecase) ?? '' }}
+                        </ng-container>
+                        <ng-container *ngIf="customer.isCompany">
+                            <mat-icon
+                                class="grey-icon"
+                                [matTooltip]="'Tooltip.Company' | translate"
+                            >
+                                business
+                            </mat-icon>
+                            {{ (customer?.companyName | uppercase) ?? '' }}
+                        </ng-container>
+                    </div>
+                </div>
+                <div class="vertical-separator"></div>
+                <div class="job-offer-wrapper-item d-flex align-items-center">
+                    <!--<mat-icon class="grey-icon" [matTooltip]="'Tooltip.Mail' | translate">alternate_email</mat-icon>
+                    <div class="customerMail" [matTooltip]="customer.email">
+                        {{customer.email}}
+                    </div> -->
+
+                    <mat-icon
+                        class="grey-icon"
+                        [matTooltip]="'Candidate.Contact' | translate"
+                    >
+                        person
+                    </mat-icon>
+                    <ng-container *ngIf="customer?.contactFullName">{{
+                        customer?.contactFullName
+                    }}</ng-container
+                    ><br />
+                    <ng-container *ngIf="customer?.customerFunction?.label"
+                        >{{ customer.customerFunction?.label }}<br />
+                    </ng-container>
+                    <ng-container *ngIf="customer?.email"
+                        >{{ customer?.email }} <br
+                    /></ng-container>
+                    <ng-container *ngIf="customer?.phone">{{
+                        customer?.phone
+                    }}</ng-container>
+                </div>
+                <div class="vertical-separator"></div>
+                <div class="job-offer-wrapper-item d-flex align-items-center">
+                    <mat-icon
+                        class="grey-icon material-icons-outlined"
+                        [matTooltip]="'Tooltip.Location' | translate"
+                    >
+                        location_on</mat-icon
+                    >
+                    <ng-container *ngIf="customer.addresses[0]?.city">
+                        {{ customer.addresses[0]?.city | titlecase }},
+                        {{
+                            RefData.getCountryLabel(
+                                customer.addresses[0]?.country
+                            ) | titlecase
+                        }}
+                    </ng-container>
+                    <ng-container *ngIf="!customer.addresses[0]?.city">
+                        {{ 'Global.NotInformed' | translate }}
+                    </ng-container>
+                </div>
+            </div>
+        </div>
+        <div class="nxs-list-page-bottom">
+            <mat-paginator
+                class="mat-paginator-sticky"
+                [length]="filteredItemsCount"
+                [pageSize]="20"
+                [pageSizeOptions]="[20, 50, 100]"
+            ></mat-paginator>
+        </div>
+    </div>
+</app-drawer-main-container>

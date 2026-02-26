@@ -1,0 +1,119 @@
+@import '../../variables';
+app-list-candidates {
+    div.content {
+        padding-left: 30px !important;
+        padding-right: 30px !important;
+    }
+    .filters-wrapper {
+        display: flex;
+        flex-wrap: wrap;
+
+        &.disabled-filters {
+            opacity: 0.5;
+            pointer-events: none;
+            user-select: none;
+        }
+    }
+
+    h2 {
+        color: $mmi-orange;
+        font-size: 16px;
+        margin: 0 0 5px 0;
+        font-weight: 500;
+    }
+
+    .search-section {
+        width: 100%;
+        margin-bottom: 15px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid #e0e0e0;
+
+        .search-input-container {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+
+            .search-field {
+                flex: 1;
+                max-width: 400px;
+            }
+
+            .search-button {
+                height: 33px;
+                font-size: 13px;
+            }
+        }
+    }
+
+    .candidates-list-and-loading-wrapper {
+        position: relative;
+        .loading-wrapper {
+            position: absolute;
+            left: 0;
+            right: 0;
+            z-index: 10;
+        }
+        .candidates-list-wrapper {
+            overflow: auto;
+            max-height: calc(100vh - 380px);
+            min-height: 300px;
+            position: relative;
+            app-candidate-list-minified {
+                display: block;
+                margin-left: 16px;
+                width: calc(100% - 34px);
+            }
+
+            .no-filters-message,
+            .no-candidates-found-message {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100%;
+                min-height: 300px;
+
+                .message-container {
+                    text-align: center;
+                    padding: 40px;
+                    background-color: #f8f9fa;
+                    border-radius: 12px;
+                    border: 2px dashed #dee2e6;
+                    flex-grow: 1;
+                    margin: 20px;
+
+                    .info-icon,
+                    .search-icon {
+                        font-size: 1.5rem;
+                        color: #6c757d;
+                        margin-bottom: 16px;
+                    }
+
+                    .search-icon {
+                        color: #dc3545;
+                    }
+
+                    h3 {
+                        color: #495057;
+                        margin: 0 0 12px 0;
+                        font-size: 20px;
+                        font-weight: 500;
+                    }
+
+                    p {
+                        color: #6c757d;
+                        margin: 8px 0;
+                        font-size: 16px;
+                        line-height: 1.5;
+                    }
+
+                    .help-text {
+                        font-size: 14px;
+                        color: #868e96;
+                        font-style: italic;
+                        margin-top: 16px;
+                    }
+                }
+            }
+        }
+    }
+}

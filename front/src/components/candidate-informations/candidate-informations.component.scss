@@ -1,0 +1,256 @@
+@import '../../variables.scss';
+
+candidate-informations-component {
+    .progress-bar-container {
+        p {
+            min-width: fit-content;
+        }
+
+        .mat-progress-bar {
+            margin: 0px 10px;
+            min-width: 180px;
+        }
+    }
+
+    .candidat-header-container {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 30px;
+        row-gap: 6px;
+
+        button {
+            height: fit-content;
+        }
+
+        p {
+            margin: 0;
+        }
+    }
+
+    .container {
+        padding: 20px 22px;
+    }
+
+    .edit-page-block .flex-sb {
+        justify-content: space-between;
+        flex-wrap: wrap;
+        align-items: center;
+
+        .mat-form-field {
+            margin-bottom: 0;
+        }
+    }
+    .notes-block {
+        hr.note-separator {
+            border-width: 0;
+            height: 1px;
+            margin: 12px auto;
+            margin-bottom: 10px !important;
+
+            background-color: white;
+        }
+        .note-author-date {
+            font-size: 11px;
+            color: lightgray;
+            margin-bottom: 4px;
+        }
+    }
+    .edit-page-blue-block {
+        .star-container {
+            display: flex;
+            justify-content: left;
+            margin-bottom: 30px;
+
+            mat-icon {
+                margin: 5px;
+
+                &.disabled {
+                    opacity: 0.3;
+                }
+
+                &.starOver {
+                    opacity: 1 !important;
+                }
+            }
+        }
+
+        .mat-form-field {
+            // padding-bottom: 7%;
+        }
+
+        .mat-form-field-empty.mat-form-field-label {
+            color: #fff;
+        }
+
+        .mat-form-field-appearance-outline .mat-form-field-outline,
+        .mat-form-field-label {
+            color: white;
+        }
+
+        .noteBloc {
+            border: 1px solid #fff;
+            border-radius: 5px;
+            padding-top: 5px;
+            padding-left: 10px;
+            justify-content: space-between;
+            line-height: 40px;
+
+            div:last-child {
+                mat-icon.mat-icon {
+                    line-height: 20px !important;
+                }
+            }
+
+            &:not(:first-child) {
+                margin-top: 10px;
+            }
+
+            &:last-child {
+                margin-bottom: 30px;
+            }
+        }
+    }
+
+    .mt-30 {
+        margin-top: 30px;
+    }
+
+    mat-tab {
+        .mat-ripple {
+            min-width: 120px !important;
+        }
+    }
+
+    .mat-tab-labels {
+        justify-content: center;
+    }
+
+    .mat-tab-label-content {
+        font-size: 15px;
+    }
+
+    .mat-tab-label-active .mat-tab-label-content {
+        color: $mmi-orange;
+    }
+
+    .mat-ink-bar {
+        height: 5px;
+    }
+
+    .mini-icon mat-icon .mat-fab:not([class*='mat-elevation-z']),
+    .mat-mini-fab:not([class*='mat-elevation-z']) {
+        box-shadow: unset !important;
+        border: 1px solid $mmi-orange;
+        background-color: #fff;
+        color: $mmi-orange;
+        height: 20px;
+        width: 20px;
+        line-height: 0;
+        margin-top: 5px;
+    }
+
+    .mini-icon .material-icons {
+        font-size: 17px !important;
+        padding-right: 5px;
+        padding-bottom: 10px;
+    }
+
+    .mat-mini-fab .mat-button-wrapper {
+        padding: 0 !important;
+    }
+
+    .consultant-picture {
+        background-color: #dcdcdc;
+        border-radius: 50%;
+        min-height: 50px;
+        min-width: 50px;
+        background-position: center;
+        background-size: cover;
+        margin-right: 20px;
+    }
+
+    .primary {
+        color: $mmi-orange !important;
+    }
+
+    p {
+        a {
+            cursor: pointer;
+        }
+    }
+
+    // Note file upload styles
+    .note-files-list,
+    .new-note-files-list {
+        margin-top: 8px;
+        padding: 8px 0;
+    }
+
+    .note-file-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 4px 0;
+
+        .file-icon {
+            font-size: 18px;
+            width: 18px;
+            height: 18px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .file-name {
+            flex: 1;
+            font-size: 13px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+
+            &.clickable {
+                cursor: pointer;
+                color: #90caf9;
+
+                &:hover {
+                    text-decoration: underline;
+                }
+            }
+        }
+
+        .delete-file-btn {
+            width: 24px;
+            height: 24px;
+            line-height: 24px;
+
+            mat-icon {
+                font-size: 16px;
+                width: 16px;
+                height: 16px;
+            }
+        }
+    }
+
+    .note-file-upload,
+    .new-note-file-upload {
+        margin-top: 8px;
+
+        .add-file-btn {
+            font-size: 12px;
+            padding: 0 12px;
+            height: 32px;
+            line-height: 32px;
+
+            mat-icon {
+                font-size: 18px;
+                width: 18px;
+                height: 18px;
+                margin-right: 4px;
+            }
+        }
+    }
+
+    .new-note-container {
+        padding: 12px 0;
+    }
+}

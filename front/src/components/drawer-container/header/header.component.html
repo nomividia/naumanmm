@@ -1,0 +1,241 @@
+<div class="header-left-side d-flex align-items-center">
+    <div class="header-left-style-div-first"></div>
+    <div class="header-left-style-div"></div>
+    
+    <!-- Hamburger menu for mobile -->
+    <button mat-icon-button class="hamburger-menu hide-lg" (click)="expandOrCollapseMenu()">
+        <mat-icon>menu</mat-icon>
+    </button>
+    
+    <!-- Desktop back button -->
+    <button mat-icon-button class="hide-xs hide-sm" (click)="backToPreviousPage()">
+        <mat-icon *ngIf="menuExpanded">navigate_before</mat-icon>
+        <mat-icon *ngIf="!menuExpanded">navigate_next</mat-icon>
+    </button>
+
+    <div
+        class="headerTitle"
+        *ngIf="title"
+    >
+        {{ title }}
+        <ng-container *ngIf="subTitle"> | </ng-container>
+    </div>
+
+    <div *ngIf="subTitle || endIcon" class="headerSubTitle">
+        {{ subTitle }}
+        <mat-icon *ngIf="endIcon" style="font-size: 16px">{{
+            endIcon
+        }}</mat-icon>
+    </div>
+
+    <div
+        *ngIf="smallText || showPendingModification"
+        class="headerSmallText"
+    >
+        {{ smallText }}
+        <span *ngIf="showPendingModification" style="font-weight: bold">
+            - {{ 'Global.UnsavedChanges' | translate }}
+        </span>
+    </div>
+
+    <div *ngIf="link" class="header-link">
+        <a
+            class="custom-header-btn"
+            [routerLink]="[link]"
+            routerLinkActive="router-link-active"
+            mat-flat-button
+            color="primary"
+        >
+            <mat-icon class="mr-1">add</mat-icon>{{ linkText }}
+        </a>
+    </div>
+    <div *ngIf="hasSearchInput">
+        <mat-form-field class="nxs-white-mat-input search-input">
+            <mat-label>{{ 'Global.Search' | translate }}</mat-label>
+            <input
+                matInput
+                [(ngModel)]="searchInputText"
+                [disabled]="searchInputDisabled"
+                (ngModelChange)="onSearchInputChange()"
+            />
+            <button
+                (click)="searchInputText = ''; onSearchInputChange()"
+                mat-icon-button
+                matSuffix
+                [disabled]="searchInputDisabled"
+            >
+                <mat-icon fontSet="material-icons-outlined">close</mat-icon>
+            </button>
+        </mat-form-field>
+    </div>
+</div>
+<div class="header-right-side" *ngIf="AuthDataService.currentUser">
+    <div class="right-menu-wrapper flex-wrapper-center-horizontal">
+        <button
+            [matMenuTriggerFor]="profileMenu"
+            [matTooltip]="'Global.Menu' | translate"
+            color="primary"
+            mat-icon-button
+        >
+            <mat-icon>more_vert</mat-icon>
+        </button>
+    </div>
+
+    <mat-menu
+        class="notifications-list-menu"
+        xPosition="before"
+        #notificationsMenu="matMenu"
+        (closed)="resetUnseenNotificationsCount()"
+    >
+        <div *ngIf="notificationsManager.notificationsList.length === 0">
+            <div mat-menu-item disabled>
+                {{ 'Global.NoNotification' | translate }}
+            </div>
+        </div>
+        <div *ngIf="notificationsManager.notificationsList.length > 0">
+            <ng-container
+                *ngFor="
+                    let notification of notificationsManager.notificationsList
+                "
+            >
+                <a
+                    *ngIf="notification.url"
+                    [ngClass]="{
+                        notification: true,
+                        'notification-unread': !notification.seen
+                    }"
+                    mat-menu-item
+                    [href]="notification.url"
+                    target="_blank"
+                >
+                    {{ getNotificationTitle(notification) }}
+                </a>
+                <button
+                    *ngIf="!notification.url"
+                    (click)="handleNotificationClick(notification)"
+                    [ngClass]="{
+                        notification: true,
+                        'notification-unread': !notification.seen
+                    }"
+                    mat-menu-item
+                >
+                    {{ getNotificationTitle(notification) }}
+                </button>
+            </ng-container>
+        </div>
+    </mat-menu>
+
+    <mat-menu
+        xPosition="before"
+        class="header-profile-menu"
+        #profileMenu="matMenu"
+    >
+        <button
+            *ngIf="showInstallButton"
+            mat-menu-item
+            (click)="PwaProvider.addToHomeScreen()"
+        >
+            <mat-icon fontSet="material-icons-outlined">add</mat-icon
+            >{{ 'Global.InstallApp' | translate }}
+        </button>
+        <button
+            mat-menu-item
+            *ngIf="
+                GlobalAppService.userHasRole(
+                    AuthDataService.currentUser,
+                    RolesList.Admin
+                ) && !AuthDataService.currentRequester
+            "
+            (click)="showConnectAsDialog()"
+        >
+            <mat-icon fontSet="material-icons-outlined">account_circle</mat-icon
+            >{{ 'Tooltip.Connect' | translate }}
+        </button>
+        <button
+            mat-menu-item
+            *ngIf="AuthDataService.currentRequester"
+            (click)="showConnectAsDialog()"
+        >
+            <mat-icon fontSet="material-icons-outlined">settings_backup_restore</mat-icon
+            >{{ 'Tooltip.ReturnInitialSession' | translate }}
+        </button>
+        <button
+            mat-menu-item
+            [matMenuTriggerFor]="notificationsMenu"
+        >
+            <mat-icon
+                [matBadge]="unseenNotificationsCount"
+                matBadgePosition="after"
+            >
+                {{
+                    unseenNotificationsCount > 0
+                        ? 'notifications'
+                        : 'notifications_none'
+                }}
+            </mat-icon
+            >{{ 'Global.Notifications' | translate }}
+        </button>
+        <hr />
+        <a
+            mat-menu-item
+            [routerLink]="
+                '/' +
+                RoutesList.AdminUsers +
+                '/' +
+                AuthDataService.currentUser.userName
+            "
+        >
+            <mat-icon class="material-icons-outlined">account_circle</mat-icon
+            >{{ 'Global.MyAccount' | translate }}
+        </a>
+        <button
+            *ngIf="
+                GlobalAppService.userHasOneOfRoles(
+                    AuthDataService.currentUser,
+                    [
+                        RolesList.Consultant,
+                        RolesList.Admin,
+                        RolesList.AdminTech,
+                        RolesList.RH,
+                        RolesList.Newsletter
+                    ]
+                )
+            "
+            mat-menu-item
+            (click)="showAboutDialog()"
+        >
+            <mat-icon class="material-icons-outlined">help_center</mat-icon
+            >{{ 'Global.AboutCRM' | translate }}
+        </button>
+        <button mat-menu-item (click)="logout()">
+            <mat-icon fontSet="material-icons-outlined">logout</mat-icon
+            >{{ 'Global.Logout' | translate }}
+        </button>
+        <hr />
+        <div
+            class="first-level-btn"
+            style="display: flex; justify-content: start"
+        >
+            <button class="btn-transparent" (click)="changeLanguage('fr')">
+                <div
+                    [ngClass]="{
+                        'flag-svg-wrapper': true,
+                        active: LanguageProvider.currentLanguageCode === 'fr'
+                    }"
+                >
+                    <img src="/assets/icons/france.png" />
+                </div>
+            </button>
+            <button class="btn-transparent" (click)="changeLanguage('en')">
+                <div
+                    [ngClass]="{
+                        'flag-svg-wrapper': true,
+                        active: LanguageProvider.currentLanguageCode === 'en'
+                    }"
+                >
+                    <img src="/assets/icons/royaume-uni.png" />
+                </div>
+            </button>
+        </div>
+    </mat-menu>
+</div>

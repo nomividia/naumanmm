@@ -1,0 +1,354 @@
+<div class="alert-wrapper">
+    <mat-icon> info </mat-icon>
+    {{ 'Candidate.FileTypesAccepted' | translate }}
+</div>
+
+<div *ngIf="fileTypesWrapper" class="d-flex row-container mt-1">
+    <div class="column-container">
+        <!-- <div class="edit-page-block">
+            <h2>{{ 'Global.MMIFiles' | translate }}</h2>
+            <hr />
+            <div class="d-flex align-items-center justify-content-between">
+                <button [disabled]="loading" mat-button>
+                    <mat-icon class="orange-icon mr-1">attach_file</mat-icon>
+                    CV MMI
+                </button>
+
+                <ng-template #notCompleted>
+                    <i style="font-size: 13px" class="color-primary">{{
+                        'Global.Missing' | translate
+                    }}</i>
+                </ng-template>
+            </div>
+        </div> -->
+        <div class="edit-page-block">
+            <ng-container
+                *ngTemplateOutlet="
+                    blockDocuments;
+                    context: { object: fileTypesWrapper.profile }
+                "
+            >
+            </ng-container>
+        </div>
+        <div class="edit-page-block mt-2">
+            <ng-container
+                *ngTemplateOutlet="
+                    blockDocuments;
+                    context: { object: fileTypesWrapper.experience }
+                "
+            >
+            </ng-container>
+        </div>
+        <div class="edit-page-block mt-2">
+            <ng-container
+                *ngTemplateOutlet="
+                    blockDocuments;
+                    context: { object: fileTypesWrapper.etatCivil }
+                "
+            >
+            </ng-container>
+        </div>
+    </div>
+    <div class="column-container">
+        <div class="edit-page-block">
+            <ng-container
+                *ngTemplateOutlet="
+                    blockDocuments;
+                    context: { object: fileTypesWrapper.diplomes }
+                "
+            >
+            </ng-container>
+        </div>
+        <div class="edit-page-block mt-2">
+            <ng-container
+                *ngTemplateOutlet="
+                    blockDocuments;
+                    context: { object: fileTypesWrapper.transports }
+                "
+            >
+            </ng-container>
+        </div>
+        <div class="edit-page-block mt-2">
+            <ng-container
+                *ngTemplateOutlet="
+                    blockDocuments;
+                    context: { object: fileTypesWrapper.complements }
+                "
+            >
+            </ng-container>
+        </div>
+
+        <!-- <div class="edit-page-block mt-2">
+            <ng-container
+                *ngTemplateOutlet="
+                    blockDocuments;
+                    context: { object: fileTypesWrapper.others }
+                "
+            >
+            </ng-container>
+        </div> -->
+    </div>
+</div>
+
+<ng-template #uploadTemplate let-item="item" let-file="file">
+    <div class="d-flex align-items-center" *ngIf="file">
+        <i
+            *ngIf="checkCandidateFileUploaded(file)"
+            style="font-size: 13px"
+            class="transmitted"
+            >{{ 'Global.Transmitted' | translate }}</i
+        >
+        <div *ngIf="!checkCandidateFileUploaded(file)" class="d-flex">
+            <i
+                *ngIf="item.isMandatory"
+                style="font-size: 13px; padding-top: 5px; font-weight: bold"
+                class="color-primary"
+                >{{ 'Global.Missing' | translate }}</i
+            >
+            <ng-container>
+                <button
+                    [disabled]="loading"
+                    (click)="openFileSelect(file)"
+                    [matTooltip]="'Global.ImportFile' | translate"
+                    mat-button
+                    class="upload-btn custom-btn"
+                >
+                    <mat-icon class="orange-icon material-icons-outlined"
+                        >file_upload</mat-icon
+                    >
+                    {{ 'Global.Import' | translate }}
+                </button>
+                <nxs-file-upload
+                    #nxsFileUpload
+                    [hasDropZone]="false"
+                    [showUploadButton]="false"
+                    [showProgressBar]="false"
+                    [showFilesList]="false"
+                    (beforeUploadItem)="loading = true"
+                    [data]="file.candidateFilesUploadData"
+                    [options]="file.candidateFilesOptions"
+                    [disabled]="loading"
+                    (onAddingFileFailed)="onAddingFileFailed($event)"
+                    (onCompleteItem)="onCompleteItem(file, $event)"
+                >
+                </nxs-file-upload>
+            </ng-container>
+        </div>
+
+        <ng-container *ngIf="checkCandidateFileUploaded(file)">
+            <div
+                class="d-flex action-button"
+                style="align-items: center; gap: 3px"
+            >
+                <button
+                    [disabled]="loading"
+                    (click)="openFileDialog(file)"
+                    [matTooltip]="'Global.OpenFile' | translate"
+                    class="download-btn custom-btn"
+                    mat-stroked-button
+                >
+                    <mat-icon class="orange-icon material-icons-outlined"
+                        >task</mat-icon
+                    >
+                    {{ 'Global.Open' | translate }}
+                </button>
+
+                <button
+                    [disabled]="loading"
+                    [style.display]="canOpenFileDisplay(file) ? '' : 'none'"
+                    (click)="deleteFile(file, true, true, item, true)"
+                    [matTooltip]="'Global.DeleteFile' | translate"
+                    class="text-wrap"
+                    mat-icon-button
+                    style="
+                        text-align: right !important;
+                        height: 26px;
+                        width: 26px;
+                        padding: unset;
+                    "
+                >
+                    <mat-icon class="material-icons-outlined orange-icon"
+                        >delete</mat-icon
+                    >
+                </button>
+            </div>
+        </ng-container>
+    </div>
+</ng-template>
+
+<ng-template
+    #blockFileItem
+    let-fileWrapper="fileWrapper"
+    let-fileItemWrapper="fileItemWrapper"
+>
+    <div
+        [ngClass]="{
+            'file-wrapper-single': !fileWrapper.isMultiple,
+            'file-wrapper-multiple': fileWrapper.isMultiple
+        }"
+    >
+        <ng-container *ngIf="fileDefined(fileItemWrapper)">
+            <div *ngIf="fileItemWrapper.editMode" class="file-name-wrapper">
+                <div class="file-name-input-wrapper">
+                    <mat-form-field>
+                        <input
+                            matInput
+                            [(ngModel)]="
+                                fileItemWrapper.candidateFileDto.file.name
+                            "
+                        />
+                    </mat-form-field>
+                </div>
+                <button
+                    [matTooltip]="'Global.Save' | translate"
+                    class="edit-file-mode-button"
+                    mat-icon-button
+                    (click)="saveFileName(fileItemWrapper)"
+                >
+                    <mat-icon>save</mat-icon>
+                </button>
+            </div>
+
+            <div *ngIf="!fileItemWrapper.editMode" class="file-name-wrapper">
+                <div>
+                    {{ getFileNameWithExtension(fileItemWrapper) }}
+                </div>
+                <button
+                    [style.display]="
+                        canOpenFileDisplay(fileItemWrapper) ? '' : 'none'
+                    "
+                    [matTooltip]="'Global.Edit' | translate"
+                    class="edit-file-mode-button"
+                    mat-icon-button
+                    (click)="openEditMode(fileItemWrapper)"
+                >
+                    <mat-icon>edit</mat-icon>
+                </button>
+            </div>
+        </ng-container>
+
+        <ng-container
+            *ngIf="fileWrapper.isMultiple && !fileDefined(fileItemWrapper)"
+        >
+            <div class="file-name-wrapper">
+                <span style="font-style: italic">{{
+                    'Aucun fichier' | translate
+                }}</span>
+            </div>
+        </ng-container>
+    </div>
+</ng-template>
+
+<ng-template #blockDocuments let-object="object">
+    <h2>{{ object?.label }}</h2>
+    <hr />
+    <p *ngIf="!object?.values.length">
+        {{ 'Files.NoDocumentRequired' | translate }}
+    </p>
+
+    <ng-container *ngFor="let item of object.values">
+        <div class="d-flex align-items-center justify-content-between">
+            <div class="d-flex align-items-center">
+                <mat-slide-toggle
+                    [(ngModel)]="item.isMandatory"
+                    *ngIf="isConsultantOrAdmin"
+                    [disabled]="loading"
+                    (ngModelChange)="onCandidateFileWrapperChange(item)"
+                ></mat-slide-toggle>
+                <button [disabled]="loading" mat-button class="text-wrap">
+                    <mat-icon class="orange-icon mr-1">attach_file</mat-icon>
+                    {{ 'label' | dbTranslate : item.fileType }}
+                </button>
+            </div>
+            <ng-container *ngIf="!item.isMultiple">
+                <ng-container
+                    *ngTemplateOutlet="
+                        uploadTemplate;
+                        context: { item: item, file: item.files[0] }
+                    "
+                ></ng-container>
+            </ng-container>
+        </div>
+        <ng-container *ngIf="!item.isMultiple">
+            <ng-container
+                *ngTemplateOutlet="
+                    blockFileItem;
+                    context: {
+                        fileWrapper: item,
+                        fileItemWrapper: item.files[0]
+                    }
+                "
+            >
+            </ng-container>
+        </ng-container>
+        <ng-container *ngIf="item.isMultiple">
+            <div style="margin-left: 60px">
+                <ng-container *ngFor="let file of item.files">
+                    <div
+                        class="d-flex align-items-center justify-content-between"
+                    >
+                        <div
+                            class="d-flex align-items-center"
+                            style="flex: auto"
+                        >
+                            <button
+                                mat-icon-button
+                                *ngIf="item.files.length > 1"
+                                (click)="removeFileUploadChild(item, file)"
+                            >
+                                <mat-icon
+                                    color="primary"
+                                    class="material-icons-outlined"
+                                    >remove_circle_outline
+                                </mat-icon>
+                            </button>
+                            <!-- <p>{{'label'|dbTranslate:file}}</p> -->
+                            <ng-container
+                                *ngTemplateOutlet="
+                                    blockFileItem;
+                                    context: {
+                                        fileWrapper: item,
+                                        fileItemWrapper: file
+                                    }
+                                "
+                            >
+                            </ng-container>
+                        </div>
+                        <div>
+                            <ng-container
+                                *ngTemplateOutlet="
+                                    uploadTemplate;
+                                    context: { item: item, file: file }
+                                "
+                            >
+                            </ng-container>
+                        </div>
+                    </div>
+                </ng-container>
+
+                <!-- <div style="margin-bottom:10px;"></div> -->
+
+                <div
+                    class="d-flex mb-1 align-items-center add-files"
+                    *ngIf="lastItemDefined(item)"
+                >
+                    <button mat-icon-button (click)="addFileTypeToUpload(item)">
+                        <mat-icon color="primary">add_circle_outline</mat-icon>
+                    </button>
+                    <p
+                        class="primary"
+                        [matTooltip]="
+                            'Candidate.AddNewFileToImport' | translate
+                        "
+                    >
+                        <a (click)="addFileTypeToUpload(item)">{{
+                            'Candidate.AddNewFile' | translate
+                        }}</a>
+                    </p>
+                </div>
+            </div>
+        </ng-container>
+
+        <div style="margin-bottom: 18px"></div>
+    </ng-container>
+</ng-template>

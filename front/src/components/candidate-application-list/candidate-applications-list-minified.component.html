@@ -1,0 +1,299 @@
+<div class="nxs-list-page-content">
+    <div class="loading-wrapper" [style.display]="loading ? '' : 'none'">
+        <mat-spinner diameter="50" strokeWidth="6"></mat-spinner>
+    </div>
+    <a
+        class="nxs-list-item-wrapper-container"
+        [href]="
+            currentCandidateApplications
+                ? '/' +
+                  RoutesList.Candidate_MyApplications +
+                  '/' +
+                  candidateApplication.id
+                : '/' +
+                  RoutesList.CandidateApplicationsList +
+                  '/' +
+                  candidateApplication.id
+        "
+        *ngFor="let candidateApplication of items"
+        [class.unseenCandidateApplication]="!candidateApplication.seen"
+    >
+        <div
+            class="candidate-application-wrapper-item d-flex align-items-center"
+        >
+            <mat-icon
+                class="grey-icon"
+                [matTooltip]="'Tooltip.ApplicationDate' | translate"
+                >schedule</mat-icon
+            >
+            <p>
+                {{
+                    candidateApplication.creationDate
+                        | localizedDate : 'd MMM yyyy'
+                }}
+                {{ 'Global.at' | translate }}
+                {{ candidateApplication.creationDate | localizedTime }}
+            </p>
+        </div>
+        <div class="vertical-separator"></div>
+
+        <div
+            class="candidate-application-wrapper-item d-flex align-items-center very-long-item"
+        >
+            <!-- <div style="padding-right: 10px">
+                <mat-icon
+                    class="grey-icon"
+                    fontSet="material-icons-outlined"
+                    [matTooltip]="'Tooltip.Candidate' | translate"
+                    >school</mat-icon
+                >
+            </div> -->
+            <div
+                class="category-dot"
+                [style.backgroundColor]="getCategoryColor(candidateApplication)"
+                [matTooltip]="
+                    getCategoryLabel(candidateApplication) | translate
+                "
+                matTooltipPosition="above"
+            ></div>
+            <div
+                class="profile-picture"
+                [style.backgroundImage]="
+                    'url(' +
+                    ImagesHelper.getCandidateApplicationPicture(
+                        environment.apiBaseUrl,
+                        candidateApplication
+                    ) +
+                    ')'
+                "
+            ></div>
+            <div class="candidate-info">
+                <p>
+                    <span
+                        [innerHTML]="
+                            highlightSearchTerm(
+                                candidateApplication.lastName | uppercase,
+                                searchTerm
+                            )
+                        "
+                    ></span>
+                    <span
+                        [innerHTML]="
+                            highlightSearchTerm(
+                                candidateApplication.firstName | titlecase,
+                                searchTerm
+                            )
+                        "
+                    ></span>
+                </p>
+                <p
+                    class="mt-5px"
+                    *ngIf="getAge(candidateApplication.birthDate)"
+                >
+                    {{ getAge(candidateApplication.birthDate) }}
+                    {{ 'Global.Years' | translate }}
+                </p>
+            </div>
+        </div>
+        <div class="vertical-separator"></div>
+        <div class="candidate-application-wrapper-item">
+            <div class="d-flex align-items-center splitText">
+                <mat-icon
+                    class="grey-icon"
+                    fontSet="material-icons-outlined"
+                    [matTooltip]="'Tooltip.JobOffer' | translate"
+                >
+                    assignment
+                </mat-icon>
+                <div>
+                    <ng-container
+                        *ngIf="
+                            candidateApplication.candidateApplicationJobs
+                                ?.length
+                        "
+                    >
+                        <ng-container
+                            *ngFor="
+                                let item of candidateApplication.candidateApplicationJobs
+                            "
+                        >
+                            <a
+                                class="redirectLinkJobOffer"
+                                target="_blank"
+                                [href]="item.jobOffer.publicLink"
+                            >
+                                <span>{{ item.jobOffer.title }}</span>
+                                <br />
+                                <span class="mt-5px"
+                                    >REF {{ item.jobOffer?.ref }}
+                                </span>
+                                <br />
+                            </a>
+                        </ng-container>
+                    </ng-container>
+
+                    <p
+                        *ngIf="
+                            !candidateApplication.candidateApplicationJobs
+                                ?.length &&
+                            candidateApplication.spontaneousApplication
+                        "
+                    >
+                        {{ 'Global.SpontaneousApplication' | translate }}
+                    </p>
+                </div>
+            </div>
+            <div
+                class="d-flex align-items-center splitText"
+                *ngIf="candidateApplication?.profession"
+            >
+                <mat-icon
+                    [matTooltip]="'Tooltip.JobCandidate' | translate"
+                    class="grey-icon"
+                    fontSet="material-icons-outlined"
+                    >work
+                </mat-icon>
+                <p *ngIf="candidateApplication?.profession">
+                    {{
+                        'label' | dbTranslate : candidateApplication?.profession
+                    }}
+                </p>
+            </div>
+        </div>
+
+        <!-- <div class="candidate-application-wrapper-item d-flex align-items-center splitText">
+            <div style=" padding-right: 10px;">
+                <mat-icon class="grey-icon" fontSet="material-icons-outlined">work</mat-icon>
+            </div>
+            <div class="candidate-info">
+                <p>{{'label'| dbTranslate: candidateApplication?.profession}}
+                </p>
+            </div>
+        </div> -->
+
+        <div class="vertical-separator"></div>
+
+        <ng-container *ngIf="displayCandidateStatus">
+            <div
+                class="candidate-application-wrapper-item d-flex align-items-center splitText splitSmall"
+            >
+                <mat-icon
+                    class="grey-icon"
+                    fontSet="material-icons-outlined"
+                    [matTooltip]="'Tooltip.CandidateStatut' | translate"
+                >
+                    account_circle
+                </mat-icon>
+                <div
+                    *ngIf="
+                        candidateApplication?.candidate?.candidateStatus?.label;
+                        else noStatus
+                    "
+                >
+                    <p>
+                        {{
+                            'label'
+                                | dbTranslate
+                                    : candidateApplication?.candidate
+                                          ?.candidateStatus
+                        }}
+                    </p>
+                </div>
+                <ng-template #noStatus>
+                    <p>{{ 'Candidate.NewCandidate' | translate }}</p>
+                </ng-template>
+            </div>
+
+            <div class="vertical-separator"></div>
+        </ng-container>
+
+        <div
+            class="candidate-application-wrapper-item d-flex align-items-center"
+        >
+            <mat-icon
+                class="grey-icon material-icons-outlined"
+                [matTooltip]="'Tooltip.Places' | translate"
+                >location_on
+            </mat-icon>
+            <div>
+                <p
+                    *ngIf="
+                        candidateApplication?.address?.city ||
+                            candidateApplication?.address?.department ||
+                            candidateApplication?.address?.country;
+                        else noAddress
+                    "
+                >
+                    {{ candidateApplication?.address?.city | titlecase
+                    }}{{
+                        candidateApplication?.address?.city &&
+                        (candidateApplication?.address?.department ||
+                            candidateApplication?.address?.country)
+                            ? ','
+                            : ''
+                    }}
+                    {{
+                        candidateApplication?.address?.department
+                            ? (candidateApplication.address.department
+                              | titlecase)
+                            : ''
+                    }}{{
+                        candidateApplication?.address?.department &&
+                        candidateApplication?.address?.country
+                            ? ','
+                            : ''
+                    }}
+                    {{
+                        candidateApplication?.address?.country
+                            ? (RefData.getCountryLabel(
+                                  candidateApplication.address.country
+                              ) | titlecase)
+                            : ''
+                    }}
+                </p>
+                <ng-template #noAddress>
+                    <p>--</p>
+                </ng-template>
+            </div>
+        </div>
+
+        <div
+            class="d-flex align-items-center position-right"
+            *ngIf="displayApplicationStatus"
+        >
+            <mat-icon
+                [ngClass]="{
+                    'green-icon':
+                        candidateApplication.applyStatus?.translations[1]
+                            ?.value == 'Accepted' ||
+                        candidateApplication.applyStatus?.translations[1]
+                            ?.value == 'Acceptée',
+                    'yellow-icon':
+                        candidateApplication.applyStatus?.translations[1]
+                            ?.value == 'Pending' ||
+                        candidateApplication.applyStatus?.translations[1]
+                            ?.value == 'En attente',
+                    'red-icon':
+                        candidateApplication.applyStatus?.translations[1]
+                            ?.value == 'Refused' ||
+                        candidateApplication.applyStatus?.translations[1]
+                            ?.value == 'Refusée'
+                }"
+                [matTooltip]="'Tooltip.Status' | translate"
+                >turned_in_not</mat-icon
+            >
+            <p>
+                {{ 'label' | dbTranslate : candidateApplication.applyStatus }}
+            </p>
+        </div>
+    </a>
+</div>
+
+<div class="nxs-list-page-bottom">
+    <mat-paginator
+        class="mat-paginator-sticky"
+        [length]="filteredItemsCount"
+        [pageSize]="20"
+        [pageSizeOptions]="[5, 20, 100]"
+    ></mat-paginator>
+</div>

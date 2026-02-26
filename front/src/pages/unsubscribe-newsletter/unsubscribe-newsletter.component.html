@@ -1,0 +1,14 @@
+<div class="unsubscribe-container">
+    <div *ngIf="!unsubscribeSucess && !unsubscribeError">
+        <mat-spinner diameter="50" strokeWidth="7"></mat-spinner>
+        {{ 'Global.Loading' | translate }} ...
+    </div>
+    <ng-container *ngIf="unsubscribeSucess && !unsubscribeError">
+        <img src="assets/logos/logo-new.png" class="logo" />
+        <p>{{ 'Newsletter.NowUnsubscribe' | translate }}</p>
+    </ng-container>
+    <ng-container *ngIf="!unsubscribeSucess && unsubscribeError">
+        <img src="assets/logos/logo-new.png" class="logo" />
+        <p>{{ 'Newsletter.UnsubscribeError' | translate }}</p>
+    </ng-container>
+</div>

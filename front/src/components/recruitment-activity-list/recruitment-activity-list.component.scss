@@ -1,0 +1,57 @@
+@import '../../variables.scss';
+
+app-job-offer-list-minified {
+    div.job-offer-wrapper-item {
+        min-width: 10%;
+        max-width: 10%;
+    }
+
+    .nxs-list-page-content {
+        .nxs-list-item-wrapper-container {
+            div:nth-child(5),
+            div:nth-child(3) {
+                min-width: 20%;
+                .splitText {
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                }
+            }
+        }
+
+        .white-title {
+            text-align: center;
+            font-size: 40px;
+            color: lightgray;
+            font-weight: 400;
+        }
+    }
+
+    .btn-activated {
+        background-color: #7ba483;
+        color: white;
+        border: 1px solid #7ba483;
+    }
+    .btn-suspended {
+        background-color: white !important;
+        border: 1px solid grey;
+        color: grey;
+    }
+    .btn-closed {
+        background-color: #862f09;
+        color: white;
+        border: 1px solid #862f09;
+    }
+
+    .actions-btn {
+        justify-content: end;
+        width: 300px;
+        button {
+            width: 150px;
+            height: 30px;
+            border-radius: 8px;
+            line-height: unset;
+            font-size: 0.8rem;
+        }
+    }
+}

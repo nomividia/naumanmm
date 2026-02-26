@@ -1,0 +1,103 @@
+@import '../../../variables';
+
+$blue-color-med: #4682b4;
+$blue-color-dark: #2a4d6a;
+$mainMenuItemHeight: 44px;
+$orange: #f6a70e;
+
+app-main-menu-item {
+    .mat-expansion-panel {
+        border-radius: 0;
+        background-color: $blue-color-med;
+        color: white;
+        .mat-list-item-content {
+            padding: 0;
+        }
+    }
+    .mat-expansion-panel-header {
+        background-color: $blue-color-med;
+        color: white;
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 1.4px;
+    }
+    .mat-expansion-panel-header.mat-expanded {
+        height: $mainMenuItemHeight;
+    }
+    .mat-expansion-panel-header.mat-expanded:focus,
+    .mat-expansion-panel-header.mat-expanded:hover {
+        background-color: $blue-color-med;
+        background: $blue-color-med;
+    }
+    .mat-expansion-panel-body {
+        padding: 0;
+    }
+
+    .mat-expansion-panel-header {
+        height: $mainMenuItemHeight;
+        padding: 0 14px;
+        font-size: 12px;
+    }
+    .mat-expansion-panel.active-panel .mat-expansion-panel-header {
+        background-color: $orange;
+    }
+
+    .mat-expansion-panel-header-description,
+    .mat-expansion-indicator::after {
+        color: white;
+    }
+
+    .mat-divider {
+        border-top-color: white;
+    }
+    .mat-nav-list .mat-list-item {
+        font-size: 12px;
+        font-weight: 200;
+        border-left-width: 0;
+        border-left-style: solid;
+        border-left-color: transparent;
+        height: 30px;
+        color: white;
+        background-color: $blue-color-dark;
+        letter-spacing: 1.2px;
+        position: relative;
+        .mat-list-item-content {
+            padding: 0 16px;
+        }
+        a {
+            display: block;
+            height: 100%;
+            background-color: $blue-color-dark;
+            display: flex;
+            align-items: center;
+            padding-left: 10px;
+        }
+        a.active-route,
+        a:hover {
+            // border-left-color: #1a5baf;
+            color: $orange;
+            font-weight: 400;
+            background-color: $blue-color-dark;
+        }
+
+        //TODO
+        // &.menu-item-level1 {
+        //     .menu-item-level2 {
+        //         display: none;
+        //         position: absolute;
+        //         left: 300px;
+        //     }
+        //     &:hover .menu-item-level2 {
+        //         display: block;
+        //     }
+        // }
+    }
+    .mat-list-base {
+        padding-top: 0;
+    }
+    .mat-nav-list .mat-list-item .mat-list-item-content {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+}

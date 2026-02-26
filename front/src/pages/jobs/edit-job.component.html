@@ -1,0 +1,122 @@
+<app-drawer-main-container>
+    <div class="edit-page-header">
+        <div class="left">
+            <div *ngIf="hasPendingModifications">
+                Modifications non sauvegardées
+            </div>
+        </div>
+        <div class="buttons-wrapper">
+            <button
+                mat-raised-button
+                color="primary"
+                [disabled]="loading"
+                matTooltip="{{ 'Tooltip.Return' | translate }}"
+                (click)="goBack()"
+            >
+                <mat-icon>keyboard_arrow_left</mat-icon>Retour
+            </button>
+            <button
+                [disabled]="loading"
+                mat-raised-button
+                color="primary"
+                (click)="save(false)"
+            >
+                <mat-icon>save</mat-icon>Sauvegarder
+            </button>
+            <button
+                [disabled]="loading"
+                mat-raised-button
+                color="primary"
+                (click)="save(true)"
+            >
+                <mat-icon>exit_to_app</mat-icon>Sauvegarder et quitter
+            </button>
+            <button
+                *ngIf="
+                    isAdmin &&
+                    entity?.id &&
+                    AuthDataService.currentUser?.id !== entity.id
+                "
+                [color]="entity.enabled ? 'warn' : 'primary'"
+                [disabled]="loading"
+                mat-button
+                (click)="switchEnable()"
+            >
+                {{ entity.enabled ? 'Désactiver' : 'Activer' }}
+            </button>
+        </div>
+        <div class="right" *ngIf="loading">
+            <mat-spinner diameter="30" strokeWidth="3"></mat-spinner>
+        </div>
+    </div>
+    <div class="job-wrapper" *ngIf="entity">
+        <h2>Fiche du job : "{{ entity.name }}"</h2>
+        <mat-form-field>
+            <mat-label>Nom du job</mat-label>
+            <input
+                matInput
+                type="text"
+                placeholder="Nom"
+                [(ngModel)]="entity.name"
+            />
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Service</mat-label>
+            <input
+                [readonly]="true"
+                matInput
+                type="text"
+                placeholder="Service"
+                [(ngModel)]="entity.applicationServiceName"
+            />
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Méthode</mat-label>
+            <input
+                matInput
+                [readonly]="true"
+                type="text"
+                placeholder="Méthode"
+                [(ngModel)]="entity.methodName"
+            />
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Périodicité (Cron)</mat-label>
+            <input
+                matInput
+                type="text"
+                placeholder="Cron"
+                [(ngModel)]="entity.cronPattern"
+            />
+        </mat-form-field>
+        <div style="margin-top: 14px">
+            Fréquence d'exécution : {{ getCronDesc() }}
+        </div>
+        <hr />
+
+        <h3>Historique d'exécution</h3>
+        <div *ngIf="entity?.jobHistory?.length">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date d'exécution</th>
+                        <th>Résultat</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr
+                        *ngFor="
+                            let history of entity.jobHistory
+                                | sortBy : 'desc' : 'date'
+                        "
+                    >
+                        <td>
+                            {{ history.date | date : 'dd/MM/yyyy - HH:mm:ss' }}
+                        </td>
+                        <td>{{ history.result }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</app-drawer-main-container>

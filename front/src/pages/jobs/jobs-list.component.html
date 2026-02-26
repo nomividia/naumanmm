@@ -1,0 +1,142 @@
+<app-drawer-main-container>
+    <div class="list-page-wrapper shadow-block">
+        <div class="list-header">
+            <h2>Liste des jobs</h2>
+            <div>Node main worker : {{ nodeMainWorker }}</div>
+        </div>
+        <div class="table-wrapper">
+            <div
+                class="loading-wrapper"
+                [style.display]="loading ? '' : 'none'"
+            >
+                <mat-spinner diameter="50" strokeWidth="6"></mat-spinner>
+            </div>
+            <table
+                style="width: 100%"
+                mat-table
+                [dataSource]="datasource"
+                matSort
+                matSortActive="name"
+                matSortDirection="asc"
+                (matSortChange)="sortChange($event)"
+            >
+                <ng-container matColumnDef="items-selection">
+                    <th mat-header-cell *matHeaderCellDef></th>
+                    <td mat-cell *matCellDef="let element" style="width: 30px">
+                        <mat-checkbox
+                            color="primary"
+                            [ngModel]="isItemChecked(element)"
+                            (ngModelChange)="itemCheckedChange(element, $event)"
+                        >
+                        </mat-checkbox>
+                    </td>
+                </ng-container>
+
+                <ng-container
+                    [matColumnDef]="column"
+                    *ngFor="let column of autoColumnsNames"
+                >
+                    <th
+                        mat-header-cell
+                        mat-sort-header
+                        [disabled]="!getAutoColumnSortable(column)"
+                        [class.notVisibleOnBigScreen]="column === 'forMobile'"
+                        [class.notVisibleOnSmallScreen]="column !== 'forMobile'"
+                        *matHeaderCellDef
+                    >
+                        {{ getAutoColumnLabel(column) }}
+                    </th>
+                    <td
+                        mat-cell
+                        *matCellDef="let element"
+                        [class.notVisibleOnBigScreen]="column === 'forMobile'"
+                        [class.notVisibleOnSmallScreen]="column !== 'forMobile'"
+                        [innerHTML]="
+                            getAutoColumnValue(element, column) | noSanitize
+                        "
+                    ></td>
+                </ng-container>
+                <ng-container matColumnDef="actions">
+                    <th mat-header-cell *matHeaderCellDef></th>
+                    <td mat-cell *matCellDef="let row">
+                        <div class="actions-wrapper">
+                            <!-- <button mat-icon-button matTooltip="{{'ToolTip.DetailJob' | translate}}" (click)="openJobDetails(row.item)">
+                                <mat-icon>view_list</mat-icon>
+                            </button> -->
+                            <button
+                                mat-icon-button
+                                matTooltip="{{
+                                    'Tooltip.TriggerJob' | translate
+                                }}"
+                                (click)="triggerJob(row.item)"
+                            >
+                                <mat-icon class="mat-icon-big"
+                                    >play_circle_outline</mat-icon
+                                >
+                            </button>
+                            <a
+                                matTooltip="{{
+                                    'Tooltip.UpdateJob' | translate
+                                }}"
+                                [routerLink]="
+                                    '/' +
+                                    RoutesList.AdminJobs +
+                                    '/' +
+                                    row.item.id
+                                "
+                                mat-icon-button
+                            >
+                                <mat-icon class="mat-icon-big"
+                                    >view_list</mat-icon
+                                >
+                            </a>
+                            <button
+                                [color]="row.item.enabled ? 'warn' : ''"
+                                (click)="toggleJobState(row.item)"
+                                mat-raised-button
+                            >
+                                <span *ngIf="row.item.enabled"
+                                    >Désactiver le job</span
+                                >
+                                <span *ngIf="!row.item.enabled"
+                                    >Activer le job</span
+                                >
+                            </button>
+                        </div>
+                    </td>
+                </ng-container>
+                <tr
+                    mat-header-row
+                    *matHeaderRowDef="allVisibleColumns; sticky: true"
+                ></tr>
+                <tr
+                    mat-row
+                    *matRowDef="let row; columns: allVisibleColumns"
+                ></tr>
+            </table>
+            <mat-paginator
+                class="mat-paginator-sticky"
+                [length]="filteredItemsCount"
+                [pageSize]="20"
+                [pageSizeOptions]="[10, 20, 100]"
+            ></mat-paginator>
+        </div>
+        <div>
+            <button
+                [disabled]="itemsChecked.length === 0"
+                mat-raised-button
+                color="warn"
+                (click)="removeSelectedItems()"
+            >
+                Supprimer
+            </button>
+            <a
+                color="primary"
+                [routerLink]="'/' + RoutesList.AdminJobs + '/new'"
+                mat-raised-button
+            >
+                <mat-icon>add</mat-icon>Nouveau
+            </a>
+        </div>
+    </div>
+</app-drawer-main-container>

@@ -1,0 +1,129 @@
+@import '../../variables.scss';
+
+app-detail-interview-dialog {
+    nxs-datetime-picker {
+        @media screen and (max-width: 700px) {
+            flex-wrap: wrap;
+        }
+
+        nxs-time-picker {
+            @media screen and (max-width: 700px) {
+                width: 100%;
+                margin-left: 0px !important;
+            }
+        }
+    }
+
+    .status-red {
+        color: #862f09 !important;
+    }
+
+    .status-green {
+        color: $mmi-green !important;
+    }
+
+    .status-indicators {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+    }
+
+    .status-no-show {
+        background-color: #ff9800;
+        color: white;
+        padding: 4px 10px;
+        border-radius: 4px;
+        font-size: 12px;
+        font-weight: 500;
+    }
+
+    .no-show-container {
+        margin-top: 8px;
+        padding: 12px;
+        background-color: #fff8e1;
+        border-left: 4px solid #ff9800;
+        border-radius: 4px;
+
+        mat-checkbox {
+            ::ng-deep .mat-checkbox-label {
+                color: #795548;
+                font-weight: 500;
+            }
+        }
+    }
+
+    .input-container {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    h1 {
+        color: $mmi-orange;
+    }
+
+    //
+    p {
+        font-size: 14px;
+    }
+
+    div.edit-page-block-item {
+        .title {
+            font-weight: 500;
+            font-size: 15px;
+        }
+    }
+
+    h2 {
+        color: $mmi-orange;
+    }
+
+    .validate-btn {
+        background-color: #7ba483;
+        color: white;
+    }
+
+    .mat-input-element[type='date']::after,
+    .mat-input-element[type='datetime']::after,
+    .mat-input-element[type='datetime-local']::after,
+    .mat-input-element[type='month']::after,
+    .mat-input-element[type='week']::after,
+    .mat-input-element[type='time']::after {
+        font-family: 'Material Icons';
+        // content: "\ea5d";
+        white-space: pre;
+        width: 20px;
+        height: 20px;
+        font-size: 1.3rem;
+        position: absolute;
+        top: -1px;
+        right: 2px;
+        background: white;
+        display: block;
+    }
+
+    nxs-datetime-picker {
+        display: flex;
+        justify-content: space-between;
+
+        .mat-form-field {
+            width: 100%;
+        }
+
+        // mat-form-field:first-of-type {
+        //     margin-right: 10px;
+        // }
+        nxs-time-picker {
+            margin-left: 10px;
+        }
+    }
+
+    // Override mat-autocomplete panel styling
+    ::ng-deep .mat-autocomplete-panel {
+        max-height: 300px !important;
+
+        .mat-option {
+            padding: 8px 16px !important;
+        }
+    }
+}

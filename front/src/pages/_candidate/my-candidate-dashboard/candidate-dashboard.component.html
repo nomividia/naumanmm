@@ -1,0 +1,175 @@
+<app-drawer-main-container [headerTitle]="'Menu.MyDashboard' | translate">
+    <div class="d-flex f-wrap mt-4" style="flex-wrap: wrap; gap: 12px">
+        <div class="left-col">
+            <div class="mb-4">
+                <h2 class="primary">
+                    {{ 'Dashboard.Welcome' | translate }}
+                    {{ AuthDataService.currentUser?.firstName | titlecase }},
+                </h2>
+                <p>
+                    {{ 'Dashboard.DashboardIntro1' | translate }} <br />
+                    {{ 'Dashboard.DashboardIntro2' | translate }}<br />
+                    {{ 'Dashboard.DashboardIntro3' | translate }}
+                </p>
+            </div>
+            <div
+                class="d-flex f-wrap align-items-center justify-content-evently"
+            >
+                <a
+                    [routerLink]="'/' + RoutesList.MatchCandidateJobOffer"
+                    class="mobile-stat"
+                >
+                    <div class="stats">
+                        <mat-spinner
+                            [style.display]="loading ? '' : 'none'"
+                            diameter="50"
+                            strokeWidth="3"
+                        ></mat-spinner>
+                        <h2>{{ matchingJobs }}</h2>
+                        <span>{{ 'Dashboard.MatchingJobs' | translate }}</span>
+                    </div>
+                </a>
+                <!-- <a [routerLink]="'/' + RoutesList.Candidate_MyApplications" class="mobile-stat">
+                    <div class="stats">
+                        <mat-spinner [style.display]="loading ? '': 'none'" diameter="50" strokeWidth="3"></mat-spinner>
+                        <h2 *ngIf="!loading">{{applicationsLength}}</h2>
+                        <span>{{'Dashboard.ApplicationSend' | translate}}</span>
+                    </div>
+                </a> -->
+                <a
+                    [routerLink]="'/' + RoutesList.Candidate_MyDossier"
+                    class="mobile-stat"
+                >
+                    <div class="stats">
+                        <mat-spinner
+                            [style.display]="loading ? '' : 'none'"
+                            diameter="50"
+                            strokeWidth="3"
+                        ></mat-spinner>
+                        <h2 *ngIf="!loading">{{ advancementPercent }} %</h2>
+                        <span>{{
+                            'Dashboard.CompleteDossier' | translate
+                        }}</span>
+                    </div>
+                </a>
+            </div>
+            <div
+                class="item-block mt-4 orange-filter"
+                style="height: 305px; padding: 65px"
+            >
+                <div class="d-flex justify-content-center">
+                    <h2 style="font-size: 28px">
+                        {{ 'Dashboard.ContactAgency' | translate }}
+                    </h2>
+                </div>
+                <p style="font-size: 20px; text-align: center">
+                    {{ 'Dashboard.YouCanExchangeBy' | translate }}
+                </p>
+                <div class="d-flex f-wrap justify-content-evently mt-3">
+                    <a
+                        [href]="agenciesUrl"
+                        class="mobile-btn"
+                        target="blank"
+                        mat-flat-button
+                        color="accent"
+                        >{{ 'Dashboard.SeeAgencies' | translate }}
+                    </a>
+                    <button
+                        mat-flat-button
+                        color="accent"
+                        [routerLink]="'/' + RoutesList.Candidate_MmiAndMe"
+                    >
+                        {{ 'Dashboard.Messaging' | translate }}
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="right-col">
+            <div
+                class="item-block flex-block blue-filter blue-filter-top"
+                style="height: 402px; padding: 120px 70px"
+            >
+                <h1>
+                    {{ 'Dashboard.ApplyDreamJob1' | translate }} <br />
+                    {{ 'Dashboard.ApplyDreamJob2' | translate }}
+                </h1>
+
+                <div class="mt-3" style="display: flex; column-gap: 16px">
+                    <a
+                        href="https://www.personneldemaison.agency/jobs--emplois-personnel-de-maison.html"
+                        target="blank"
+                        mat-flat-button
+                        color="primary"
+                        >{{ 'Dashboard.SeeOffers' | translate }}
+                    </a>
+                    <button
+                        mat-flat-button
+                        color="primary"
+                        (click)="openApplyDialog()"
+                    >
+                        {{
+                            'CandidateApplication.ApplyToAJobOffer' | translate
+                        }}
+                    </button>
+                </div>
+            </div>
+            <div
+                class="item-block mt-5 blue-filter blue-filter-bottom"
+                style="height: 305px"
+            >
+                <h2>{{ 'Dashboard.GetInformed' | translate }}</h2>
+                <hr />
+                <a
+                    class="d-flex link"
+                    href="https://www.personneldemaison.agency/blog"
+                    target="blank"
+                >
+                    <span>{{ 'Dashboard.MMINews' | translate }}</span>
+                    <button mat-icon-button>
+                        <mat-icon fontSet="material-icons-outlined"
+                            >navigate_next</mat-icon
+                        >
+                    </button>
+                </a>
+                <a
+                    class="d-flex link"
+                    href="https://www.personneldemaison.agency/candidat.html"
+                    target="blank"
+                >
+                    <span>{{ 'Dashboard.FindAJob' | translate }}</span>
+                    <button mat-icon-button>
+                        <mat-icon fontSet="material-icons-outlined"
+                            >navigate_next</mat-icon
+                        >
+                    </button>
+                </a>
+                <a
+                    class="d-flex link"
+                    href="https://www.personneldemaison.agency/guide-des-salaires-des-employes-de-maison.html"
+                    target="blank"
+                >
+                    <span>{{ 'Dashboard.GuideSalaries' | translate }}</span>
+                    <button mat-icon-button>
+                        <mat-icon fontSet="material-icons-outlined"
+                            >navigate_next</mat-icon
+                        >
+                    </button>
+                </a>
+                <a
+                    class="d-flex link"
+                    href="https://www.personneldemaison.agency/les-meacutetiers-de-la-domesticiteacute.html"
+                    target="blank"
+                >
+                    <span>{{
+                        'Dashboard.ProfessionsOfDomesticity' | translate
+                    }}</span>
+                    <button mat-icon-button>
+                        <mat-icon fontSet="material-icons-outlined"
+                            >navigate_next</mat-icon
+                        >
+                    </button>
+                </a>
+            </div>
+        </div>
+    </div>
+</app-drawer-main-container>

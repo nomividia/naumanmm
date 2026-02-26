@@ -1,0 +1,40 @@
+<app-drawer-main-container>
+    <div
+        style="
+            width: 100%;
+            text-align: center;
+            padding-top: 60px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        "
+    >
+        <mat-icon style="font-size: 60px; width: 80px; height: 80px"
+            >sentiment_very_dissatisfied</mat-icon
+        >
+        <div
+            style="
+                font-size: 3.125em;
+                margin: 60px auto;
+                color: #1d2e3f;
+                display: block;
+                letter-spacing: 10px;
+            "
+        >
+            <span style="font-weight: bold">OOPS !</span>
+        </div>
+        <div style="margin: 30px auto">
+            Nous sommes désolés pour le dérangement occasionné. Il semble que
+            vous<br />
+            essayez d'accéder à une page qui a été supprimée ou n'a même jamais
+            existé.
+        </div>
+        <a
+            [routerLink]="'/' + RoutesList.Index"
+            mat-raised-button
+            color="primary"
+            >Retour à l'accueil</a
+        >
+    </div>
+</app-drawer-main-container>

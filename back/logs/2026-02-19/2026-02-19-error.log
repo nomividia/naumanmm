@@ -1,0 +1,35 @@
+
+[2026-02-19T08:35:03] - [error] => 
+    Guid = 5a95dfb2-757e-1ada-16ce-6e2aca8f71dc
+    Forbidden resource
+---Stack---
+ForbiddenException: Forbidden resource
+    at canActivateFn (/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/node_modules/@nestjs/core/router/router-execution-context.js:136:23)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at /Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/node_modules/@nestjs/core/router/router-execution-context.js:42:31
+    at /Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/node_modules/@nestjs/core/router/router-proxy.js:9:17
+    at Object.<anonymous> (/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/node_modules/@nestjs/core/router/router-explorer.js:177:17)
+---End of Stack---
+ - URL : /api/users?start=0&length=100&roles=admin%2Cconsultant%2CRH&includeRoles=true
+[2026-02-19T08:35:17] - [error] => 
+    Guid = 85863969-3389-7134-54a0-af90bc9b1086
+    Forbidden resource
+---Stack---
+ForbiddenException: Forbidden resource
+    at canActivateFn (/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/node_modules/@nestjs/core/router/router-execution-context.js:136:23)
+    at /Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/node_modules/@nestjs/core/router/router-execution-context.js:42:31
+    at /Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/node_modules/@nestjs/core/router/router-proxy.js:9:17
+    at Object.<anonymous> (/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/node_modules/@nestjs/core/router/router-explorer.js:177:17)
+---End of Stack---
+ - URL : /api/users?start=0&length=100&roles=admin%2Cconsultant%2CRH&includeRoles=true
+[2026-02-19T08:35:18] - [error] => 
+    Guid = 5c24f964-640b-8375-3b84-06a6f820b8ad
+    Forbidden resource
+---Stack---
+ForbiddenException: Forbidden resource
+    at canActivateFn (/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/node_modules/@nestjs/core/router/router-execution-context.js:136:23)
+    at /Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/node_modules/@nestjs/core/router/router-execution-context.js:42:31
+    at /Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/node_modules/@nestjs/core/router/router-proxy.js:9:17
+    at Object.<anonymous> (/Users/ranielvincentbesana/Downloads/morgan-mallet-crm-master/node_modules/@nestjs/core/router/router-explorer.js:177:17)
+---End of Stack---
+ - URL : /api/users?start=0&length=100&roles=admin%2Cconsultant%2CRH&includeRoles=true

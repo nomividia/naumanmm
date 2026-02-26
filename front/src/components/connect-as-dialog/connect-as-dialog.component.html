@@ -1,0 +1,39 @@
+<div class="connectAsDialogWrapper">
+    <div>
+        <h2>Se connecter en tant que</h2>
+        <nextalys-app-autocomplete
+            label="User"
+            placeholder="User"
+            [loadData]="loadUsersFunction.bind(this)"
+            [minLength]="1"
+            [(ngModel)]="selectedUser"
+            [delay]="500"
+            matTooltip="Tapez la première lettre, puis sélectionnez dans la liste"
+            valueFieldName="userName"
+            matTooltipPosition="after"
+            [autoSelectSingleResult]="true"
+        >
+        </nextalys-app-autocomplete>
+    </div>
+    <div style="margin: 16px 0" *ngIf="errorMessage">
+        {{ errorMessage }}
+    </div>
+    <div class="flex-wrapper-center-horizontal">
+        <button
+            color="primary"
+            mat-raised-button
+            (click)="connectAs()"
+            style="margin: 0 6px"
+        >
+            Valider
+        </button>
+        <button
+            color="primary"
+            mat-raised-button
+            (click)="dialogRef.close()"
+            style="margin: 0 6px"
+        >
+            Annuler
+        </button>
+    </div>
+</div>

@@ -1,0 +1,175 @@
+<app-drawer-main-container>
+    <div class="edit-page-header">
+        <div class="left">
+            <div *ngIf="hasPendingModifications">
+                Modifications non sauvegardées
+            </div>
+        </div>
+        <div class="buttons-wrapper">
+            <button
+                mat-raised-button
+                color="primary"
+                [disabled]="loading"
+                matTooltip="{{ 'Tooltip.Return' | translate }}"
+                (click)="goBack()"
+            >
+                <mat-icon fontSet="material-icons-outlined"
+                    >keyboard_arrow_left</mat-icon
+                >Retour
+            </button>
+            <button
+                [disabled]="loading"
+                mat-raised-button
+                color="primary"
+                (click)="save(false)"
+            >
+                <mat-icon fontSet="material-icons-outlined">save</mat-icon
+                >Sauvegarder
+            </button>
+            <button
+                [disabled]="loading"
+                mat-raised-button
+                color="primary"
+                (click)="save(true)"
+            >
+                <mat-icon fontSet="material-icons-outlined"
+                    >exit_to_app</mat-icon
+                >Sauvegarder et quitter
+            </button>
+        </div>
+        <div class="right" *ngIf="loading">
+            <mat-spinner diameter="30" strokeWidth="3"></mat-spinner>
+        </div>
+    </div>
+    <form #saveForm (ngSubmit)="save()" *ngIf="entity">
+        <div class="shadow-block">
+            <div>
+                <h1 style="font-weight: 300; text-decoration: underline">
+                    Configuration du type de données
+                </h1>
+                <div class="flex-wrapper-horizontal" style="max-width: 600px">
+                    <app-translation-input
+                        (onLanguageChange)="setAllTranslationInputs($event)"
+                        field="label"
+                        [entity]="entity"
+                        placeholder="Libellé du type"
+                        appearance="outline"
+                    >
+                    </app-translation-input>
+                </div>
+                <div style="margin: 10px 0 20px 0; text-decoration: underline">
+                    Liste des valeurs
+                </div>
+
+                <div
+                    cdkDropList
+                    class="app-values-wrapper"
+                    (cdkDropListDropped)="drop($event)"
+                >
+                    <div
+                        class="flex-wrapper-horizontal edit-app-value-wrapper"
+                        *ngFor="let appValue of filteredAppValues"
+                        cdkDrag
+                    >
+                        <div
+                            cdkDragHandle
+                            style="
+                                cursor: pointer;
+                                margin: 0 10px;
+                                display: flex;
+                                align-items: center;
+                            "
+                        >
+                            <mat-icon style="margin-right: 4px"
+                                >drag_handle</mat-icon
+                            >
+                            <div>
+                                {{ appValue.order }}
+                            </div>
+                        </div>
+                        <app-translation-input
+                            field="label"
+                            [entity]="appValue"
+                            placeholder="Libellé"
+                            appearance="outline"
+                        >
+                        </app-translation-input>
+                        <ng-container
+                            *ngIf="
+                                GlobalAppService.userHasRole(
+                                    AuthDataService.currentUser,
+                                    RolesList.AdminTech
+                                )
+                            "
+                        >
+                            <mat-form-field appearance="outline">
+                                <mat-label>Code</mat-label>
+                                <input
+                                    matInput
+                                    placeholder="Code"
+                                    [value]="appValue.code"
+                                    disabled
+                                />
+                            </mat-form-field>
+                        </ng-container>
+
+                        <div
+                            *ngIf="
+                                GlobalAppService.userHasRole(
+                                    AuthDataService.currentUser,
+                                    RolesList.AdminTech
+                                )
+                            "
+                        >
+                            <button
+                                type="button"
+                                matTooltip="{{
+                                    'Tooltip.ArchiveValue' | translate
+                                }}"
+                                color="warn"
+                                mat-icon-button
+                                (click)="archiveValue(appValue)"
+                            >
+                                <mat-icon>archive</mat-icon>
+                            </button>
+                        </div>
+                        <div
+                            *ngIf="
+                                GlobalAppService.userHasRole(
+                                    AuthDataService.currentUser,
+                                    RolesList.AdminTech
+                                )
+                            "
+                        >
+                            <button
+                                type="button"
+                                matTooltip="{{
+                                    'Tooltip.DeleteValue' | translate
+                                }}"
+                                color="warn"
+                                mat-icon-button
+                                (click)="deleteValue(appValue)"
+                            >
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <button
+                    *ngIf="
+                        GlobalAppService.userHasRole(
+                            AuthDataService.currentUser,
+                            RolesList.Admin
+                        )
+                    "
+                    mat-button
+                    type="button"
+                    (click)="addNewAppValue()"
+                >
+                    <mat-icon>add</mat-icon>Nouvelle valeur pour ce type de
+                    données
+                </button>
+            </div>
+        </div>
+    </form>
+</app-drawer-main-container>

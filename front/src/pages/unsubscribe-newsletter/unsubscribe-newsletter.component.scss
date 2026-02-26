@@ -1,0 +1,19 @@
+app-unsubscribe-newsletter {
+    div.unsubscribe-container {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        height: 100vh;
+        padding-top: 150px;
+    }
+
+    img.logo {
+        height: 150px;
+        margin-bottom: 30px;
+    }
+
+    p {
+        font-size: 20px;
+        text-align: center;
+    }
+}

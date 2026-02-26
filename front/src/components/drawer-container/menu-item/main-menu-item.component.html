@@ -1,0 +1,49 @@
+<mat-expansion-panel
+    *ngIf="menuItem"
+    [class.mat-elevation-z0]="true"
+    #submenuRef
+    [class.active-panel]="isActivePanel(submenuRef)"
+>
+    <mat-expansion-panel-header>
+        {{ menuItem.title }}
+    </mat-expansion-panel-header>
+    <mat-nav-list>
+        <ng-container *ngFor="let submenuItem of menuItem.subItems">
+            <div mat-list-item class="menu-item-level1 mat-list-item">
+                <a
+                    [routerLink]="submenuItem.url"
+                    routerLinkActive="active-route"
+                    [routerLinkActiveOptions]="{
+                        exact: !!submenuItem.exactRouteActive
+                    }"
+                    (isActiveChange)="isActiveChange($event, submenuRef)"
+                    [queryParams]="submenuItem.queryParams"
+                >
+                    <mat-icon *ngIf="submenuItem.icon">{{
+                        submenuItem.icon
+                    }}</mat-icon
+                    >{{ submenuItem.label }}</a
+                >
+
+                <div
+                    *ngIf="submenuItem.subItems?.length"
+                    class="menu-item-level2"
+                >
+                    <ng-container
+                        *ngFor="let submenuItem2 of submenuItem.subItems"
+                    >
+                        <a [routerLink]="submenuItem2.url">{{
+                            submenuItem2.label
+                        }}</a>
+                    </ng-container>
+                </div>
+            </div>
+
+            <mat-divider></mat-divider>
+        </ng-container>
+        <!-- <a mat-list-item>
+            <mat-icon>calendar_month</mat-icon>Agenda</a>
+        <a mat-list-item>
+            <mat-icon>mail</mat-icon>Notifications / messages</a> -->
+    </mat-nav-list>
+</mat-expansion-panel>

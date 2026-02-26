@@ -1,0 +1,15 @@
+app-candidate-status-histories-dialog {
+    table {
+        border-collapse: collapse;
+        border: 1px solid transparent;
+
+        td,
+        th {
+            border: 1px solid;
+            min-width: 120px;
+            height: 50px;
+            text-align: center;
+            padding: 10px;
+        }
+    }
+}

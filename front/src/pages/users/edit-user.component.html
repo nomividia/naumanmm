@@ -1,0 +1,538 @@
+<app-drawer-main-container
+    [headerTitle]="
+        !!entity?.id
+            ? ('Menu.Users' | translate) + ' | ' + entity?.userName
+            : isNewUser
+            ? ('User.NewUser' | translate)
+            : ''
+    "
+    [headerSmallText]="
+        entity?.id
+            ? ('Global.LastUpdate' | translate) + (entity?.modifDate | date)
+            : undefined
+    "
+    padding="0"
+    [showPendingModifications]="hasPendingModifications"
+>
+    <div class="edit-page-header edit-header-container">
+        <div class="d-flex align-items-center color-primary">
+            <button
+                [disabled]="loading"
+                mat-raised-button
+                color="primary"
+                (click)="goBack()"
+            >
+                <mat-icon fontSet="material-icons-outlined"
+                    >keyboard_arrow_left</mat-icon
+                >{{ 'Global.Back' | translate }}
+            </button>
+        </div>
+
+        <!-- <div class="d-flex align-items-center color-primary">
+            <div *ngIf="hasPendingModifications">
+                {{'Global.UnsavedChanges' | translate}}
+            </div>
+        </div> -->
+        <div class="d-flex align-items-center color-primary">
+            <ng-container *ngIf="isNewUser">
+                <button
+                    [disabled]="loading"
+                    mat-raised-button
+                    color="primary"
+                    (click)="save()"
+                >
+                    <mat-icon fontSet="material-icons-outlined"
+                        >person_add</mat-icon
+                    >{{ 'User.Save' | translate }}
+                </button>
+            </ng-container>
+
+            <ng-container *ngIf="!isNewUser && entity">
+                <ng-container>
+                    <span [ngClass]="{ 't-grey': !isUserEnable }">
+                        {{ 'User.Enabled' | translate }}
+                    </span>
+                </ng-container>
+
+                <mat-slide-toggle
+                    color="primary"
+                    class="ml-1"
+                    [disabled]="loading"
+                    [(ngModel)]="isUserEnable"
+                    (ngModelChange)="changeUserStatut()"
+                    [matTooltip]="
+                        isUserEnable
+                            ? ('User.DeactivateUser' | translate)
+                            : ('User.ActivateUser' | translate)
+                    "
+                >
+                </mat-slide-toggle>
+
+                <button
+                    *ngIf="
+                        GlobalAppService.userHasRole(
+                            AuthDataService.currentUser,
+                            RolesList.AdminTech
+                        )
+                    "
+                    class="ml-2 bordered-icon"
+                    [disabled]="loading"
+                    mat-icon-button
+                    color="primary"
+                    (click)="deleteUser()"
+                    [matTooltip]="'User.Delete' | translate"
+                >
+                    <mat-icon class="material-icons-outlined">delete</mat-icon>
+                </button>
+            </ng-container>
+
+            <!-- <button mat-icon-button color="primary" style="padding-left: 15px;"
+                [matTooltip]="'User.archiveUser' | translate" *ngIf="entity?.id "
+                [disabled]="loading || entity.disabled || !entity" (click)="onArchive()">
+                <mat-icon>
+                    inventory_2
+                </mat-icon>
+            </button> -->
+        </div>
+        <!-- <div class="right" *ngIf="loading">
+            <mat-spinner diameter="30" strokeWidth="3"></mat-spinner>
+        </div> -->
+
+        <div class="mainLoadingOverlay" *ngIf="loading">
+            <div style="position: relative; margin-top: 10vh">
+                <mat-spinner diameter="80" strokeWidth="7"></mat-spinner>
+            </div>
+            <!-- <div class="mainLoadingOverlayMessage"></div> -->
+        </div>
+    </div>
+    <div *ngIf="entity" style="padding: 20px 50px">
+        <div class="d-flex row-container mt-1">
+            <div class="column-container">
+                <div
+                    class="edit-page-block"
+                    [class.selected]="editModes.informations"
+                >
+                    <ng-container *ngIf="!isNewUser">
+                        <ng-container
+                            *ngTemplateOutlet="
+                                editBtn;
+                                context: { editModeKey: 'informations' }
+                            "
+                        ></ng-container>
+                    </ng-container>
+                    <h2>Informations</h2>
+                    <hr />
+                    <ng-container *ngIf="editModes.informations">
+                        <mat-form-field
+                            class="nxs-small-mat-input"
+                            appearance="outline"
+                        >
+                            <mat-label>{{
+                                'Global.UserName' | translate
+                            }}</mat-label>
+                            <input
+                                required
+                                [placeholder]="'Global.UserName' | translate"
+                                matInput
+                                type="text"
+                                [(ngModel)]="entity.userName"
+                                (ngModelChange)="hasPendingModifications = true"
+                            />
+                        </mat-form-field>
+                        <mat-form-field
+                            class="nxs-small-mat-input"
+                            appearance="outline"
+                        >
+                            <mat-label>{{
+                                'Global.FirstName' | translate
+                            }}</mat-label>
+                            <input
+                                required
+                                [placeholder]="'Global.FirstName' | translate"
+                                matInput
+                                type="text"
+                                [(ngModel)]="entity.firstName"
+                                (ngModelChange)="hasPendingModifications = true"
+                            />
+                        </mat-form-field>
+                        <mat-form-field
+                            class="nxs-small-mat-input"
+                            appearance="outline"
+                        >
+                            <mat-label>{{
+                                'Global.LastName' | translate
+                            }}</mat-label>
+                            <input
+                                required
+                                [placeholder]="'Global.LastName' | translate"
+                                matInput
+                                type="text"
+                                [(ngModel)]="entity.lastName"
+                                (ngModelChange)="hasPendingModifications = true"
+                            />
+                        </mat-form-field>
+                        <mat-form-field
+                            class="nxs-small-mat-input"
+                            appearance="outline"
+                        >
+                            <mat-label>{{
+                                'Candidate.Gender' | translate
+                            }}</mat-label>
+                            <mat-select
+                                required
+                                [(ngModel)]="entity.genderId"
+                                name="gender"
+                                (ngModelChange)="hasPendingModifications = true"
+                            >
+                                <mat-option
+                                    *ngFor="let item of genderList"
+                                    [value]="item.id"
+                                >
+                                    {{ 'label' | dbTranslate : item }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field
+                            class="nxs-small-mat-input"
+                            appearance="outline"
+                        >
+                            <mat-label>{{
+                                'Candidate.Email' | translate
+                            }}</mat-label>
+                            <input
+                                required
+                                [placeholder]="'Candidate.Email' | translate"
+                                matInput
+                                type="email"
+                                [(ngModel)]="entity.mail"
+                                (ngModelChange)="hasPendingModifications = true"
+                            />
+                        </mat-form-field>
+                        <nxs-intl-tel-input
+                            [required]="false"
+                            class="nxs-small-mat-input"
+                            [matLabel]="'Global.Phone' | translate"
+                            [(ngModel)]="entity.phone"
+                        >
+                        </nxs-intl-tel-input>
+                        <nxs-intl-tel-input
+                            [required]="false"
+                            class="nxs-small-mat-input"
+                            [matLabel]="'Global.PhoneFix' | translate"
+                            [(ngModel)]="entity.phoneFix"
+                        >
+                        </nxs-intl-tel-input>
+                    </ng-container>
+                    <ng-container *ngIf="!editModes.informations">
+                        <div class="edit-page-block-item">
+                            <p class="title">
+                                {{ 'Global.UserName' | translate }}
+                            </p>
+                            <p>
+                                {{
+                                    entity.userName || 'Global.NotInformed'
+                                        | translate
+                                }}
+                            </p>
+                        </div>
+                        <div class="edit-page-block-item">
+                            <p class="title">
+                                {{ 'Global.FirstName' | translate }}
+                            </p>
+                            <p>
+                                {{
+                                    entity.firstName || 'Global.NotInformed'
+                                        | translate
+                                }}
+                            </p>
+                        </div>
+                        <div class="edit-page-block-item">
+                            <p class="title">
+                                {{ 'Global.LastName' | translate }}
+                            </p>
+                            <p>
+                                {{
+                                    (entity.lastName | uppercase) ||
+                                        'Global.NotInformed' | translate
+                                }}
+                            </p>
+                        </div>
+                        <div class="edit-page-block-item">
+                            <p class="title">
+                                {{ 'Global.Gender' | translate }}
+                            </p>
+                            <p>
+                                {{
+                                    entity.gender?.label || 'Global.NotInformed'
+                                        | translate
+                                }}
+                            </p>
+                        </div>
+                        <div class="edit-page-block-item">
+                            <p class="title">
+                                {{ 'Candidate.Email' | translate }}
+                            </p>
+                            <p>
+                                {{
+                                    entity.mail || 'Global.NotInformed'
+                                        | translate
+                                }}
+                            </p>
+                        </div>
+                        <div class="edit-page-block-item">
+                            <p class="title">
+                                {{ 'Global.Phone' | translate }}
+                            </p>
+                            <p>
+                                {{
+                                    entity.phone || 'Global.NotInformed'
+                                        | translate
+                                }}
+                            </p>
+                        </div>
+                        <div class="edit-page-block-item">
+                            <p class="title">
+                                {{ 'Global.PhoneFix' | translate }}
+                            </p>
+                            <p>
+                                {{
+                                    entity.phoneFix || 'Global.NotInformed'
+                                        | translate
+                                }}
+                            </p>
+                        </div>
+                        <div class="edit-page-block-item">
+                            <p class="title">
+                                {{ 'User.CreationDateShort' | translate }}
+                            </p>
+                            <p>
+                                {{ entity.creationDate | date : 'dd/MM/yyyy' }}
+                            </p>
+                        </div>
+                    </ng-container>
+                </div>
+                <div
+                    class="edit-page-block mt-3"
+                    [class.selected]="editModes.password"
+                >
+                    <ng-container *ngIf="!isNewUser">
+                        <ng-container
+                            *ngTemplateOutlet="
+                                editBtn;
+                                context: { editModeKey: 'password' }
+                            "
+                        ></ng-container>
+                    </ng-container>
+                    <h2>{{ 'User.Password' | translate }}</h2>
+                    <hr />
+                    <ng-container *ngIf="editModes.password">
+                        <button
+                            [disabled]="loading"
+                            style="margin-right: 10px"
+                            *ngIf="
+                                entityRefFieldValue !== 'new' &&
+                                !defineNewPassword
+                            "
+                            (click)="
+                                defineNewPassword = true;
+                                hasPendingModifications = true
+                            "
+                            mat-raised-button
+                        >
+                            {{ 'User.SetNewPassword' | translate }}
+                        </button>
+                        <ng-container
+                            *ngIf="
+                                entityRefFieldValue === 'new' ||
+                                defineNewPassword
+                            "
+                        >
+                            <mat-form-field
+                                class="nxs-small-mat-input"
+                                appearance="outline"
+                            >
+                                <mat-label>{{
+                                    'User.NewPassword' | translate
+                                }}</mat-label>
+                                <input
+                                    required
+                                    [placeholder]="
+                                        'User.NewPassword' | translate
+                                    "
+                                    matInput
+                                    type="password"
+                                    [(ngModel)]="entity.password"
+                                />
+                            </mat-form-field>
+                        </ng-container>
+                    </ng-container>
+                    <ng-container *ngIf="!editModes.password">
+                        <div class="edit-page-block-item">
+                            <p class="title">
+                                {{ 'User.Password' | translate }}
+                            </p>
+                            <p>*************</p>
+                        </div>
+                    </ng-container>
+                </div>
+                <ng-container
+                    *ngIf="
+                        !isNewUser &&
+                        GlobalAppService.userHasOneOfRoles(
+                            AuthDataService.currentUser,
+                            [RolesList.Admin, RolesList.AdminTech]
+                        )
+                    "
+                >
+                    <div
+                        class="edit-page-block mt-3"
+                        [class.selected]="editModes.roles"
+                    >
+                        <ng-container
+                            *ngTemplateOutlet="
+                                editBtn;
+                                context: { editModeKey: 'roles' }
+                            "
+                        ></ng-container>
+                        <h2>{{ 'Global.Roles' | translate }}</h2>
+                        <hr />
+                        <ng-container *ngIf="editModes.roles">
+                            <div *ngFor="let item of rolesListWrapper">
+                                <mat-checkbox
+                                    [(ngModel)]="item.checked"
+                                    (ngModelChange)="
+                                        hasPendingModifications = true
+                                    "
+                                >
+                                    {{ item.roleLabel }}
+                                </mat-checkbox>
+                                <br />
+                            </div>
+                        </ng-container>
+                        <ng-container *ngIf="!editModes.roles">
+                            <ul>
+                                <li *ngFor="let role of entity.roles">
+                                    {{ role.label }}
+                                </li>
+                            </ul>
+                        </ng-container>
+                    </div>
+                </ng-container>
+            </div>
+
+            <div
+                class="column-container"
+                *ngIf="!entity.candidateId && !isNewUser"
+            >
+                <div class="edit-page-block" [class.selected]="editModes.photo">
+                    <ng-container *ngIf="!isNewUser">
+                        <ng-container
+                            *ngTemplateOutlet="
+                                editBtn;
+                                context: { editModeKey: 'photo' }
+                            "
+                        ></ng-container>
+                    </ng-container>
+                    <h2>{{ 'Global.Photo' | translate }}</h2>
+                    <hr />
+                    <ng-container *ngIf="editModes.photo">
+                        <nxs-file-upload
+                            [hasDropZone]="false"
+                            [showProgressBar]="true"
+                            [showFilesList]="true"
+                            (beforeUploadItem)="loading = true"
+                            [data]="photoUploadData"
+                            [options]="photoUploadOptions"
+                            [disabled]="loading"
+                            (onAddingFileFailed)="onAddingFileFailed($event)"
+                            (onCompleteAllItems)="onCompleteItems()"
+                        >
+                        </nxs-file-upload>
+                    </ng-container>
+                    <ng-container *ngIf="!editModes.photo && !photoSaving">
+                        <div
+                            class="user-picture"
+                            [style.backgroundImage]="
+                                'url(' +
+                                ImagesHelper.getUserPicture(entity) +
+                                ')'
+                            "
+                        ></div>
+                    </ng-container>
+                </div>
+            </div>
+            <div
+                class="column-container"
+                *ngIf="
+                    GlobalAppService.userHasOneOfRoles(entity, [
+                        RolesList.Admin,
+                        RolesList.RH,
+                        RolesList.Consultant
+                    ])
+                "
+            >
+                <div class="edit-page-block">
+                    <h2>{{ 'User.Recruitment' | translate }}</h2>
+                    <hr />
+                    <div class="d-flex justify-arround">
+                        <div class="stat-item">
+                            <span>{{ jobOfferLinkedCount || 0 }}</span>
+                            <p class="text-center">
+                                {{ 'User.JobOfferLinked1' | translate }} <br />
+                                {{ 'User.JobOfferLinked2' | translate }}
+                            </p>
+                        </div>
+                        <div
+                            style="cursor: pointer"
+                            (click)="redirectWithLinkedConsultant()"
+                            class="stat-item"
+                            matTooltip="{{
+                                'Tooltip.SeeCandidate' | translate
+                            }}"
+                        >
+                            <span>{{ candidateLinkedCount || 0 }}</span>
+                            <p class="text-center">
+                                {{ 'User.CandidatesLinked1' | translate }}
+                                <br />
+                                {{ 'User.CandidatesLinked2' | translate }}
+                            </p>
+                        </div>
+                        <div
+                            style="cursor: pointer"
+                            (click)="redirectWithLinkedConsultant()"
+                            class="stat-item"
+                            matTooltip="{{
+                                'Tooltip.SeeCandidate' | translate
+                            }}"
+                        >
+                            <span>{{ candidatePlacedCount || 0 }}</span>
+                            <p class="text-center">
+                                {{ 'User.CandidatesPlaced1' | translate }}
+                                <br />
+                                {{ 'User.CandidatesPlaced2' | translate }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</app-drawer-main-container>
+
+<ng-template #editBtn let-editModeKey="editModeKey">
+    <button
+        class="edit-btn"
+        mat-raised-button
+        mat-icon-button
+        color="primary"
+        (click)="onEditClick(editModeKey)"
+        [matTooltip]="
+            ($any(editModes)[editModeKey] ? 'Global.Save' : 'Global.Edit')
+                | translate
+        "
+        [disabled]="loading"
+    >
+        <mat-icon *ngIf="!$any(editModes)[editModeKey]">edit</mat-icon>
+        <mat-icon *ngIf="$any(editModes)[editModeKey]">done</mat-icon>
+    </button>
+</ng-template>

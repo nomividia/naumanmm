@@ -1,0 +1,218 @@
+@import '../../variables';
+
+app-candidate-list-minified {
+    ul {
+        padding: 0 !important;
+        li {
+            list-style: none;
+        }
+    }
+    .w-50 {
+        width: 100px;
+    }
+    mat-progress-bar {
+        width: 50% !important;
+    }
+    .mat-progress-bar-fill::after {
+        background-color: $mmi-green;
+        border-radius: 100px;
+    }
+    mat-progress-bar .mat-progress-bar-buffer {
+        background: #e4e8eb;
+        border-radius: 100px;
+    }
+    .long-width {
+        width: 270px;
+    }
+    .small-width {
+        width: 130px;
+    }
+
+    // COLOR ICONS
+    .grey-star-icon,
+    .orange-star-icon {
+        width: 10px;
+        height: 10px;
+        font-size: 10px;
+    }
+    .grey-star-icon {
+        color: #929292;
+    }
+    .orange-star-icon {
+        color: $mmi-orange;
+    }
+    .green-icon,
+    .red-icon {
+        margin-right: 10px;
+        cursor: default;
+    }
+    .green-icon {
+        color: $mmi-green;
+    }
+    .red-icon {
+        color: #862f09;
+    }
+
+    // CATEGORY DOT (job big category color)
+    .category-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        margin-right: 8px;
+        flex: 0 0 10px;
+    }
+
+    // CANDIDATE STATUS COLOR
+    .actions button {
+        height: 30px;
+        width: 150px;
+        border-radius: 8px;
+        line-height: unset;
+        // color: white;
+        font-size: 0.8rem;
+        mat-icon {
+            color: #ececec !important;
+        }
+    }
+    .statut-btn-black {
+        background-color: #161616 !important;
+        color: rgb(214, 214, 214);
+    }
+    .statut-btn-orange {
+        background-color: $mmi-orange !important;
+        color: white;
+    }
+    .statut-btn-blue {
+        background-color: $mmi-blue !important;
+        color: white;
+    }
+    .statut-btn-border {
+        background-color: white !important;
+        border: 1px solid grey;
+        color: grey;
+    }
+    .statut-btn-red {
+        background-color: #862f09 !important;
+        color: white;
+    }
+    .statut-btn-green {
+        background-color: $mmi-green !important;
+        color: white;
+    }
+    .statut-btn-yellow {
+        background-color: #a3a105 !important;
+        color: white;
+    }
+
+    // COMPLETION STATUS DOTS
+    .completion-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        margin-right: 5px;
+
+        &.complete {
+            background-color: $mmi-green;
+        }
+
+        &.incomplete {
+            background-color: #862f09;
+        }
+    }
+
+    // SEARCH HIGHLIGHT STYLES
+    .search-highlight {
+        background-color: #ffeb3b;
+        color: #000;
+        font-weight: bold;
+        padding: 1px 2px;
+        border-radius: 2px;
+    }
+
+    .candidate-info-item {
+        min-width: 25% !important;
+        max-width: 25% !important;
+    }
+
+    @media screen and (max-width: 1500px) {
+        .candidate-info-item {
+            min-width: 27% !important;
+            max-width: 27% !important;
+        }
+    }
+
+    .candidate-job-item {
+        min-width: 17% !important;
+        max-width: 17% !important;
+    }
+
+    @media screen and (max-width: 1500px) {
+        .candidate-job-item {
+            min-width: 20% !important;
+            max-width: 20% !important;
+        }
+    }
+
+    .candidate-location-item {
+        min-width: 17% !important;
+        max-width: 17% !important;
+    }
+
+    @media screen and (max-width: 1500px) {
+        .candidate-location-item {
+            min-width: 26% !important;
+            max-width: 26% !important;
+        }
+    }
+    
+    @media (max-width: 599px) {
+        .nxs-list-item-wrapper-container {
+            display: flex !important;
+            flex-direction: column !important;
+            
+            > a {
+                display: flex !important;
+                flex-direction: column !important;
+                width: 100% !important;
+            }
+            
+            > div {
+                width: 100% !important;
+                display: flex !important;
+                justify-content: center !important;
+                margin: 5px 0 !important;
+            }
+        }
+        
+        .candidate-info-item {
+            min-width: 100% !important;
+            max-width: 100% !important;
+            margin: 5px 0 !important;
+            order: 1 !important;
+        }
+        
+        .candidate-job-item {
+            min-width: 100% !important;
+            max-width: 100% !important;
+            margin: 5px 0 !important;
+            order: 2 !important;
+        }
+        
+        .candidate-location-item {
+            min-width: 100% !important;
+            max-width: 100% !important;
+            margin: 5px 0 !important;
+            order: 3 !important;
+        }
+        
+        .actions {
+            width: 100% !important;
+            order: 4 !important;
+            
+            button {
+                width: 100% !important;
+                margin: 5px 0 !important;
+            }
+        }
+    }
+}

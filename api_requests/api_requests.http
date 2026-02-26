@@ -1,0 +1,52 @@
+# @name login
+POST {{apiBaseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+    "userName":"contact@nextalys.com",
+    "password":"admin"
+}
+###
+
+@authToken = {{login.response.body.token}}
+
+
+### Send notification
+POST {{apiBaseUrl}}/api/notifications/send-notification/133ae0ab-afd0-423c-8114-70cebc891364
+Authorization: Bearer {{authToken}}
+
+### Generate PDF
+POST {{apiBaseUrl}}/api/pdf/generate-pdf
+Authorization: Bearer {{authToken}}
+
+### Get PDF
+GET {{apiBaseUrl}}/api/pdf/get-pdf/test.pdf
+
+### Get Users
+GET {{apiBaseUrl}}/api/users
+Authorization: Bearer {{authToken}}
+
+###Get users list
+GET {{apiBaseUrl}}/api/users?start=0&length=500
+Authorization: Bearer {{authToken}}
+
+
+### Get One User
+GET {{apiBaseUrl}}/api/users/nextalys
+Authorization: Bearer {{authToken}}
+
+
+### Create or update User
+POST {{apiBaseUrl}}/api/users
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+{
+    "userName":"test_user_creation",
+    "roles":[]
+}
+
+
+### Get current candidate dossier
+GET {{apiBaseUrl}}/api/candidates/getMyDossier
+Authorization: Bearer {{authToken}}

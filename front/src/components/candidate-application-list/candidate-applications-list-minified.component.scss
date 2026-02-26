@@ -1,0 +1,88 @@
+@import '../../variables.scss';
+
+app-candidate-applications-list-minified {
+    div.candidate-application-wrapper-item {
+        min-width: 13%;
+        max-width: 13%;
+    }
+
+    .position-right {
+        position: absolute;
+        right: 30px;
+        min-width: unset !important;
+        max-width: unset !important;
+        
+        @media (max-width: 599px) {
+            position: static !important;
+            right: auto !important;
+        }
+    }
+
+    .profile-picture {
+        background-color: #dcdcdc;
+        border-radius: 50%;
+        min-height: 50px;
+        min-width: 50px;
+        background-position: center;
+        background-size: cover;
+        margin-right: 20px;
+    }
+
+    .category-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        margin-right: 8px;
+        flex: 0 0 10px;
+        background-color: #000; // default if binding fails
+    }
+
+    .splitText {
+        min-width: 20% !important;
+
+        &.splitSmall {
+            min-width: 12% !important;
+        }
+
+        div {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+    }
+
+    .candidate-ref-job {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+
+        .job-ref,
+        .ref-annonce {
+            display: flex;
+            align-items: center;
+        }
+    }
+
+    .redirectLinkJobOffer {
+        color: $mmi-orange;
+    }
+
+    .yellow-icon {
+        color: #d9d94c;
+    }
+
+    .red-icon {
+        color: red;
+    }
+
+    .green-icon {
+        color: green;
+    }
+
+    .search-highlight {
+        background-color: #fff3cd;
+        padding: 0 2px;
+        border-radius: 2px;
+        font-weight: 600;
+    }
+}
