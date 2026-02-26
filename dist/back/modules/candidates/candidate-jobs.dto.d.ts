@@ -1,0 +1,32 @@
+import { CandidateJobStatus } from '../../../shared/types/candidate-job-status.type';
+import { CandidateJobType } from '../../../shared/types/candidate-job-type';
+import { AppValueDto } from '../../models/dto/app-value-dto';
+import { JobReferenceDto } from '../job-references/job-reference-dto';
+import { CandidateDto } from './candidate-dto';
+export declare class CandidateJobDto {
+    id?: string;
+    creationDate?: Date;
+    modifDate?: Date;
+    candidateId?: string;
+    candidate?: CandidateDto;
+    candidateResumeId?: string;
+    job?: AppValueDto;
+    jobId?: string;
+    experienceStartDate?: Date;
+    experienceEndDate?: Date;
+    showMonthInResume?: boolean;
+    postTitle?: string;
+    postDescription?: string;
+    postResponsability?: string;
+    employer?: string;
+    inActivity?: boolean;
+    leavingReason?: string;
+    jobReference?: JobReferenceDto;
+    jobReferenceId?: string;
+    employerProfileId?: string;
+    employerProfile?: AppValueDto;
+    jobName?: string;
+    jobDescription?: string;
+    status: CandidateJobStatus;
+    type: CandidateJobType;
+}

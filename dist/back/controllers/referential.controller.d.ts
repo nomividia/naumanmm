@@ -1,0 +1,30 @@
+import { FastifyReply } from 'fastify';
+import { AppTypeDto, FindAppTypesRequest, GetAppTypeRequest, GetAppTypeResponse, GetAppTypesResponse, GetTypeValuesRequest } from '../models/dto/app-type-dto';
+import { AppValueDto, GetAppValueResponse, MultipleAppValuesRequest } from '../models/dto/app-value-dto';
+import { BaseSearchRequest } from '../models/requests/base-search-requests';
+import { GenericResponse } from '../models/responses/generic-response';
+import { GetLanguagesResponse } from '../models/responses/languages-responses';
+import { GetLogFileContentResponse } from '../models/responses/log-file.responses';
+import { AuthToolsService } from '../services/auth-tools.service';
+import { ReferentialService } from '../services/referential.service';
+import { AppLogger } from '../services/tools/logger.service';
+import { BaseController } from '../shared/base.controller';
+export declare class ReferentialController extends BaseController {
+    private referentialService;
+    private appLogger;
+    private readonly authToolsService;
+    constructor(referentialService: ReferentialService, appLogger: AppLogger, authToolsService: AuthToolsService);
+    getAppTypes(request: BaseSearchRequest): Promise<GetAppTypesResponse>;
+    getOneAppType(request: GetAppTypeRequest): Promise<GetAppTypeResponse>;
+    getTypeValues(request: GetTypeValuesRequest): Promise<GetAppTypeResponse>;
+    getMultipleTypeValues(request: FindAppTypesRequest): Promise<GetAppTypesResponse>;
+    insertOrUpdateAppValue(appValueDto: AppValueDto): Promise<GetAppValueResponse>;
+    insertOrUpdateAppType(appTypeDto: AppTypeDto): Promise<GetAppTypeResponse>;
+    getAllLanguages(): Promise<GetLanguagesResponse>;
+    getLogFileContent(date: string, type: 'info' | 'warn' | 'error'): Promise<GetLogFileContentResponse>;
+    downloadLogFile(date: string, type: 'info' | 'warn' | 'error', dl?: '0' | '1', res?: FastifyReply): Promise<GenericResponse>;
+    removeLogFile(date: string, type: 'info' | 'warn' | 'error'): Promise<GenericResponse>;
+    removeAppValues(request: MultipleAppValuesRequest): Promise<GenericResponse>;
+    disableAppValues(request: MultipleAppValuesRequest): Promise<GenericResponse>;
+    deleteAppValues(request: MultipleAppValuesRequest): Promise<GenericResponse>;
+}

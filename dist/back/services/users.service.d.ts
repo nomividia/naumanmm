@@ -1,0 +1,30 @@
+import { JwtService } from '@nestjs/jwt';
+import { FindOneOptions, Repository } from 'typeorm';
+import { JwtPayload } from '../../shared/jwt-payload';
+import { User } from '../entities/user.entity';
+import { GetConnectedConsultantsResponse, GetUserResponse, GetUsersResponse, GetUserStatsResponse, UserDto } from '../models/dto/user-dto';
+import { FindUsersRequest } from '../models/requests/user-requests';
+import { GenericResponse } from '../models/responses/generic-response';
+import { CandidateService } from '../modules/candidates/candidates.service';
+import { JobOfferService } from '../modules/job-offers/job-offers.service';
+import { ApplicationBaseModelService, LinqQueryWrapper } from './base-model.service';
+import { ReferentialService } from './referential.service';
+import { FileService } from './tools/file.service';
+import { UserRoleService } from './user-roles.service';
+export declare class UsersService extends ApplicationBaseModelService<User, UserDto, GetUserResponse, GetUsersResponse> {
+    readonly usersRepository: Repository<User>;
+    private readonly userRoleService;
+    readonly jwtService: JwtService;
+    private fileService;
+    private candidateService;
+    private jobOfferService;
+    private referentialService;
+    constructor(usersRepository: Repository<User>, userRoleService: UserRoleService, jwtService: JwtService, fileService: FileService, candidateService: CandidateService, jobOfferService: JobOfferService, referentialService: ReferentialService);
+    getUsers(request: FindUsersRequest): Promise<GetUsersResponse>;
+    findOne(conditions: FindOneOptions<User> | LinqQueryWrapper<User>, getPassword?: boolean): Promise<GetUserResponse>;
+    private generateUserNameFromUser;
+    createOrUpdate(user: UserDto, mustGenerateToken?: boolean, currentPayload?: JwtPayload): Promise<GetUserResponse>;
+    getConsultantStats(userId: string): Promise<GetUserStatsResponse>;
+    getConnectedConsultants(): Promise<GetConnectedConsultantsResponse>;
+    setUsersLanguagesJob(): Promise<GenericResponse>;
+}

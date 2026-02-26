@@ -1,0 +1,136 @@
+<mjml>
+    <mj-head>
+        <mj-attributes>
+            <mj-text
+                padding="0"
+                color="#707070"
+                font-size="20px"
+                line-height="2"
+            />
+            <mj-button inner-padding="20px 40px" font-size="16px" />
+            <mj-all font-family="Open Sans, Calibri" />
+            <mj-class name="blue" color="#0073aa" />
+            <mj-class
+                name="blue-btn"
+                background-color="#247AFF"
+                color="#FFFFFF"
+                inner-padding="20px 40px"
+            />
+            <mj-class name="blue-text" color="#247AFF" />
+            <mj-class
+                name="transparent-btn"
+                font-size="14px"
+                padding="2px 8px"
+                background-color="transparent"
+                color="black"
+                inner-padding="0"
+                line-height="2"
+                font-weight="bold"
+                align="left"
+            />
+            <mj-class name="social-btn" width="30px" vertical-align="middle" />
+            <mj-class
+                name="social-btn-wrapper"
+                width="60px"
+                padding="14px 14px"
+                vertical-align="middle"
+                align="center"
+            />
+            <mj-class name="itw-btn" color="#FFFFFF" />
+            <mj-class
+                name="itw-btn-wrapper"
+                padding="20px 0 40px 0"
+                background-color="#FFFFFF"
+            />
+        </mj-attributes>
+
+        <mj-style> td { word-break:initial !important; } </mj-style>
+    </mj-head>
+    <mj-body width="800px" background-color="#F3F3F3">
+        <mj-wrapper>
+            <mj-section>
+                <mj-column>
+                    <mj-image
+                        width="150px"
+                        src="{{{SITE_BASE_URL}}}/assets/logos/logo-new.png"
+                    />
+                </mj-column>
+            </mj-section>
+        </mj-wrapper>
+        <mj-wrapper padding="0 20px">
+            <mj-section padding="0">
+                <mj-column
+                    background-color="#FFFFFF"
+                    border-radius="10px 10px 0 0"
+                >
+                    <mj-text
+                        align="left"
+                        padding="20px 60px 2px 60px"
+                        font-size="16px"
+                    >
+                        {{#ifEquals language 'fr'}} Bonjour
+                        {{{candidateFirstName}}},<br /><br />
+                        Nous vous remercions d'avoir pris le temps de rencontrer
+                        l'un de nos collaborateurs récemment dans le cadre de
+                        votre candidature chez Morgan & Mallet.<br /><br />
+                        Dans une démarche d'amélioration continue de nos
+                        services et de notre accompagnement, nous serions ravis
+                        de connaître votre ressenti suite à cet échange. Votre
+                        avis est précieux pour nous !<br /><br />
+                        Nous vous invitons à partager votre expérience en
+                        cliquant sur le lien suivant :<br />
+                        👉
+                        <a href="{{{googleReviewUrl}}}" style="color: #247aff"
+                            >Laissez votre avis Google</a
+                        ><br /><br />
+                        Cela ne vous prendra que quelques instants et nous
+                        aidera à toujours mieux accompagner nos candidats et
+                        clients.<br /><br />
+                        Nous vous remercions par avance pour votre retour et
+                        restons à votre disposition pour toute question.<br /><br />
+                        Cordialement,<br />
+                        L'équipe Morgan & Mallet International {{/ifEquals}}
+                        {{#ifEquals language 'en'}} Hi
+                        {{{candidateFirstName}}},<br /><br />
+                        It was great to meet you! Thank you again for taking the
+                        time to speak with me.<br /><br />
+                        We are striving to improve our recruitment process and
+                        would really appreciate your feedback. Could you please
+                        take a few moments to leave a review on Google through
+                        this link?<br />
+                        <a href="{{{googleReviewUrl}}}" style="color: #247aff"
+                            >Leave your Google review</a
+                        ><br /><br />
+                        We assure you that all comments will in no way influence
+                        the outcome of your application. Thank you so much!<br /><br />
+                        Best regards,<br />
+                        The Morgan & Mallet International Team {{/ifEquals}}
+                    </mj-text>
+                </mj-column>
+            </mj-section>
+        </mj-wrapper>
+
+        <mj-wrapper padding="0 20px">
+            <mj-section padding="0">
+                <mj-column
+                    background-color="#FFFFFF"
+                    border-radius="0 0 10px 10px"
+                    padding-bottom="40px"
+                >
+                    <mj-text
+                        align="center"
+                        padding="20px 60px"
+                        font-size="14px"
+                        color="#999999"
+                    >
+                        {{#ifEquals language 'fr'}} Morgan & Mallet
+                        International - Recrutement de personnel de maison et
+                        yacht {{/ifEquals}} {{#ifEquals language 'en'}} Morgan &
+                        Mallet International - Household staff and yacht
+                        recruitment {{/ifEquals}}
+                    </mj-text>
+                </mj-column>
+            </mj-section>
+        </mj-wrapper>
+    </mj-body>
+</mjml>

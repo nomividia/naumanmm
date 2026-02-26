@@ -1,0 +1,1 @@
+{"version":3,"file":"expired-token-exception.js","sourceRoot":"./","sources":["back/services/guards/expired-token-exception.ts"],"names":[],"mappings":";;;AAAA,2CAA2D;AAE3D,MAAa,qBAAsB,SAAQ,sBAAa;IACpD;QACI,KAAK,CAAC,WAAW,EAAE,mBAAU,CAAC,SAAS,CAAC,CAAC;IAC7C,CAAC;CACJ;AAJD,sDAIC"}

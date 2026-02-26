@@ -1,0 +1,42 @@
+import { Repository } from 'typeorm';
+import { JwtPayload } from '../../../shared/jwt-payload';
+import { ApplyStatus } from '../../../shared/shared-constants';
+import { GenericResponse } from '../../models/responses/generic-response';
+import { ApplicationBaseModelService } from '../../services/base-model.service';
+import { ReferentialService } from '../../services/referential.service';
+import { FileService } from '../../services/tools/file.service';
+import { MailService } from '../../services/tools/mail.service';
+import { CandidateApplicationJobs } from '../candidate-application-jobs/candidates-application-jobs.entity';
+import { CandidateService } from '../candidates/candidates.service';
+import { GCloudStorageService } from '../gdrive/gcloud-storage-service';
+import { ApplyToJobOffersRequest, CandidateApplicationDto, GetCandidateApplicationResponse, GetCandidateApplicationsResponse, GuidExchangeResponse } from './candidate-application-dto';
+import { CandidateApplication } from './candidate-application.entity';
+export declare class CandidateApplicationService extends ApplicationBaseModelService<CandidateApplication, CandidateApplicationDto, GetCandidateApplicationResponse, GetCandidateApplicationsResponse> {
+    readonly repository: Repository<CandidateApplication>;
+    private candidateService;
+    private referentialService;
+    private fileService;
+    private mailService;
+    private gCloudStorageService;
+    private readonly candidateApplicationJobsRepository;
+    constructor(repository: Repository<CandidateApplication>, candidateService: CandidateService, referentialService: ReferentialService, fileService: FileService, mailService: MailService, gCloudStorageService: GCloudStorageService, candidateApplicationJobsRepository: Repository<CandidateApplicationJobs>);
+    changeCandidateApplicationStatusAndCreateCandidateIfNeeded(id: string, statusCode: ApplyStatus, createCandidate: boolean, giveAtsAccess?: boolean, currentJobsId?: string[], genderId?: string, consultantEmail?: string, isPlatform?: boolean, consultantId?: string): Promise<GetCandidateApplicationResponse>;
+    createCandidateFromCandidateApplication(candidateApplication: CandidateApplication, currentJobsId?: string[], consultantId?: string): Promise<GetCandidateApplicationResponse>;
+    private updateExistingCandidateFilesFromApplication;
+    private copyCandidateApplicationFilesToCandidate;
+    createOrUpdate(dto: CandidateApplicationDto, ...toDtoParameters: any): Promise<GetCandidateApplicationResponse>;
+    delete(ids: string[]): Promise<GenericResponse>;
+    deleteAllCandidateApplications(): Promise<GenericResponse>;
+    applyToJobOffers(request: ApplyToJobOffersRequest, payload: JwtPayload, langCode: 'en' | 'fr'): Promise<GetCandidateApplicationResponse>;
+    linkCandidateApplicationToCandidateFromMail(id: string): Promise<GetCandidateApplicationResponse>;
+    generateGuidExchangeAndSendEmail(candidateApplicationId: string): Promise<GuidExchangeResponse>;
+    sendPrivateExchangeLinkToCandidateApplication(candidateApplicationId?: string, candidateApplication?: CandidateApplicationDto): Promise<GenericResponse>;
+    setCandidateApplicationUnseen(candidateApplicationId: string): Promise<GenericResponse>;
+    sendCandidateApplicationReceivedMail(candidateApplication: CandidateApplicationDto, request: {
+        language: 'fr' | 'en';
+    }, consultantEmail?: string): Promise<void>;
+    private getIsoDateFileName;
+    exportNanniesApplicationsBase(sendMail: boolean, minDate: Date, maxDate: Date): Promise<GenericResponse>;
+    exportNanniesApplicationsLastWeek(): Promise<GenericResponse>;
+    exportNanniesApplications(): Promise<GenericResponse>;
+}

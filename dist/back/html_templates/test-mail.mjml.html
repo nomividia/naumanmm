@@ -1,0 +1,124 @@
+<mjml>
+    <mj-head>
+        <mj-attributes>
+            <mj-text
+                padding="0"
+                color="#707070"
+                font-size="20px"
+                line-height="2"
+            />
+            <mj-button inner-padding="20px 40px" font-size="16px" />
+            <mj-all font-family="Open Sans, Calibri" />
+            <mj-class name="blue" color="#0073aa" />
+            <mj-class
+                name="blue-btn"
+                background-color="#247AFF"
+                color="#FFFFFF"
+                inner-padding="20px 40px"
+            />
+            <mj-class name="blue-text" color="#247AFF" />
+            <mj-class
+                name="transparent-btn"
+                font-size="14px"
+                padding="2px 8px"
+                background-color="transparent"
+                color="black"
+                inner-padding="0"
+                line-height="2"
+                font-weight="bold"
+                align="left"
+            />
+        </mj-attributes>
+
+        <mj-style> td { word-break:initial !important; } </mj-style>
+    </mj-head>
+    <mj-body width="800px" background-color="#F3F3F3">
+        <mj-wrapper>
+            <mj-section>
+                <mj-column>
+                    <mj-image
+                        width="350px"
+                        src="{{{SITE_BASE_URL}}}/assets/logos/logo_menu.png"
+                    />
+                </mj-column>
+            </mj-section>
+        </mj-wrapper>
+        <mj-wrapper padding="0px 20px">
+            <mj-section padding="0">
+                <mj-column background-color="#FFFFFF">
+                    <mj-text
+                        align="center"
+                        padding="20px"
+                        font-weight="bold"
+                        font-size="16px"
+                        >Titre 1
+                    </mj-text>
+                </mj-column>
+            </mj-section>
+
+            {{#each textList}}
+            <mj-section padding="0">
+                <mj-column background-color="#FFFFFF">
+                    <mj-text align="center" padding="20px 40px" font-size="16px"
+                        >{{{this}}}</mj-text
+                    >
+                </mj-column>
+            </mj-section>
+            {{/each}}
+
+            <mj-section background-color="#FFFFFF">
+                <mj-column background-color="#FFFFFF">
+                    <mj-divider
+                        border-width="1px"
+                        border-style="solid"
+                        border-color="grey"
+                    />
+                </mj-column>
+            </mj-section>
+            <mj-section padding="10px 40px" background-color="#FFFFFF">
+                <mj-column>
+                    <mj-text font-size="14px" align="center"> texte </mj-text>
+                </mj-column>
+            </mj-section>
+        </mj-wrapper>
+
+        <mj-section>
+            <mj-column>
+                <mj-text
+                    align="center"
+                    padding="5px 19px 10px 19px"
+                    font-size="14px"
+                >
+                    À bientôt sur notre site<br /><br />
+                    Si vous ne souhaitez plus recevoir de mail,<br />
+                    désinscrivez-vous en cliquant
+                    <a
+                        style="color: #247aff"
+                        href="{{{SITE_BASE_URL}}}/disable-emailing/{{{DISABLE_EMAILING_GUID}}}"
+                    >
+                        ici
+                    </a>
+                </mj-text>
+            </mj-column>
+        </mj-section>
+
+        <mj-section>
+            <mj-column>
+                <mj-text
+                    align="center"
+                    padding="30px 10px 10px 10px"
+                    font-size="14px"
+                >
+                    Si vous ne souhaitez plus recevoir de mail,<br />
+                    désinscrivez-vous en cliquant
+                    <a
+                        style="color: #247aff"
+                        href="{{{SITE_BASE_URL}}}/disable-emailing/{{{DISABLE_EMAILING_GUID}}}"
+                    >
+                        ici
+                    </a>
+                </mj-text>
+            </mj-column>
+        </mj-section>
+    </mj-body>
+</mjml>

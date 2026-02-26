@@ -1,0 +1,35 @@
+import { Repository } from 'typeorm';
+import { GenericResponse } from '../../models/responses/generic-response';
+import { ApplicationBaseModelService } from '../../services/base-model.service';
+import { ReferentialService } from '../../services/referential.service';
+import { MailService } from '../../services/tools/mail.service';
+import { CandidateApplicationService } from '../candidates-application/candidate-applications.service';
+import { CandidateService } from '../candidates/candidates.service';
+import { SmsService } from '../sms/sms.service';
+import { GetCandidatesCountRequest, GetCandidatesCountResponse, GetNewsletterCandidateApplicationsRequest, GetNewsletterCandidateApplicationsResponse, GetNewsletterResponse, GetNewslettersResponse, NewsletterDto, UnsubscribeFromNewsletterRequest } from './newsletter.dto';
+import { Newsletter } from './newsletter.entity';
+export declare class NewsletterService extends ApplicationBaseModelService<Newsletter, NewsletterDto, GetNewsletterResponse, GetNewslettersResponse> {
+    readonly repository: Repository<Newsletter>;
+    private referentialService;
+    private candidateService;
+    private candidateApplicationService;
+    private mailService;
+    private smsService;
+    constructor(repository: Repository<Newsletter>, referentialService: ReferentialService, candidateService: CandidateService, candidateApplicationService: CandidateApplicationService, mailService: MailService, smsService: SmsService);
+    archiveNewslettersStatus(id: string): Promise<GetNewsletterResponse>;
+    sendNewsletter(id: string, consultantEmail?: string): Promise<GenericResponse>;
+    duplicateNewsletter(id: string): Promise<GetNewsletterResponse>;
+    private createCandidateSubquery;
+    getNewsletterCandidateApplications(request: GetNewsletterCandidateApplicationsRequest, returnCandidateApplications: boolean): Promise<GetNewsletterCandidateApplicationsResponse>;
+    getNewsletterCandidates(request: GetCandidatesCountRequest, returnCandidates: boolean): Promise<GetCandidatesCountResponse>;
+    previewNewsletter(newsletterId: string): Promise<GenericResponse>;
+    private getContactsListFromNewsletterRequest;
+    private getDataNewsletterFromNewsletterDto;
+    private sendNewsLetterMailOrSms;
+    private groupJobOffersByCountry;
+    createOrUpdate(newsletterDto: NewsletterDto, consultantEmail?: string): Promise<GetNewsletterResponse>;
+    unsubscribeFromNewsletter(request: UnsubscribeFromNewsletterRequest): Promise<GenericResponse>;
+    refreshNewsletterLoop(): Promise<GenericResponse>;
+    syncSibNewsletter(newsletter: NewsletterDto, sentSibStatusId: string): Promise<GenericResponse>;
+    cleanNewsletterRecipients(): Promise<GenericResponse>;
+}

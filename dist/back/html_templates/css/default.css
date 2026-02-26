@@ -1,0 +1,204 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap');
+
+* {
+    font-family: 'Times New Roman', 'Tinos', Times, serif;
+    -webkit-print-color-adjust: exact;
+    text-align: left;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+@page {
+    margin-top: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    margin-right: 0;
+}
+
+@page :first {
+    /* margin-top: 40px; */
+}
+
+body {
+    margin: unset !important;
+}
+
+.container {
+    margin-left: auto;
+    margin-right: auto;
+    width: 80%;
+    text-align: left;
+}
+
+.container div {
+    margin: 10px;
+    text-align: center;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+table th,
+table td {
+    text-align: center;
+    padding: 4px;
+    border: 1px solid black;
+    margin: 0;
+}
+
+.d-flex {
+    display: flex;
+    align-items: center;
+    text-align: left;
+}
+
+.justify-center {
+    justify-content: center;
+}
+
+.name {
+    font-family: 'Times New Roman', 'Tinos', Times, serif;
+}
+
+.picture {
+    background-color: grey;
+    height: 150px;
+    width: 150px;
+    border-radius: 0%;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.blue-title {
+    background-color: #071e30;
+    width: 100%;
+    border-radius: 30px;
+    color: white;
+    text-align: center;
+    font-size: 20px;
+    padding: 5px;
+    font-family: 'Times New Roman', 'Tinos', Times, serif;
+    margin-bottom: 50px;
+    font-weight: 300;
+}
+
+.subtitle {
+    font-weight: 600;
+    text-align: left;
+}
+
+.main-infos p {
+    margin: 0 0 3px 0;
+}
+
+.mt-2 {
+    margin-top: 20px !important;
+}
+
+.mt-13 {
+    margin-top: 130px !important;
+}
+
+.header-banner-main {
+    background-image: url('../images/top-cv-mmi.png');
+    width: 100%;
+    height: 160px;
+    background-position: center;
+    background-size: cover;
+}
+
+.header-banner-main-new {
+    background-image: url('../images/top-cv-mmi1.png');
+    width: 100%;
+    height: 170px;
+    /* background-position: center; */
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.header-banner {
+    background-image: url('../images/top-cv-mmi02.png');
+    height: 40px;
+    width: 100%;
+    background-position: center;
+    background-size: cover;
+}
+
+.page-break {
+    page-break-after: always;
+}
+
+.material-icons-outlined {
+    color: #d76004;
+    margin-right: 10px;
+}
+
+.footer {
+    background-color: lightgrey;
+    width: 100%;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    position: fixed;
+    bottom: 0px;
+}
+
+.footer p {
+    font-size: 8px !important;
+    text-align: center;
+}
+
+p {
+    font-size: 14px;
+}
+
+.blue-title,
+.name {
+    font-family: 'Times New Roman', 'Tinos', Times, serif;
+}
+
+.description-candidate {
+    line-height: 25px;
+}
+
+.header,
+.header-space {
+    height: 50px;
+}
+
+.footer,
+.footer-space {
+    height: 70px;
+}
+
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+}
+
+.footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+.main-table-wrapper {
+    border: none;
+    width: 100%;
+}
+
+.main-table-wrapper td {
+    border: none;
+    padding: 0;
+}
+
+.h-20 {
+    height: 20px;
+    width: 100%;
+}

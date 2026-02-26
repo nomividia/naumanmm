@@ -1,0 +1,44 @@
+import { Repository } from 'typeorm';
+import { GenericResponse } from '../../models/responses/generic-response';
+import { AuthToolsService } from '../../services/auth-tools.service';
+import { ApplicationBaseModelService } from '../../services/base-model.service';
+import { ReferentialService } from '../../services/referential.service';
+import { MailService } from '../../services/tools/mail.service';
+import { CandidateService } from '../candidates/candidates.service';
+import { GetInterviewResponse, GetInterviewsRequest, GetInterviewsResponse, InterviewDto } from './interview-dto';
+import { Interview } from './interview.entity';
+export declare class InterviewsService extends ApplicationBaseModelService<Interview, InterviewDto, GetInterviewResponse, GetInterviewsResponse> {
+    private readonly repository;
+    private mailService;
+    private referentialService;
+    private candidateService;
+    constructor(repository: Repository<Interview>, mailService: MailService, referentialService: ReferentialService, candidateService: CandidateService);
+    sendInterviewMailToCandidate(id: string, consultantEmail?: string): Promise<GenericResponse>;
+    findAllInterviewsConsultant(request: GetInterviewsRequest, authToolsService: AuthToolsService): Promise<GetInterviewsResponse>;
+    private setInterviewsConsultantFilters;
+    updateInterviewedCandidatesStatus(): Promise<GenericResponse>;
+    private sendReviewRequestEmail;
+    private updateCandidateStatusAndSendEmail;
+    sendPlacedCandidateReviewEmail(candidateId: string, consultantEmail?: string): Promise<GenericResponse>;
+    private static readonly DAILY_INTERVIEW_GOAL;
+    private static readonly WEEKLY_INTERVIEW_GOAL;
+    private static readonly REPORT_RECIPIENT_EMAILS;
+    private static readonly REPORT_RECIPIENT_EMAIL;
+    private static readonly EXCLUDED_EMAILS;
+    private static readonly US_CONSULTANT_USERNAMES;
+    sendDailyInterviewReportWorld(): Promise<GenericResponse>;
+    sendDailyInterviewReportUS(): Promise<GenericResponse>;
+    private sendDailyInterviewReport;
+    private getYesterdayStartInTimezone;
+    private getYesterdayEndInTimezone;
+    private getDayOfWeekInTimezone;
+    private getTimezoneOffsetMs;
+    private formatDateForReport;
+    sendWeeklyInterviewReport(): Promise<GenericResponse>;
+    private getLastWeekDateRange;
+    checkCandidatesInterviewEligibility(candidateIds: string[], consultantId: string): Promise<{
+        candidateId: string;
+        isEligible: boolean;
+        lastInterviewDate?: Date;
+    }[]>;
+}

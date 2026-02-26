@@ -1,0 +1,40 @@
+import { LazyModuleLoader, ModuleRef } from '@nestjs/core';
+import { FindManyOptions, Repository } from 'typeorm';
+import { GenericResponse } from '../../models/responses/generic-response';
+import { ApplicationBaseModelService } from '../../services/base-model.service';
+import { AppLogger } from '../../services/tools/logger.service';
+import { CronJobObject } from '../../shared/types';
+import { NotificationsService } from '../notifications/notifications.service';
+import { JobDto } from './job-dto';
+import { JobHistory } from './job-history.entity';
+import { Job } from './job.entity';
+import { GetJobResponse, GetJobsResponse } from './jobs-responses';
+export declare class JobsService extends ApplicationBaseModelService<Job, JobDto, GetJobResponse, GetJobsResponse> {
+    private readonly jobsRepository;
+    private readonly jobHistoryRepository;
+    private appLogger;
+    private readonly moduleRef;
+    private readonly notificationsService;
+    private lazyModuleLoader;
+    runningJobs: {
+        jobId: string;
+        cronJobObject: CronJobObject;
+    }[];
+    constructor(jobsRepository: Repository<Job>, jobHistoryRepository: Repository<JobHistory>, appLogger: AppLogger, moduleRef: ModuleRef, notificationsService: NotificationsService, lazyModuleLoader: LazyModuleLoader);
+    findAll(conditions?: FindManyOptions<Job>, includeFirstJobHistory?: boolean): Promise<GetJobsResponse>;
+    findAllOptimize(conditions?: FindManyOptions<Job>): Promise<GetJobsResponse>;
+    createOrUpdate(job: JobDto): Promise<GetJobResponse>;
+    init(): Promise<void>;
+    private planJobs;
+    private getJobDescription;
+    private executeJob;
+    private triggerPlanJobs;
+    deleteJobs(jobIds: string[]): Promise<GenericResponse>;
+    triggerJob(jobId: string): Promise<GenericResponse>;
+    deleteOldJobHistoryAndLogs(): Promise<GenericResponse>;
+    private cleanOldFilesInTempDirectory;
+    private deleteOldJobHistory;
+    private createInitialJobsIfNeeded;
+    stopAllJobsAndClearRunningJobs(): void;
+    stopDisabledJobs(): Promise<void>;
+}

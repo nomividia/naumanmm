@@ -1,0 +1,31 @@
+import { CandidateJobStatus } from '../../../shared/types/candidate-job-status.type';
+import { CandidateJobType } from '../../../shared/types/candidate-job-type';
+import { AppValue } from '../../entities/app-value.entity';
+import { AppBaseEntity } from '../../entities/base-entity';
+import { JobReference } from '../job-references/job-reference.entity';
+import { CandidateJobDto } from './candidate-jobs.dto';
+import { Candidate } from './candidate.entity';
+export declare class CandidateJob extends AppBaseEntity {
+    candidateId?: string;
+    candidate?: Candidate;
+    jobId?: string;
+    job?: AppValue;
+    experienceStartDate?: Date;
+    experienceEndDate?: Date;
+    showMonthInResume?: boolean;
+    employer?: string;
+    inActivity?: boolean;
+    leavingReason?: string;
+    jobReferenceId?: string;
+    jobReference?: JobReference;
+    employerProfileId: string;
+    employerProfile?: AppValue;
+    jobName?: string;
+    jobDescription?: string;
+    status: CandidateJobStatus;
+    type: CandidateJobType;
+    private normalizeDateForOutput;
+    toDto(): CandidateJobDto;
+    private normalizeDateForStorage;
+    fromDto(dto: CandidateJobDto): void;
+}

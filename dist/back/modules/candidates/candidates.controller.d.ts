@@ -1,0 +1,32 @@
+import { JwtService } from '@nestjs/jwt';
+import { GetUserResponse } from '../../models/dto/user-dto';
+import { GenericResponse } from '../../models/responses/generic-response';
+import { AuthToolsService } from '../../services/auth-tools.service';
+import { UsersService } from '../../services/users.service';
+import { BaseController } from '../../shared/base.controller';
+import { NoteItemFileDto } from '../../models/dto/note-item-file.dto';
+import { GetCandidateImageResponse, GetCandidateJobsConditionResponse, GetCandidateLanguageResponse, GetCandidateRequest, GetCandidateResponse, GetCandidatesRequest, GetCandidatesResponse, SaveCandidateRequest, SendCandidateByEmailRequest, UpdateCandidateJobsStatusRequest } from './candidate-dto';
+import { CandidateService } from './candidates.service';
+export declare class CandidatesController extends BaseController {
+    private readonly candidateService;
+    private readonly authToolsService;
+    private userService;
+    private jwtService;
+    constructor(candidateService: CandidateService, authToolsService: AuthToolsService, userService: UsersService, jwtService: JwtService);
+    getAll(request: GetCandidatesRequest): Promise<GetCandidatesResponse>;
+    get(id: string, request: GetCandidateRequest): Promise<GetCandidateResponse>;
+    createOrUpdate(request: SaveCandidateRequest): Promise<GetCandidateResponse>;
+    delete(ids: string): Promise<GenericResponse>;
+    archive(ids: string[]): Promise<GenericResponse>;
+    getMyDossier(request: GetCandidateRequest): Promise<GetCandidateResponse>;
+    saveMyDossier(request: SaveCandidateRequest): Promise<GetCandidateResponse>;
+    createUserFromCandidate(candidateId: string): Promise<GetUserResponse>;
+    sendMailAccessToCandidate(candidateId: string): Promise<GetUserResponse>;
+    getCandidateJobsConditions(): Promise<GetCandidateJobsConditionResponse>;
+    getCandidateHasImageProfile(id: string): Promise<GetCandidateImageResponse>;
+    sendCandidateFolderByMail(request: SendCandidateByEmailRequest): Promise<GenericResponse>;
+    getCandidateMainLanguage(id: string): Promise<GetCandidateLanguageResponse>;
+    updateCandidateJobsStatus(request: UpdateCandidateJobsStatusRequest): Promise<GetCandidateResponse>;
+    saveNoteItemFile(noteItemId: string, fileDto: NoteItemFileDto): Promise<GenericResponse>;
+    deleteNoteItemFile(noteItemFileId: string): Promise<GenericResponse>;
+}

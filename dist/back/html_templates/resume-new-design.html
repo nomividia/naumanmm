@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="css/default.css" />
+        <title>CV - {{firstName}}</title>
+    </head>
+    <style>
+        @font-face {
+            font-family: 'bodoni'; /* Choose a name for your font */
+            src: url('./fonts/BodoniFerraraOrigin-Bold.otf') format('woff2'); /* Path to your font file */
+            font-weight: normal; /* Define weight if applicable (e.g., 400 for normal) */
+            font-style: normal; /* Define style if applicable (e.g., normal) */
+        }
+        @font-face {
+            font-family: 'bodoni-regular'; /* Choose a name for your font */
+            src: url('./fonts/BodoniFerraraOrigin-Regular.otf') format('woff2'); /* Path to your font file */
+            font-weight: normal; /* Define weight if applicable (e.g., 400 for normal) */
+            font-style: normal; /* Define style if applicable (e.g., normal) */
+        }
+        @font-face {
+            font-family: 'Metropolis-bold'; /* Choose a name for your font */
+            src: url('./fonts/Metropolis-Bold.otf') format('woff2'); /* Path to your font file */
+            font-weight: normal; /* Define weight if applicable (e.g., 400 for normal) */
+            font-style: normal; /* Define style if applicable (e.g., normal) */
+        }
+        @font-face {
+            font-family: 'Metropolis-medium'; /* Choose a name for your font */
+            src: url('./fonts/Metropolis-Medium.otf') format('woff2'); /* Path to your font file */
+            font-weight: normal; /* Define weight if applicable (e.g., 400 for normal) */
+            font-style: normal; /* Define style if applicable (e.g., normal) */
+        }
+        @font-face {
+            font-family: 'Metropolis-regular'; /* Choose a name for your font */
+            src: url('./fonts/Metropolis-Regular.otf') format('woff2'); /* Path to your font file */
+            font-weight: normal; /* Define weight if applicable (e.g., 400 for normal) */
+            font-style: normal; /* Define style if applicable (e.g., normal) */
+        }
+        @font-face {
+            font-family: 'Avenir Heavy'; /* Choose a name for your font */
+            src: url('./fonts/Avenir Heavy.ttf') format('truetype'); /* Path to your font file */
+            font-weight: normal; /* Define weight if applicable (e.g., 400 for normal) */
+            font-style: normal; /* Define style if applicable (e.g., normal) */
+        }
+        h1 {
+            font-family: bodoni;
+        }
+        h4 {
+            margin: 0;
+        }
+        p {
+            color: #131e48;
+            margin: 0;
+        }
+        body {
+            font-family: system-ui;
+            font-weight: 400;
+        }
+        ul {
+            margin: 0;
+            padding-left: 15px;
+        }
+        .page-break {
+            page-break-before: always;
+        }
+    </style>
+    <body style="margin: 0">
+        <div
+            style="
+                display: flex;
+                justify-content: space-between;
+                padding: 30px 60px;
+                background-color: #131e48;
+                color: white;
+            "
+        >
+            <div>
+                <span
+                    style="
+                        margin: 0 0 5px 0;
+                        font-family: Metropolis-medium;
+                        font-size: 12px;
+                        letter-spacing: 2px;
+                    "
+                >
+                    {{#if isFR}} MEILLEURS CANDIDATS POUR LE POSTE DE {{else}}
+                    TOP CV CANDIDATES FOR {{/if}}
+                </span>
+                <h1 style="margin: 0; font-size: 25px">{{jobTitle}}</h1>
+            </div>
+            <div>
+                <span
+                    style="
+                        margin: 0 0 5px 0;
+                        font-family: Metropolis-medium;
+                        font-size: 11px;
+                        letter-spacing: 2px;
+                    "
+                >
+                    {{#if isFR}} PRÉSENTÉ PAR {{else}} PRESENTED BY {{/if}}
+                </span>
+                <h2 style="margin: 0; font-family: bodoni; font-size: 25px">
+                    Morgan & Mallet
+                </h2>
+            </div>
+        </div>
+        <div
+            style="
+                display: flex;
+                justify-content: space-between;
+                padding: 60px 50px;
+                background-color: #faf8f3;
+            "
+        >
+            <div>
+                <h2
+                    style="
+                        margin: 0 0 10px 0;
+                        color: #131e48;
+                        font-size: 25px;
+                        font-family: Avenir Heavy;
+                        letter-spacing: 3px;
+                        text-transform: uppercase;
+                    "
+                >
+                    {{firstName}}
+                </h2>
+                <p
+                    style="
+                        margin: 0;
+                        font-family: Metropolis-regular;
+                        font-weight: bold;
+                    "
+                >
+                    {{#if city}}{{city}}{{#if showState}}, {{state}}{{/if}},
+                    {{displayCountry}}{{else}}{{#if showState}}{{state}},
+                    {{displayCountry}}{{else}}{{displayCountry}}{{/if}}{{/if}}
+                </p>
+
+                <p
+                    style="
+                        margin: 0;
+                        font-family: Metropolis-regular;
+                        font-weight: bold;
+                    "
+                >
+                    {{#if showNationality}} {{nationality}}, {{/if}} {{#if
+                    showAge}} {{#if isFR}} {{age}} ans{{else}} {{age}} years
+                    old{{/if}}{{/if}}
+                </p>
+                <!-- <p style="margin: 0">Permis B (véhiculée)</p> -->
+                {{#if hasLanguage}}
+                <p
+                    style="
+                        margin: 0;
+                        font-family: Metropolis-regular;
+                        font-weight: bold;
+                    "
+                >
+                    {{#if isFR}} Langues : {{else}} Languages : {{/if}} {{#each
+                    languages}}{{#unless @first}},
+                    {{/unless}}{{this.languageName}} - {{this.level}}{{/each}}
+                </p>
+                {{/if}}
+            </div>
+            {{#if hasPicture}}
+            <img
+                width="150"
+                src="{{candidatePictureUrl}}"
+                alt="candidate-picture"
+            />
+            {{/if}}
+        </div>
+        <div
+            style="
+                padding: 80px 50px;
+                display: flex;
+                flex-direction: column;
+                gap: 50px;
+            "
+        >
+            <div>
+                <h3
+                    style="
+                        margin: 0 0 28px 0;
+                        font-family: Metropolis-regular;
+                        letter-spacing: 2px;
+                        color: #131e48;
+                        font-size: 18px;
+                        text-transform: uppercase;
+                    "
+                >
+                    {{#if isFR}} PRÉSENTATION {{else}} PRESENTATION {{/if}}
+                </h3>
+                <p
+                    style="
+                        margin: 0;
+                        font-family: Metropolis-regular;
+                        font-weight: 300;
+                        font-size: 14px;
+                        line-height: 19px;
+                        text-align: justify;
+                    "
+                >
+                    {{candidatePresentation}}
+                </p>
+            </div>
+            <div>
+                <h3
+                    style="
+                        margin: 0 0 28px 0;
+                        font-family: Metropolis-regular;
+                        letter-spacing: 3px;
+                        color: #131e48;
+                        font-size: 18px;
+                        text-transform: uppercase;
+                    "
+                >
+                    {{#if isFR}} RÉFÉRENCES {{else}} REFERENCES {{/if}}
+                </h3>
+                {{#if hasReferences}}
+                {{#each references}}
+                <p
+                    style="
+                        margin: 0;
+                        font-family: Metropolis-regular;
+                        font-weight: 300;
+                        font-size: 14px;
+                        line-height: 19px;
+                        text-align: justify;
+                    "
+                >
+                    {{this}}
+                </p>
+                <br />
+                {{/each}}
+                {{else}}
+                <p
+                    style="
+                        margin: 0;
+                        font-family: Metropolis-regular;
+                        font-weight: 300;
+                        font-size: 14px;
+                        line-height: 19px;
+                    "
+                >
+                    {{#if isFR}} Références supplémentaires disponibles sur
+                    demande{{else}} Additional references available on
+                    request{{/if}}
+                </p>
+                {{/if}}
+            </div>
+        </div>
+
+        <!-- Second Page - Candidate Jobs -->
+        <div class="page-break">
+            <!-- Header for second page -->
+            <div
+                style="
+                    display: flex;
+                    justify-content: space-between;
+                    padding: 30px 60px;
+                    background-color: #131e48;
+                    color: white;
+                "
+            >
+                <div>
+                    <span
+                        style="
+                            margin: 0 0 5px 0;
+                            font-family: Metropolis-medium;
+                            font-size: 12px;
+                            letter-spacing: 2px;
+                        "
+                    >
+                        {{#if isFR}} MEILLEURS CANDIDATS POUR LE POSTE DE
+                        {{else}} TOP CV CANDIDATES FOR {{/if}}
+                    </span>
+                    <h1 style="margin: 0; font-size: 25px">{{jobTitle}}</h1>
+                </div>
+                <div>
+                    <div style="text-align: right">
+                        <span
+                            style="
+                                margin: 0 0 5px 0;
+                                font-family: Metropolis-medium;
+                                font-size: 11px;
+                                letter-spacing: 2px;
+                            "
+                        >
+                            {{#if isFR}} PRÉSENTÉ PAR {{else}} PRESENTED BY
+                            {{/if}}
+                        </span>
+                    </div>
+                    <h2 style="margin: 0; font-family: bodoni; font-size: 25px">
+                        Morgan & Mallet
+                    </h2>
+                </div>
+            </div>
+
+            <!-- Content for second page -->
+            <div
+                style="
+                    padding: 80px 50px;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 50px;
+                "
+            >
+                <div>
+                    <h3
+                        style="
+                            margin: 0 0 28px 0;
+                            font-family: Metropolis-regular;
+                            letter-spacing: 2px;
+                            color: #131e48;
+                            font-size: 18px;
+                        "
+                    >
+                        {{#if isFR}} EXPÉRIENCE PROFESSIONNELLE {{else}}
+                        PROFESSIONAL EXPERIENCE {{/if}}
+                    </h3>
+                    {{#each candidateJobs}}
+                    <div style="margin-bottom: 30px">
+                        <div
+                            style="
+                                display: flex;
+                                align-items: center;
+                                margin-bottom: 8px;
+                            "
+                        >
+                            <div style="min-width: 140px; margin-right: 20px">
+                                <p
+                                    style="
+                                        font-weight: 300;
+                                        font-size: 14px;
+                                        margin: 0;
+                                        line-height: 1.2;
+                                        font-family: Metropolis-regular;
+                                    "
+                                >
+                                    {{#if
+                                    this.startDate}}{{this.startDate}}{{/if}}{{#if
+                                    this.endDate}} –
+                                    {{this.endDate}}{{else}}{{#if isFR}} –
+                                    Présent{{else}} – Present{{/if}}{{/if}}
+                                </p>
+                            </div>
+                            <div style="flex: 1">
+                                <h4
+                                    style="
+                                        font-family: Avenir Heavy;
+                                        color: #131e48;
+                                        margin: 0;
+                                        font-size: 14px;
+                                        text-transform: uppercase;
+                                        line-height: 1.2;
+                                        margin-top: 3px;
+                                    "
+                                >
+                                    {{this.jobReference.jobTitle}}
+                                </h4>
+                            </div>
+                        </div>
+                        {{#if this.jobReference.description}}
+                        <div style="margin-left: 160px">
+                            <p
+                                style="
+                                    margin: 0;
+                                    font-family: Metropolis-regular;
+                                    font-weight: 300;
+                                    font-size: 14px;
+                                    line-height: 19px;
+                                    text-align: justify;
+                                "
+                            >
+                                {{{this.jobReference.description}}}
+                            </p>
+                        </div>
+                        {{/if}}
+                    </div>
+                    {{/each}}
+                </div>
+            </div>
+        </div>
+
+        <!-- Third Page - Candidate Education -->
+        {{#if candidateEducation.length}}
+        <div class="page-break">
+            <!-- Header for third page -->
+            <div
+                style="
+                    display: flex;
+                    justify-content: space-between;
+                    padding: 30px 60px;
+                    background-color: #131e48;
+                    color: white;
+                "
+            >
+                <div>
+                    <span
+                        style="
+                            margin: 0 0 5px 0;
+                            font-family: Metropolis-medium;
+                            font-size: 12px;
+                            letter-spacing: 2px;
+                        "
+                    >
+                        {{#if isFR}} MEILLEURS CANDIDATS POUR LE POSTE DE
+                        {{else}} TOP CV CANDIDATES FOR {{/if}}
+                    </span>
+                    <h1 style="margin: 0; font-size: 25px">{{jobTitle}}</h1>
+                </div>
+                <div>
+                    <div style="text-align: right">
+                        <span
+                            style="
+                                margin: 0 0 5px 0;
+                                font-family: Metropolis-medium;
+                                font-size: 11px;
+                                letter-spacing: 2px;
+                            "
+                        >
+                            {{#if isFR}} PRÉSENTÉ PAR {{else}} PRESENTED BY
+                            {{/if}}
+                        </span>
+                    </div>
+                    <h2 style="margin: 0; font-family: bodoni; font-size: 25px">
+                        Morgan & Mallet
+                    </h2>
+                </div>
+            </div>
+
+            <!-- Content for third page -->
+            <div
+                style="
+                    padding: 80px 50px;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 50px;
+                "
+            >
+                <div>
+                    <h3
+                        style="
+                            margin: 0 0 28px 0;
+                            font-family: Metropolis-regular;
+                            letter-spacing: 2px;
+                            color: #131e48;
+                            font-size: 18px;
+                        "
+                    >
+                        {{#if isFR}} FORMATION {{else}} EDUCATION {{/if}}
+                    </h3>
+                    {{#each candidateEducation}}
+                    <div style="margin-bottom: 30px">
+                        <div
+                            style="
+                                display: flex;
+                                align-items: center;
+                                margin-bottom: 8px;
+                            "
+                        >
+                            <div style="min-width: 140px; margin-right: 20px">
+                                <p
+                                    style="
+                                        font-weight: 300;
+                                        font-size: 14px;
+                                        margin: 0;
+                                        line-height: 1.2;
+                                        font-family: Metropolis-regular;
+                                    "
+                                >
+                                    {{#if
+                                    this.startDate}}{{this.startDate}}{{/if}}{{#if
+                                    this.endDate}} –
+                                    {{this.endDate}}{{else}}{{#if isFR}} –
+                                    Présent{{else}} – Present{{/if}}{{/if}}
+                                </p>
+                            </div>
+                            <div style="flex: 1">
+                                <h4
+                                    style="
+                                        font-family: Avenir Heavy;
+                                        color: #131e48;
+                                        margin: 0;
+                                        font-size: 14px;
+                                        text-transform: uppercase;
+                                        line-height: 1.2;
+                                        margin-top: 3px;
+                                    "
+                                >
+                                    {{this.jobReference.jobTitle}}
+                                </h4>
+                            </div>
+                        </div>
+                        {{#if this.jobReference.description}}
+                        <div style="margin-left: 160px">
+                            <p
+                                style="
+                                    margin: 0;
+                                    font-family: Metropolis-regular;
+                                    font-weight: 300;
+                                    font-size: 14px;
+                                    line-height: 19px;
+                                    text-align: justify;
+                                "
+                            >
+                                {{{this.jobReference.description}}}
+                            </p>
+                        </div>
+                        {{/if}}
+                    </div>
+                    {{/each}}
+                </div>
+            </div>
+        </div>
+        {{/if}}
+    </body>
+    <footer
+        class="footer"
+        style="
+            background-color: #faf8f3;
+            padding: 30px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        "
+    >
+        <p
+            style="
+                margin: 0;
+                background-color: #e8dec6;
+                padding: 8px 15px;
+                border-radius: 6px;
+                font-family: Metropolis-regular;
+                font-size: 10px;
+                letter-spacing: 0;
+            "
+        >
+            {{#if isFR}} CONFIDENTIEL – POUR REVISION CLIENT {{else}}
+            CONFIDENTIAL – FOR CLIENT REVIEW ONLY {{/if}}
+        </p>
+        <div style="display: flex; align-items: center; gap: 30px">
+            <p style="font-family: bodoni-regular; font-size: 19px !important">
+                morganmallet.agency
+            </p>
+            <img src="./images/qr-code.png" width="60px" />
+        </div>
+    </footer>
+</html>

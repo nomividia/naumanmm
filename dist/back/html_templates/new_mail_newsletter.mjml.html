@@ -1,0 +1,421 @@
+<mjml>
+    <mj-head>
+        <mj-attributes>
+            <mj-all font-family="Arial, Helvetica, sans-serif" />
+            <mj-text
+                padding="0"
+                color="#131e48"
+                font-size="14px"
+                line-height="1.5"
+            />
+            <mj-button font-family="Arial, Helvetica, sans-serif" />
+            <mj-class
+                name="apply-btn"
+                background-color="#131e48"
+                font-size="11px"
+                inner-padding="5px 10px"
+                color="#FFFFFF"
+                border-radius="0"
+            />
+            <mj-class
+                name="see-more-btn"
+                background-color="#DAA520"
+                font-size="15px"
+                inner-padding="7px 20px"
+                border-radius="12px"
+                color="#FFFFFF"
+            />
+            <mj-class
+                name="country-title"
+                font-size="32px"
+                font-style="italic"
+                color="#808080"
+                font-family="Georgia, Times New Roman, serif"
+                padding="0"
+            />
+        </mj-attributes>
+    </mj-head>
+
+    <mj-body background-color="#FFFFFF" width="800px">
+        <!-- Header with logo -->
+        <mj-section background-color="#131e48" padding="35px 20px 30px 20px">
+            <mj-column>
+                <mj-image
+                    src="{{{SITE_BASE_URL}}}/assets/newsletter/logo-morgan-mallet-white.png"
+                    alt="Morgan and Mallet"
+                    width="335px"
+                    align="center"
+                    padding="0"
+                />
+                <mj-text
+                    align="center"
+                    color="#FFFFFF"
+                    font-size="12px"
+                    letter-spacing="2px"
+                    padding="10px 0 0 0"
+                    >HOUSEHOLD &nbsp;&nbsp;&nbsp;&nbsp; HOSPITALITY
+                    &nbsp;&nbsp;&nbsp;&nbsp; YACHT CREW</mj-text
+                >
+            </mj-column>
+        </mj-section>
+
+        <!-- Banner with title -->
+        <mj-section
+            background-color="#2a3a5a"
+            background-url="{{{SITE_BASE_URL}}}/assets/newsletter/banner-hands.png"
+            background-size="cover"
+            background-repeat="no-repeat"
+            background-position="center center"
+            padding="60px 20px"
+        >
+            <mj-column>
+                <mj-text
+                    align="center"
+                    color="#FFFFFF"
+                    font-size="40px"
+                    font-style="italic"
+                    font-family="Georgia, Times New Roman, serif"
+                    padding="0"
+                    >{{#if isFrench}}Offres d'emploi{{else}}Domestic Staff
+                    Openings{{/if}}</mj-text
+                >
+            </mj-column>
+        </mj-section>
+
+        <!-- Introduction text -->
+        <mj-section background-color="#FFFFFF" padding="25px 20px 15px 20px">
+            <mj-column>
+                <mj-text
+                    align="center"
+                    color="#131e48"
+                    font-size="14px"
+                    line-height="1.5"
+                    >{{{mailContent}}}</mj-text
+                >
+            </mj-column>
+        </mj-section>
+
+        <!-- Job offers grouped by country - 2 column layout (or centered single column) -->
+        {{#each jobOffersByCountry}} {{#if right}}
+        <!-- Two columns layout -->
+        <mj-section background-color="#FFFFFF" padding="20px 20px 0 20px">
+            <!-- Left column -->
+            <mj-column width="48%" vertical-align="top">
+                <mj-text mj-class="country-title" padding="0 10px"
+                    >{{left.countryName}}</mj-text
+                >
+                <mj-divider
+                    border-width="1px"
+                    border-color="#DAA520"
+                    padding="5px 10px 15px 10px"
+                />
+                {{#each left.jobs}}
+                <mj-text
+                    font-size="14px"
+                    padding="0 10px 8px 10px"
+                    color="#131e48"
+                >
+                    <table
+                        width="100%"
+                        cellpadding="0"
+                        cellspacing="0"
+                        border="0"
+                    >
+                        <tr>
+                            <td
+                                style="
+                                    max-width: 200px;
+                                    overflow: hidden;
+                                    text-overflow: ellipsis;
+                                    white-space: nowrap;
+                                "
+                            >
+                                <span style="color: #131e48"
+                                    >{{title}}{{#if city}} -
+                                    {{city}}{{/if}}</span
+                                >
+                            </td>
+                            <td style="text-align: right; width: 80px">
+                                <a
+                                    href="{{{publicLink}}}"
+                                    style="
+                                        display: inline-block;
+                                        background-color: #131e48;
+                                        color: #ffffff;
+                                        font-size: 11px;
+                                        padding: 5px 10px;
+                                        text-decoration: none;
+                                    "
+                                    >{{#if @root.isFrench}}Postuler{{else}}Apply
+                                    Now{{/if}}</a
+                                >
+                            </td>
+                        </tr>
+                    </table>
+                </mj-text>
+                {{/each}}
+            </mj-column>
+            <!-- Right column -->
+            <mj-column width="48%" vertical-align="top">
+                <mj-text mj-class="country-title" padding="0 10px"
+                    >{{right.countryName}}</mj-text
+                >
+                <mj-divider
+                    border-width="1px"
+                    border-color="#DAA520"
+                    padding="5px 10px 15px 10px"
+                />
+                {{#each right.jobs}}
+                <mj-text
+                    font-size="14px"
+                    padding="0 10px 8px 10px"
+                    color="#131e48"
+                >
+                    <table
+                        width="100%"
+                        cellpadding="0"
+                        cellspacing="0"
+                        border="0"
+                    >
+                        <tr>
+                            <td
+                                style="
+                                    max-width: 200px;
+                                    overflow: hidden;
+                                    text-overflow: ellipsis;
+                                    white-space: nowrap;
+                                "
+                            >
+                                <span style="color: #131e48"
+                                    >{{title}}{{#if city}} -
+                                    {{city}}{{/if}}</span
+                                >
+                            </td>
+                            <td style="text-align: right; width: 80px">
+                                <a
+                                    href="{{{publicLink}}}"
+                                    style="
+                                        display: inline-block;
+                                        background-color: #131e48;
+                                        color: #ffffff;
+                                        font-size: 11px;
+                                        padding: 5px 10px;
+                                        text-decoration: none;
+                                    "
+                                    >{{#if @root.isFrench}}Postuler{{else}}Apply
+                                    Now{{/if}}</a
+                                >
+                            </td>
+                        </tr>
+                    </table>
+                </mj-text>
+                {{/each}}
+            </mj-column>
+        </mj-section>
+        {{else}}
+        <!-- Single column layout - centered -->
+        <mj-section background-color="#FFFFFF" padding="20px 20px 0 20px">
+            <mj-column width="60%" vertical-align="top">
+                <mj-text
+                    mj-class="country-title"
+                    padding="0 10px"
+                    align="center"
+                    >{{left.countryName}}</mj-text
+                >
+                <mj-divider
+                    border-width="1px"
+                    border-color="#DAA520"
+                    padding="5px 10px 15px 10px"
+                />
+                {{#each left.jobs}}
+                <mj-text
+                    font-size="14px"
+                    padding="0 10px 8px 10px"
+                    color="#131e48"
+                >
+                    <table
+                        width="100%"
+                        cellpadding="0"
+                        cellspacing="0"
+                        border="0"
+                    >
+                        <tr>
+                            <td
+                                style="
+                                    max-width: 200px;
+                                    overflow: hidden;
+                                    text-overflow: ellipsis;
+                                    white-space: nowrap;
+                                "
+                            >
+                                <span style="color: #131e48"
+                                    >{{title}}{{#if city}} -
+                                    {{city}}{{/if}}</span
+                                >
+                            </td>
+                            <td style="text-align: right; width: 80px">
+                                <a
+                                    href="{{{publicLink}}}"
+                                    style="
+                                        display: inline-block;
+                                        background-color: #131e48;
+                                        color: #ffffff;
+                                        font-size: 11px;
+                                        padding: 5px 10px;
+                                        text-decoration: none;
+                                    "
+                                    >{{#if @root.isFrench}}Postuler{{else}}Apply
+                                    Now{{/if}}</a
+                                >
+                            </td>
+                        </tr>
+                    </table>
+                </mj-text>
+                {{/each}}
+            </mj-column>
+        </mj-section>
+        {{/if}} {{/each}}
+
+        <!-- See more button -->
+        <mj-section background-color="#FFFFFF" padding="25px 20px 40px 20px">
+            <mj-column>
+                <mj-button
+                    mj-class="see-more-btn"
+                    href="{{{jobOfferSeeMoreLink}}}"
+                    >{{#if isFrench}}Voir plus{{else}}See more{{/if}}</mj-button
+                >
+            </mj-column>
+        </mj-section>
+
+        <!-- Footer -->
+        <mj-section
+            background-color="#131e48"
+            background-url="{{{SITE_BASE_URL}}}/assets/newsletter/footer-bg.png"
+            background-size="cover"
+            background-repeat="no-repeat"
+            background-position="center center"
+            padding="30px 20px 20px 20px"
+        >
+            <mj-column width="45%" vertical-align="middle">
+                <mj-text
+                    color="#FFFFFF"
+                    font-size="22px"
+                    padding="0 0 15px 0"
+                    align="center"
+                >
+                    {{#if isFrench}} Nous contacter {{else}} Connect with
+                    us{{/if}}
+                </mj-text>
+                <mj-text align="center" padding="0">
+                    <a
+                        href="https://www.linkedin.com/in/household-staff-domestic-recruitment-agency-273a329a"
+                        target="_blank"
+                        style="display: inline-block; margin: 0 5px"
+                    >
+                        <img
+                            src="{{{SITE_BASE_URL}}}/assets/newsletter/icon-linkedin.png"
+                            alt="LinkedIn"
+                            width="25"
+                            style="display: block"
+                        />
+                    </a>
+                    <a
+                        href="https://www.facebook.com/Householdstaffagency/"
+                        target="_blank"
+                        style="display: inline-block; margin: 0 5px"
+                    >
+                        <img
+                            src="{{{SITE_BASE_URL}}}/assets/newsletter/icon-facebook.png"
+                            alt="Facebook"
+                            width="25"
+                            style="display: block"
+                        />
+                    </a>
+                    <a
+                        href="https://www.instagram.com/morgan_mallet/"
+                        target="_blank"
+                        style="display: inline-block; margin: 0 5px"
+                    >
+                        <img
+                            src="{{{SITE_BASE_URL}}}/assets/newsletter/icon-instagram.png"
+                            alt="Instagram"
+                            width="25"
+                            style="display: block"
+                        />
+                    </a>
+                </mj-text>
+            </mj-column>
+            <mj-column width="10%" vertical-align="middle">
+                <mj-text align="center" padding="0">
+                    <div
+                        style="
+                            width: 2px;
+                            height: 120px;
+                            background-color: #daa520;
+                            margin: 0 auto;
+                        "
+                    ></div>
+                </mj-text>
+            </mj-column>
+            <mj-column width="45%" vertical-align="middle">
+                <mj-text
+                    color="#FFFFFF"
+                    font-size="13px"
+                    align="center"
+                    padding="0 0 5px 0"
+                    >{{#if isFrench}}Vous ne souhaitez plus recevoir d'emails de
+                    Morgan Mallet ?{{else}}No longer want to receive emails from
+                    Morgan Mallet?{{/if}}</mj-text
+                >
+                {{#if unsubcribeLink}}
+                <mj-text
+                    color="#FFFFFF"
+                    font-size="13px"
+                    align="center"
+                    padding="0 0 10px 0"
+                    ><a
+                        href="{{{unsubcribeLink}}}"
+                        style="color: #ffffff; text-decoration: underline"
+                        >{{#if isFrench}}Se
+                        desabonner{{else}}Unsubscribe{{/if}}</a
+                    ></mj-text
+                >
+                {{/if}}
+                <mj-text
+                    color="#FFFFFF"
+                    font-size="13px"
+                    align="center"
+                    padding="5px 0"
+                    >10 Rue de Penthievre, Paris - France. 75008</mj-text
+                >
+                <mj-text
+                    color="#FFFFFF"
+                    font-size="10px"
+                    align="center"
+                    padding="5px 0"
+                    ><a
+                        href="{{{SITE_BASE_URL}}}/legal"
+                        style="color: #ffffff; text-decoration: none"
+                        >{{#if isFrench}}Mentions legales{{else}}Legal
+                        Terms{{/if}}</a
+                    >
+                    |
+                    <a
+                        href="{{{SITE_BASE_URL}}}/privacy"
+                        style="color: #ffffff; text-decoration: none"
+                        >{{#if isFrench}}Politique de
+                        confidentialite{{else}}Privacy Policy{{/if}}</a
+                    ></mj-text
+                >
+                <mj-text
+                    color="#FFFFFF"
+                    font-size="12px"
+                    align="center"
+                    font-family="Georgia, Times New Roman, serif"
+                    padding="10px 0 0 0"
+                    >© Morgan and Mallet International 2015</mj-text
+                >
+            </mj-column>
+        </mj-section>
+    </mj-body>
+</mjml>

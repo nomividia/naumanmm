@@ -1,0 +1,33 @@
+import { AppValue } from '../../entities/app-value.entity';
+import { AppBaseEntity } from '../../entities/base-entity';
+import { User } from '../../entities/user.entity';
+import { CandidateApplicationJobs } from '../candidate-application-jobs/candidates-application-jobs.entity';
+import { Customer } from '../customer/customer.entity';
+import { JobOfferDto } from './job-offer-dto';
+export declare class JobOffer extends AppBaseEntity {
+    title: string;
+    ref: string;
+    jobDescription: string;
+    city?: string;
+    country?: string;
+    countryCode?: string;
+    consultantId?: string;
+    consultant?: User;
+    salary?: string;
+    publicLink?: string;
+    jobId: string;
+    job?: AppValue;
+    taskResponsabilitiesDescription: string;
+    candidateProfileDescription: string;
+    conditionsDescription: string;
+    applyInCouple: boolean;
+    contractTypeId: string;
+    contractType?: AppValue;
+    candidateApplicationJobs?: CandidateApplicationJobs[];
+    customerId?: string;
+    customer?: Customer;
+    stateId?: string;
+    state?: AppValue;
+    toDto(): JobOfferDto;
+    fromDto(dto: JobOfferDto): void;
+}

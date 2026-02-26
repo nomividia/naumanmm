@@ -1,0 +1,41 @@
+import { FindManyOptions, Repository } from 'typeorm';
+import { JwtPayload } from '../../shared/jwt-payload';
+import { AppLanguage } from '../entities/app-language.entity';
+import { AppType } from '../entities/app-type.entity';
+import { AppValue } from '../entities/app-value.entity';
+import { AppTypeDto, FindAppTypesRequest, GetAppTypeResponse, GetAppTypesResponse, GetTypeValuesRequest } from '../models/dto/app-type-dto';
+import { AppValueDto, GetAppValueResponse, GetAppValuesResponse } from '../models/dto/app-value-dto';
+import { LanguageDto } from '../models/dto/language-dto';
+import { GenericResponse } from '../models/responses/generic-response';
+import { GetLanguageResponse, GetLanguagesResponse } from '../models/responses/languages-responses';
+import { ApplicationBaseService } from './base-service';
+import { AppLogger } from './tools/logger.service';
+export declare class ReferentialService extends ApplicationBaseService {
+    private readonly appValuesRepository;
+    private readonly appTypesRepository;
+    readonly appLanguagesRepository: Repository<AppLanguage>;
+    private appLogger;
+    constructor(appValuesRepository: Repository<AppValue>, appTypesRepository: Repository<AppType>, appLanguagesRepository: Repository<AppLanguage>, appLogger: AppLogger);
+    getAllAppTypes(conditions?: FindManyOptions<AppType>): Promise<GetAppTypesResponse>;
+    getAppValues(conditions?: FindManyOptions<AppValue>, ofTypeCode?: string): Promise<GetAppValuesResponse>;
+    getOneAppValue(code: string, ofTypeCode?: string): Promise<GetAppValueResponse>;
+    getAllAppValues(codes?: string[], ofTypeCode?: string): Promise<GetAppValuesResponse>;
+    getOneAppType(id: string, payload: JwtPayload, includeDisabled: boolean): Promise<GetAppTypeResponse>;
+    getTypeValues(request: GetTypeValuesRequest): Promise<GetAppTypeResponse>;
+    getMultipleTypeValues(request: FindAppTypesRequest): Promise<GetAppTypesResponse>;
+    insertOrUpdateAppType(appTypeDto: AppTypeDto, includeAppValues: boolean, includeTranslations: boolean): Promise<GetAppTypeResponse>;
+    insertOrUpdateAppValue(appValueDto: AppValueDto): Promise<GetAppValueResponse>;
+    createOrUpdateTypeWithValues(typeCode: string, typeLabel: string, values: {
+        label: string;
+        order: number;
+        code?: string;
+    }[], removeOldValues: boolean): Promise<void>;
+    getAllLanguages(conditions?: FindManyOptions<AppLanguage>): Promise<GetLanguagesResponse>;
+    createOrUpdateLanguage(language: LanguageDto): Promise<GetLanguageResponse>;
+    removeAppValues(ids?: string[], codes?: string[]): Promise<GenericResponse>;
+    disableAppValues(ids?: string[], codes?: string[]): Promise<GenericResponse>;
+    private filterAppValues;
+    private filterAppTypes;
+    private sortAppTypes;
+    private sortAppValues;
+}
